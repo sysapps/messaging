@@ -117,8 +117,8 @@ Style guide to contributors:
   <p>The terms <a
   href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"><dfn
   id="dfn-eventhandler">event handler</dfn></a> and <a
-  href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type"><dfn
-  id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
+  href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
+  <dfn id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
   [[!HTML5]]. 
 </section>
 
@@ -317,7 +317,8 @@ Style guide to contributors:
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to a <code>MessagingCursor</code> providing access to the results
       of the retrieval, i.e. the set of <code>Conversation</code> elements.
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -339,7 +340,8 @@ Style guide to contributors:
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to the <code>SmsMessage</code> or <code>MmsMessage</code> whose
       identifier matches the <code>id</code> parameter
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -360,7 +362,8 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -382,7 +385,8 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -405,7 +409,8 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -428,7 +433,8 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -451,10 +457,12 @@ Style guide to contributors:
   class="idl">
 
     <dt>readonly attribute DOMString type</dt> <dd>MUST return the type of the
-    messaging service manager. It can have the following values: 'sms' or 'mms'.</dd>
+    messaging service manager. It can have the following values: 'sms' or
+    'mms'.</dd>
   
-    <dt>readonly attribute DOMString[] serviceIDs</dt> <dd>MUST return the identifier
-    of the different services for this type of messaging service (e.g. 'sms_sim1').</dd>
+    <dt>readonly attribute DOMString[] serviceIDs</dt> <dd>MUST return the
+    identifier of the different services for this type of messaging service
+    (e.g. 'sms_sim1').</dd>
   
     <dt>MessagingRequest deleteAll ()</dt>
     <dd>This method makes a request to delete all the messages associated to the
@@ -618,7 +626,8 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -729,7 +738,8 @@ Style guide to contributors:
 <!------------------------ Interface SmsManager ------------------------------>
 <section>
   <h2><a>SmsManager</a> Interface</h2>
-  <p>The <a>SmsManager</a> interface represents the SMS messaging service manager.
+  <p>The <a>SmsManager</a> interface represents the SMS messaging service
+  manager.
   
   <dl title="[NoInterfaceObject] interface SmsManager : MessagingManager"
   class="idl">
@@ -824,7 +834,8 @@ Style guide to contributors:
         'error'
         <li>if a delivery report had been requested set the
         <code>deliveryStatus</code> of the <code>SmsMessage</code> to 'error'
-        <li>invoke the <code>onerror</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+        <li>invoke the <code>onerror</code> <a class="internalDFN"
+        href="#dfn-eventhandler">event handlers</a> of the
         <code>MessagingRequest</code> object
      </ol>
      <li>When the requests has been completed:
@@ -836,7 +847,8 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to the <code>SmsMessage</code> that has been sent
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
       <li><a>queue a task</a> to <a>fire a simple event</a> named
       <code>sent</code> with the <code>message</code> attribute set to the sent
@@ -906,7 +918,8 @@ Style guide to contributors:
 <!------------------------ Interface MmsManager ------------------------------>    
 <section>
   <h2><a>MmsManager</a> Interface</h2>
-  <p>The <a>MmsManager</a> interface represents the MMS messaging service manager.
+  <p>The <a>MmsManager</a> interface represents the MMS messaging service
+  manager.
   
   <dl title="[NoInterfaceObject] interface MmsManager : MessagingManager"
   class="idl">
@@ -945,6 +958,11 @@ Style guide to contributors:
     </dd>
    </dl>  
 
+  <div class='note'>
+  It is FFS whether any MMS setting (e.g. fetch mode, creation mode) needs to be
+  managed through the MmsManager interface.
+  </div>
+   
   <section>
   <h3>Steps</h3>        
     
@@ -1003,7 +1021,8 @@ Style guide to contributors:
         <li>if a delivery report had been requested set the different elements
         in the <code>deliveryStatus</code> array of the <code>MmsMessage</code>
         to 'error'
-        <li>invoke the <code>onerror</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+        <li>invoke the <code>onerror</code> <a class="internalDFN"
+        href="#dfn-eventhandler">event handlers</a> of the
         <code>MessagingRequest</code> object
      </ol>
      <li>When the requests has been completed:
@@ -1015,7 +1034,8 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to the <code>MmsMessage</code> that has been sent
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
       <li><a>queue a task</a> to <a>fire a simple event</a> named
       <code>sent</code> with the <code>message</code> attribute set to the sent
@@ -1041,7 +1061,8 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -1113,7 +1134,8 @@ Style guide to contributors:
           <td><strong><code>onprogress</code></strong></td>
           <td><code><dfn>progress</dfn></code></td>
           <td><a><code>ProgressEvent</code></a></td>
-          <td>handles progress events related to MMS sending/fetching operations</td>
+          <td>handles progress events related to MMS sending/fetching
+          operations</td>
         </tr>
         <tr>
           <td><strong><code>onsuccess</code></strong></td>
@@ -1369,8 +1391,8 @@ Style guide to contributors:
     most recent timestamp .</dd>
 
     <dt>readonly attribute MessageCursor cursor</dt>
-    <dd>MUST return the <code>MessageCursor</code> to access the messages in this
-    conversation.</dd>
+    <dd>MUST return the <code>MessageCursor</code> to access the messages in
+    this conversation.</dd>
 
   </dl>
 </section>
@@ -1460,7 +1482,7 @@ Style guide to contributors:
 </section>
 
 
-<!------------------------ Interface ServiceChangeEvent -------------------------->
+<!------------------------ Interface ServiceChangeEvent ---------------------->
 <section>
   <h2><a>ServiceChangeEvent</a> Interface</h2>
   <p>The <a>ServiceChangeEvent</a> interface represents events related to
