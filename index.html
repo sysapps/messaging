@@ -77,13 +77,13 @@ Style guide to contributors:
     An example of use is provided below:
   
   <pre class="example highlight">
-        var sms_send_request = navigator.messaging.sms.send (
+        var req = navigator.messaging.sms.send (
           '+1234567890', 'How are you?');
           
-        sms_send_request.onsuccess = function() {
+        req.onsuccess = function() {
                 window.console.log('Message Sent!');
         }
-        sms_send_request.onerror = function(e) {
+        req.onerror = function(e) {
                 window.console.error(e.target.error.name);
         }
   </pre>
@@ -114,11 +114,12 @@ Style guide to contributors:
   href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event">
   fire a simple event</a></dfn> are defined in [[!HTML5]].
   
-  <p>The terms <dfn><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"> event
-  handler</a></dfn> and <dfn><a
-  href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
-  event handler event types</a></dfn> are defined in [[!HTML5]].      
+  <p>The terms <a
+  href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"><dfn
+  id="dfn-eventhandler">event handler</dfn></a> and <a
+  href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type"><dfn
+  id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
+  [[!HTML5]]. 
 </section>
 
 <!------------------------ Security and privacy ------------------------------>
@@ -146,10 +147,10 @@ Style guide to contributors:
   
   <dl title="[NoInterfaceObject] interface Messaging" class="idl">
 
-    <dt>readonly attribute SmsService sms</dt> <dd>Provides access to the
+    <dt>readonly attribute SmsManager sms</dt> <dd>Provides access to the
     SMS service's specific functionality.</dd>
   
-    <dt>readonly attribute MmsService mms</dt> <dd>Provides access to the
+    <dt>readonly attribute MmsManager mms</dt> <dd>Provides access to the
     MMS service's specific functionality.</dd>
   
     <dt> MessagingRequest findMessages ()</dt> <dd>This method makes a request
@@ -288,8 +289,9 @@ Style guide to contributors:
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to a <code>MessagingCursor</code> providing access to the results
       of the retrieval, i.e. the set of <code>SmsMessage</code> and/or
-      <code>SmsMessage</code> elements.
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <code>MmsMessage</code> elements.
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN"
+      href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -315,7 +317,7 @@ Style guide to contributors:
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to a <code>MessagingCursor</code> providing access to the results
       of the retrieval, i.e. the set of <code>Conversation</code> elements.
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -337,7 +339,7 @@ Style guide to contributors:
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to the <code>SmsMessage</code> or <code>MmsMessage</code> whose
       identifier matches the <code>id</code> parameter
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -358,7 +360,7 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -380,7 +382,7 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -403,7 +405,7 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -426,7 +428,7 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
@@ -439,41 +441,75 @@ Style guide to contributors:
   </section>
 </section>
 
-<!------------------------ Interface MessagingService ------------------------>
+<!------------------------ Interface MessagingManager ------------------------>
 <section>
-  <h2><a>MessagingService</a> Interface</h2> <p>The <a>MessagingService</a>
+  <h2><a>MessagingManager</a> Interface</h2> <p>The <a>MessagingManager</a>
   interface represents the common attributes of any messaging service (e.g. SMS,
-  MMS).
+  MMS) manager.
   
-  <dl title="[NoInterfaceObject] interface MessagingService : EventTarget"
+  <dl title="[NoInterfaceObject] interface MessagingManager : EventTarget"
   class="idl">
 
     <dt>readonly attribute DOMString type</dt> <dd>MUST return the type of the
-    messaging service. It can have the following values: 'sms' or 'mms'.</dd>
+    messaging service manager. It can have the following values: 'sms' or 'mms'.</dd>
   
-    <dt>readonly attribute DOMString id</dt> <dd>MUST return the identifier
-    of the messaging service (e.g. 'sms_sim1').</dd>
+    <dt>readonly attribute DOMString[] serviceIDs</dt> <dd>MUST return the identifier
+    of the different services for this type of messaging service (e.g. 'sms_sim1').</dd>
   
-    <dt>readonly attribute DOMString displayName</dt> <dd>MUST return the a user
-    friendly display name for the messaging service (e.g. 'SMS(Corporate
-    SIM)').</dd>
-  
-    <dt>MessagingRequest deleteAll ()</dt> <dd>This method makes a request to
-    delete all the messages associated to this messaging service. </dd>
-
+    <dt>MessagingRequest deleteAll ()</dt>
+    <dd>This method makes a request to delete all the messages associated to the
+    messaging service passed as parameter.
+      <dl class='parameters'>
+         <dt>DOMString serviceID</dt>
+         <dd>
+           Identifies the messaging service all whose messages are requested to
+           be deleted
+         </dd>
+     </dl>
+    </dd>
 
     <dt class="no-docs">
       attribute EventHandler onreceived
     </dt>
     <dd>The simple event <code>received</code> MUST be fired when a new
-    message is received on this messaging service.</dd>
+    message is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onsent
     </dt>
     <dd>The simple event <code>sent</code> MUST be fired when a new
-    message is sent using this messaging service.</dd>
+    message is sent using this messaging service manager.</dd>
+    
+    <dt class="no-docs">
+      attribute EventHandler ondeliverysuccess
+    </dt>
+    <dd>The simple event <code>deliverysuccess</code> of type
+    <a>DeliveryReportEvent</a> MUST be fired when a new succesful delivery
+    report is received on this messaging service manager.</dd>
 
+    <dt class="no-docs">
+      attribute EventHandler ondeliveryfailure
+    </dt>
+    <dd>The simple event <code>deliveryfailure</code> of type
+    <a>DeliveryReportEvent</a> MUST be fired when a new failure delivery
+    report is received on this messaging service manager.</dd>
+
+    <dt class="no-docs">
+      attribute EventHandler onserviceadded
+    </dt>
+    <dd>The <code>serviceadded</code> event of type <a>ServiceChangeEvent</a>
+    MUST be fired whenever a new messaging service is enabled in the system. The
+    <code>serviceID</code> property of the event MUST contain the identifier of
+    the new messaging service.</dd>
+
+    <dt class="no-docs">
+      attribute EventHandler onserviceremoved
+    </dt>
+    <dd>The <code>serviceremoved</code> event of type <a>ServiceChangeEvent</a>
+    MUST be fired when an existing messaging service is disabled in the system.
+    The <code>serviceID</code> property of the event MUST contain the identifier
+    of the disabled messaging service</dd>
+     
   </dl>
 
   <section>
@@ -488,7 +524,7 @@ Style guide to contributors:
       <li>set the <code>id</code> of the <code>SmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>SmsMessage</code> to 'sms'
-      <li>set the <code>serviceId</code> of the <code>SmsMessage</code> to the
+      <li>set the <code>serviceID</code> of the <code>SmsMessage</code> to the
       identifier of the service at which the message has been received.
       <li>set the <code>sender</code> of the <code>SmsMessage</code> to the
       sender of the SMS message, i.e. the value of the TP Originating Address
@@ -522,7 +558,7 @@ Style guide to contributors:
       <li>set the <code>id</code> of the <code>MmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>MmsMessage</code> to 'mms'
-      <li>set the <code>serviceId</code> of the <code>MmsMessage</code> to the
+      <li>set the <code>serviceID</code> of the <code>MmsMessage</code> to the
       identifier of the service at which the message has been received.
       <li>set the <code>sender</code> of the <code>MmsMessage</code> to the
       value of the 'From' field of the MMS message
@@ -568,8 +604,9 @@ Style guide to contributors:
   <p> The <dfn><code>deleteAll</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
-     <li>Make a request to the system to delete all the messages associated
-     to this messaging service
+     <li>Make a request to the system to delete all the messages associated to
+     the messaging service with identifier equal to the <code>serviceID</code>
+     parameter
      <li>Create a new <code>MessagingRequest</code> object and set
      <code>readyState</code> of the <code>MessagingRequest</code> object to
      'processing' and return the <code>MessagingRequest</code> to the caller
@@ -581,18 +618,58 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
-    
+
+  <p>Upon a delivery report of a previously sent SMS message being received, the
+  <a>user agent</a> MUST
+    <ol>
+      <li>set the <code>deliveryStatus</code> parameter of the
+      <code>SmsMessage</code> to 'success' or 'error' depending on the reported
+      result.
+      <li><a>queue a task</a> to <a>fire a simple event</a> named
+      <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
+      delivery was successfull or not, with
+        <ol>
+          <li>the <code>id</code> attribute set to the identifier of the
+          <code>SmsMessage</code> to which this confirmation is related,
+          <li>the <code>serviceID</code> attribute set to the identifier of the
+      service used to send such message, and
+          <li>the <code>recipients</code> attribute set to the recipient of such
+          message
+        </ol>
+    </ol>
+   
+  <p>Upon a delivery report of a previously sent MMS message being received, the
+  <a>user agent</a> MUST
+    <ol>
+      <li>set the elements of the <code>deliveryStatus</code> array of the
+      <code>MmsMessage</code> corresponding to the recipients to which the
+      delivery report refers to 'success' or 'error' depending on the reported
+      result.
+      <li><a>queue a task</a> to <a>fire a simple event</a> named
+      <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
+      delivery was successfull or not, with
+        <ol>
+          <li>the <code>id</code> attribute set to the identifier of the
+          <code>MmsMessage</code> to which this confirmation is related,
+          <li>the <code>serviceID</code> attribute set to the identifier of the
+          service used to send such message, and
+          <li>the <code>recipients</code> attribute set to the subset of the
+          original recipients to which this delivery report is related
+        </ol>
+    </ol>
+   
   </section>
   
   <section>
     <h2>Event handlers</h2>
-    <p>The following are the <a>event handlers</a> (and their corresponding
-    <a>event types</a>) that MUST be supported as attributes by the
-    <a>MessagingService</a> object.
+    <p>The following are the <a class="internalDFN"
+    href="#dfn-eventhandler">event handlers</a> (and their corresponding <a
+    class="internalDFN" href="#dfn-eventtypes">event types</a>) that MUST be
+    supported as attributes by the <a>MessagingManager</a> object.
     
     <table class="simple">
       <thead>
@@ -607,36 +684,58 @@ Style guide to contributors:
         <tr>
           <td><strong><code>onreceived</code></strong></td>
           <td><code><dfn>received</dfn></code></td>
-          <td><a><code>MessagingEvent</code></a> with <code>message</code>
-    property set to the received <a><code>SmsMessage</code></a> or
-    <a><code>MmsMessage</code></a> object</td>
+          <td><a><code>MessagingEvent</code></a></td>
           <td>handles received messages</td>
         </tr>
         <tr>
           <td><strong><code>onsent</code></strong></td>
           <td><code><dfn>sent</dfn></code></td>
-          <td><a><code>MessagingEvent</code></a> with <code>message</code>
-    property set to the sent <a><code>SmsMessage</code></a> or
-    <a><code>MmsMessage</code></a> object</td>
+          <td><a><code>MessagingEvent</code></a></td>
           <td>handles sent messages</td>
+        </tr>
+        <tr>
+          <td><strong><code>ondeliverysuccess</code></strong></td>
+          <td><code><dfn>deliverysuccess</dfn></code></td>
+          <td><a><code>DeliveryReportEvent</code></a></td>
+          <td>handles successful delivery reports</td>
+        </tr>
+        <tr>
+          <td><strong><code>ondeliveryfailure</code></strong></td>
+          <td><code><dfn>deliveryfailure</dfn></code></td>
+          <td><a><code>DeliveryReportEvent</code></a></td>
+          <td>handles failure delivery reports</td>
+        </tr>
+        <tr>
+          <td><strong><code>onserviceadded</code></strong></td>
+          <td><code><dfn>serviceadded</dfn></code></td>
+          <td><a><code>ServiceChangeEvent</code></a></td>
+          <td>handle new messaging services</td>
+          </td>
+        </tr>
+        <tr>
+          <td><strong><code>onserviceremoved</code></strong></td>
+          <td><code><dfn>serviceremoved</dfn></code></td>
+          <td><a><code>ServiceChangeEvent</code></a></td>
+          <td>handle disabled messaging services</td>
+          </td>
         </tr>
       </tbody>
     </table>
- </section>
+  </section>
 
 
 </section>
 
-<!------------------------ Interface SmsService ------------------------------>
+<!------------------------ Interface SmsManager ------------------------------>
 <section>
-  <h2><a>SmsService</a> Interface</h2>
-  <p>The <a>SmsService</a> interface represents the SMS messaging service.
+  <h2><a>SmsManager</a> Interface</h2>
+  <p>The <a>SmsManager</a> interface represents the SMS messaging service manager.
   
-  <dl title="interface SmsService : MessagingService"
+  <dl title="[NoInterfaceObject] interface SmsManager : MessagingManager"
   class="idl">
 
     <dt> SmsSegmentInfo getSegmentInfoForText ()</dt>
-    <dd>This method returns an SmsSegmentInfo object including informtation on
+    <dd>This method returns an SmsSegmentInfo object including information on
     the number of concatenated SMS segments needed to send the text in the
     <code>text</code> parameter, the number of characters available per segment
     and the maximum number of available characters in the last segment.
@@ -645,6 +744,10 @@ Style guide to contributors:
          <dd>
            Text intended to be sent as an SMS, whose segmentation
            information is checked by this method
+         </dd>
+         <dt>optional DOMString serviceID</dt>
+         <dd>
+           Identifier of the service through which the message is would  be sent
          </dd>
      </dl>
     </dd>
@@ -664,60 +767,14 @@ Style guide to contributors:
          <dd>
            Content of the SMS message to be sent
          </dd>
+         <dt>optional DOMString serviceID</dt>
+         <dd>
+           Identifier of the service through which the message is requested to
+           be sent
+         </dd>
      </dl>
     </dd>
-
-    <dt class="no-docs">
-      attribute EventHandler onsmsdeliverysuccess
-    </dt>
-    <dd>The simple event <code>smsdeliverysuccess</code> of type
-    <a>SmsDeliveryReportEvent</a> MUST be fired when a new succesful delivery
-    report is received on this messaging service.</dd>
-
-    <dt class="no-docs">
-      attribute EventHandler onsmsdeliveryfailure
-    </dt>
-    <dd>The simple event <code>smsdeliveryfailure</code> of type
-    <a>SmsDeliveryReportEvent</a> MUST be fired when a new failure delivery
-    report is received on this messaging service.</dd>
-     </dl>
-
-  <section>
-    <h2>Event handlers</h2>
-    <p>The following are the <a>event handlers</a> (and their corresponding
-    <a>event types</a>) that MUST be supported as attributes by the
-    <a>SmsService</a> object.
-    
-    <table class="simple">
-      <thead>
-        <tr>
-          <th>event handler</th>
-          <th>event name</th>
-          <th>event type</th>
-          <th>short description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong><code>onsmsdeliverysuccess</code></strong></td>
-          <td><code><dfn>smsdeliverysuccess</dfn></code></td>
-          <td><a><code>SmsDeliveryReportEvent</code></a> with <code>id</code>
-    property set to identifier of the <a><code>SmsMessage</code></a> object to
-    which the report refers</td>
-          <td>handles successful SMS delivery reports</td>
-        </tr>
-        <tr>
-          <td><strong><code>onsmsdeliveryfailure</code></strong></td>
-          <td><code><dfn>smsdeliveryfailure</dfn></code></td>
-          <td><a><code>SmsDeliveryReportEvent</code></a> with <code>id</code>
-    property set to identifier of the <a><code>SmsMessage</code></a> object to
-    which the report refers</td>
-          <td>handles failure SMS delivery reports</td>
-        </tr>
-      </tbody>
-    </table>
- </section>
-
+   </dl>
   
   <section>
   <h3>Steps</h3>
@@ -734,8 +791,11 @@ Style guide to contributors:
       <li>set the <code>id</code> of the <code>SmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>SmsMessage</code> to 'sms'
-      <li>set the <code>serviceId</code> of the <code>SmsMessage</code> to the
-      identifier of the service used to send the message.
+      <li>set the <code>serviceID</code> of the <code>SmsMessage</code> to the
+      identifier of the service used to send the message, i.e. the one passed in
+      the <code>serviceID</code> parameter, if provided, or otherwise to the
+      first element in the <code>serviceIDs</code> attribute of the
+      <code>SmsManager</code>
       <li>set the <code>sender</code> of the <code>SmsMessage</code> to the
       number of the mobile subscription used to send this SMS message
       <li>set the <code>read</code> of the <code>SmsMessage</code> to 'true'
@@ -750,9 +810,9 @@ Style guide to contributors:
       <li>set the <code>deliveryStatus</code> of the <code>SmsMessage</code> to
       'pending' if a delivery report has been requested.
       <li>Make a request to the system to send an SMS message with text passed
-      in the <code>text</code>
-     parameter to the number of the recipient indicated in the <code>to</code>
-     parameter.
+      in the <code>text</code> parameter to the number of the recipient
+      indicated in the <code>to</code> parameter, using the proper service as
+      described above.
       <li>set <code>readyState</code> of the <code>MessagingRequest</code>
       object to 'processing'
       <li>return the <code>MessagingRequest</code> to the caller and <a>queue a
@@ -764,7 +824,7 @@ Style guide to contributors:
         'error'
         <li>if a delivery report had been requested set the
         <code>deliveryStatus</code> of the <code>SmsMessage</code> to 'error'
-        <li>invoke the <code>onerror</code> <a>event handler</a> of the
+        <li>invoke the <code>onerror</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
         <code>MessagingRequest</code> object
      </ol>
      <li>When the requests has been completed:
@@ -776,7 +836,7 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to the <code>SmsMessage</code> that has been sent
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
       <li><a>queue a task</a> to <a>fire a simple event</a> named
       <code>sent</code> with the <code>message</code> attribute set to the sent
@@ -790,12 +850,15 @@ Style guide to contributors:
     <ol>
      <li>a <code>segments</code> element indicating the number of concatenated
      SMS segments needed to send the text passed in the <code>text</code>
-     parameter. Note that the application SHOULD NOT split the text in a set of
-     strings that fit each into a single SMS segment as it would result in
-     different independent SMS messages being sent, but SHOULD instead send the
-     full message in a single <code>sendSMS</code> request. However having
-     information on the number of SMS segments may be required by the
-     application in order to inform the user (e.g. in case the length of the
+     parameter using the service with identifier equal to the one passed in the
+     <code>serviceID</code> parameter, if provided, or otherwise to the first
+     element in the <code>serviceIDs</code> attribute of the
+     <code>SmsManager</code>. Note that the application SHOULD NOT split the
+     text in a set of strings that fit each into a single SMS segment as it
+     would result in different independent SMS messages being sent, but SHOULD
+     instead send the full message in a single <code>sendSMS</code> request.
+     However having information on the number of SMS segments may be required by
+     the application in order to inform the user (e.g. in case the length of the
      text impacts on the price charged for sending the message).
      <li>a <code>charsPerSegment</code> element indicating the number of
      characters available per SMS segment. This number depends on the encoding
@@ -808,27 +871,16 @@ Style guide to contributors:
      SMS segment to send the text.
    </ol>
   
-  <p>Upon a delivery report of a previously sent message being received, the
-  <a>user agent</a> MUST
-    <ol>
-      <li>set the <code>deliveryStatus</code> parameter to 'success' or 'error'
-      depending on the reported result.
-      <li><a>queue a task</a> to <a>fire a simple event</a> named
-      <a>smsdeliverysuccess</a> or <a>smsdeliveryfailure</a> respectively if the
-      delivery was successfull or not, with the <code>id</code> attribute set to
-      the identifier of the <code>SmsMessage</code> to which this confirmation
-      is related.
-    </ol>
-</section>
+  </section>
 </section>
 
 
 <!------------------------ Interface SmsSegmentInfo -------------------------->
 <section>
   <h2><a>SmsSegmentInfo</a> Interface</h2>
-  <p>The <a>SmsSegmentInfo</a> interface contians information about the
+  <p>The <a>SmsSegmentInfo</a> interface contains information about the
   segmentation of a given text to be sent as SMS.
-  <dl title="interface SmsSegmentInfo"
+  <dl title="[NoInterfaceObject] interface SmsSegmentInfo"
       class="idl">
     <dt>readonly attribute long segments</dt>
     <dd>MUST return the total number of SMS segments needed to send the input
@@ -851,19 +903,14 @@ Style guide to contributors:
 </section>    
     
 
-<!------------------------ Interface MmsService ------------------------------>    
+<!------------------------ Interface MmsManager ------------------------------>    
 <section>
-  <h2><a>MmsService</a> Interface</h2>
-  <p>The <a>MmsService</a> interface represents the MMS messaging service.
+  <h2><a>MmsManager</a> Interface</h2>
+  <p>The <a>MmsManager</a> interface represents the MMS messaging service manager.
   
-  <dl title="interface MmsService : MessagingService"
+  <dl title="[NoInterfaceObject] interface MmsManager : MessagingManager"
   class="idl">
 
-    <dt>attribute DOMString fetchMode</dt>
-    <dd>MUST return 'manual' if the MMS service is configured to fetch MMS
-    messages upon explicit user request or 'automatic' if MMS messages are
-    fetched automatically.</dd>
-   
     <dt> MessagingRequest send ()</dt>
     <dd>This method issues a request to the messaging system to send an MMS
     message with the content and recipients included in the
@@ -874,6 +921,11 @@ Style guide to contributors:
          <dt>MmsContent mmsContent</dt>
          <dd>
            Content and recipients of the MMS message to be sent.
+         </dd>
+         <dt>optional DOMString serviceID</dt>
+         <dd>
+           Identifier of the service through which the message is requested to
+           be sent
          </dd>
      </dl>
     </dd>
@@ -891,58 +943,8 @@ Style guide to contributors:
          </dd>
      </dl>
     </dd>
-    
-    <dt class="no-docs">
-      attribute EventHandler onmmsdeliverysuccess
-    </dt>
-    <dd>The simple event <code>mmsdeliverysuccess</code> of type
-    <a>MmsDeliveryReportEvent</a> MUST be fired when a new succesful delivery
-    report is received on this messaging service.</dd>
+   </dl>  
 
-    <dt class="no-docs">
-      attribute EventHandler onmmsdeliveryfailure
-    </dt>
-    <dd>The simple event <code>mmsdeliveryfailure</code> of type
-    <a>MmsDeliveryReportEvent</a> MUST be fired when a new failure delivery
-    report is received on this messaging service.</dd>
-     </dl>
-
-  <section>
-    <h2>Event handlers</h2>
-    <p>The following are the <a>event handlers</a> (and their corresponding
-    <a>event types</a>) that MUST be supported as attributes by the
-    <a>MmsService</a> object.
-    
-    <table class="simple">
-      <thead>
-        <tr>
-          <th>event handler</th>
-          <th>event name</th>
-          <th>event type</th>
-          <th>short description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong><code>onmmsdeliverysuccess</code></strong></td>
-          <td><code><dfn>mmsdeliverysuccess</dfn></code></td>
-          <td><a><code>MmsDeliveryReportEvent</code></a> with <code>id</code>
-    property set to identifier of the <a><code>MmsMessage</code></a> object to
-    which the report refers</td>
-          <td>handles successful MMS delivery reports</td>
-        </tr>
-        <tr>
-          <td><strong><code>onmmsdeliveryfailure</code></strong></td>
-          <td><code><dfn>mmsdeliveryfailure</dfn></code></td>
-          <td><a><code>MmsDeliveryReportEvent</code></a> with <code>id</code>
-          property set to identifier of the <a><code>MmsMessage</code></a>
-          object to which the report refers</td>
-          <td>handles failure MMS delivery reports</td>
-        </tr>
-      </tbody>
-    </table>
- </section>         
-     
   <section>
   <h3>Steps</h3>        
     
@@ -958,8 +960,11 @@ Style guide to contributors:
       <li>set the <code>id</code> of the <code>MmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>MmsMessage</code> to 'mms'
-      <li>set the <code>serviceId</code> of the <code>MmsMessage</code> to the
-      identifier of the service used to send the message.
+      <li>set the <code>serviceID</code> of the <code>MmsMessage</code> to the
+      identifier of the service used to send the message, i.e. the one passed in
+      the <code>serviceID</code> parameter, if provided, or otherwise to the
+      first element in the <code>serviceIDs</code> attribute of the
+      <code>MmsManager</code>.
       <li>set the <code>sender</code> of the <code>MmsMessage</code> to the
       number of the mobile subscription used to send this MMS message
       <li>set the <code>read</code> of the <code>MmsMessage</code> to 'true'
@@ -983,8 +988,9 @@ Style guide to contributors:
       <code>to</code>, <code>cc</code> and <code>bcc</code> parameters, with
       value 'pending' if a delivery report has been requested.
       <li>Make a request to the system to send an MMS message with the content
-      passed in the <code>content</code>
-     parameter to the number(s) of indicated in the <code>to</code> parameter.
+      passed in the <code>content</code> parameter to the number(s) of indicated
+      in the <code>to</code> parameter, using the proper service as described
+      above.
       <li>set <code>readyState</code> of the <code>MessagingRequest</code>
       object to 'processing'
       <li>return the <code>MessagingRequest</code> to the caller and <a>queue a
@@ -997,7 +1003,7 @@ Style guide to contributors:
         <li>if a delivery report had been requested set the different elements
         in the <code>deliveryStatus</code> array of the <code>MmsMessage</code>
         to 'error'
-        <li>invoke the <code>onerror</code> <a>event handler</a> of the
+        <li>invoke the <code>onerror</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
         <code>MessagingRequest</code> object
      </ol>
      <li>When the requests has been completed:
@@ -1009,7 +1015,7 @@ Style guide to contributors:
       object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to the <code>MmsMessage</code> that has been sent
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
       <li><a>queue a task</a> to <a>fire a simple event</a> named
       <code>sent</code> with the <code>message</code> attribute set to the sent
@@ -1035,25 +1041,16 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to 'true'
-      <li>invoke the <code>onsuccess</code> <a>event handler</a> of the
+      <li>invoke the <code>onsuccess</code> <a class="internalDFN" href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
     </ol>
    </ol>
+
+  <p>The User Agent MAY fire additional <code>ProgressEvent</code>s
+  [[!PROGRESS-EVENTS]] on the <code>MessagingRequest</code> object associated to
+  the sending and fetching of an MMS message, in order to report on the progress
+  of such operations
     
-  <p>Upon a delivery report of a previously sent message being received, the
-  <a>user agent</a> MUST
-    <ol>
-      <li>set the elements of the <code>deliveryStatus</code> array
-      corresponding to the recipients to which the delivery report refers to
-      'success' or 'error' depending on the reported result.
-      <li><a>queue a task</a> to <a>fire a simple event</a> named
-      <a>mmsdeliverysuccess</a> or <a>mmsdeliveryfailure</a> respectively if the
-      delivery was successfull or not, with the <code>id</code> attribute set to
-      the identifier of the <code>MmsMessage</code> to which this confirmation
-      is related, and the <code>recipients</code> attribute set to the subset of
-      the original recipients of the message to which the delivery report is
-      related.
-    </ol>
    </section>    
 </section>    
     
@@ -1066,7 +1063,7 @@ Style guide to contributors:
   (e.g. delete message via the <code>delete</code> method in the
   <code>Messaging</code> interface) MUST return a MessagingRequest object that
   can be used to monitor the progress of that operation.
-  <dl title="interface MessagingRequest"
+  <dl title="[NoInterfaceObject] interface MessagingRequest"
       class="idl">
     <dt>readonly attribute DOMString readyState</dt>
     <dd>Indicates the state of the request, with possible string values
@@ -1097,24 +1094,38 @@ Style guide to contributors:
   <section>
     <h2>Event handlers</h2>
     <p>
-      The following are the <a>event handlers</a> (and their corresponding
-      <a>event handler event types</a>) that MUST be supported as attributes by
-      the <a>MessagingRequest</a> object:
+    <p>The following are the <a class="internalDFN"
+    href="#dfn-eventhandler">event handlers</a> (and their corresponding <a
+    class="internalDFN" href="#dfn-eventtypes">event types</a>) that MUST be
+    supported as attributes by the <a>MessagingManager</a> object.
+
     <table class="simple">
       <thead>
         <tr>
           <th>event handler</th>
-          <th>event handler event type</th>
+          <th>event name</th>
+          <th>event type</th>
+          <th>short description</th>
         </tr>
       </thead>
       <tbody>
         <tr>
+          <td><strong><code>onprogress</code></strong></td>
+          <td><code><dfn>progress</dfn></code></td>
+          <td><a><code>ProgressEvent</code></a></td>
+          <td>handles progress events related to MMS sending/fetching operations</td>
+        </tr>
+        <tr>
           <td><strong><code>onsuccess</code></strong></td>
           <td><code><dfn>success</dfn></code></td>
+          <td><a><code>Event</code></a></td>
+          <td>handles success of the request</td>
         </tr>
         <tr>
           <td><strong><code>onerror</code></strong></td>
           <td><code><dfn>error</dfn></code></td>
+          <td><a><code>Event</code></a></td>
+          <td>handles failure of the request</td>
         </tr>
       </tbody>
     </table>
@@ -1144,7 +1155,7 @@ Style guide to contributors:
     <dt>readonly attribute DOMString type</dt>
     <dd>MUST return the type of message ('sms' or 'mms').</dd>
 
-    <dt>readonly attribute DOMString serviceId</dt>
+    <dt>readonly attribute DOMString serviceID</dt>
     <dd>MUST return the messaging service id</a> used to send / receive this
     message.</dd>
 
@@ -1170,7 +1181,7 @@ Style guide to contributors:
   <a href="http://www.3gpp.org/ftp/Specs/html-info/23040.htm">Technical
   realization of the Short Message Service (SMS)</a>. This interface is not
   intended to represent binary SMS, which are out of the scope of this API.
-  <dl title="interface SmsMessage : Message"
+  <dl title="[NoInterfaceObject] interface SmsMessage : Message"
       class="idl">
     <dt>readonly attribute DOMString recipient</dt>
     <dd>MUST return the recipient of the message, i.e. the TP Destination
@@ -1207,7 +1218,7 @@ Style guide to contributors:
   <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in <a
   href="http://technical.openmobilealliance.org/Technical/release_program/mms_v1_3.aspx">
   OMA MMS 1.3</a>.
-  <dl title="interface MmsMessage : Message"
+  <dl title="[NoInterfaceObject] interface MmsMessage : Message"
       class="idl">
     <dt>readonly attribute DOMString[] to</dt>
     <dd>MUST return an array containing the recipient(s) included
@@ -1258,29 +1269,29 @@ Style guide to contributors:
     <dd>Indicates the subject of the MMS message, corresponding to the
     'Subject' field of the MMS message.</dd>
 
-    <dt>optional attribute DOMString[] to</dt>
+    <dt>optional DOMString[] to</dt>
     <dd>Indicates the recipient(s) included in the 'To' field of the MMS
     message.
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional attribute DOMString[] cc</dt>
+    <dt>optional DOMString[] cc</dt>
     <dd>Indicates the recipient(s) included in the 'Cc' field of the MMS
     message.
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional attribute DOMString[] bcc</dt>
+    <dt>optional DOMString[] bcc</dt>
     <dd>Indicates the recipient(s) included in the 'Bcc' field of the MMS
     message. 
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional attribute Document smil</dt>
+    <dt>optional Document smil</dt>
     <dd>Contains the SMIL component, i.e. the presentation element that
     determines the way the content of the MMS message MUST be displayed.</dd>
 
-    <dt>optional attribute MmsAttachment[] attachments</dt>
+    <dt>optional MmsAttachment[] attachments</dt>
     <dd>Contains the set of attachments of the MMS message.</dd>
   </dl>    
 </section>
@@ -1290,14 +1301,14 @@ Style guide to contributors:
 <section>
   <h2><a>MmsAttachment</a> Dictionary</h2>
   <dl title="dictionary MmsAttachment" class="idl">
-    <dt>optional attribute DOMString contentId</dt>
+    <dt>optional DOMString contentId</dt>
     <dd>
     The Content-ID parameter that MAY be used to refer to the attachment from
     the SMIL presentation object. At least one of Content-ID and
     Content-Location needs to be specified if the MMS Message contains an SMIL
     presentation object. 
     </dd>
-    <dt>optional attribute DOMString contentLocation</dt>
+    <dt>optional DOMString contentLocation</dt>
     <dd>
     The Content-Location parameter that MAY be used to refer to the attachment
     from the SMIL presentation object. At least one of Content-ID and
@@ -1305,7 +1316,7 @@ Style guide to contributors:
     presentation object. It may also be used as a hint to define the filename
     when the attachment is stored at the file system.
     </dd>
-    <dt>attribute Blob content</dt>
+    <dt>Blob content</dt>
     <dd>
     The Blob object containing the media type and the binary content of the
     attachment.
@@ -1319,7 +1330,7 @@ Style guide to contributors:
   <p>The <a>Conversation</a> interface represents a set of messages that are
   grouped together either because they are exchanged among the same set of
   participants or because they have the same subject.
-  <dl title="interface Conversation"
+  <dl title="[NoInterfaceObject] interface Conversation"
       class="idl">
     <dt>readonly attribute DOMString id</dt>
     <dd>MUST return the identifier of the conversation, which is unique in the
@@ -1381,7 +1392,7 @@ Style guide to contributors:
   retrieved, the <a>associated request</a>'s <code>readyState</code> must be set
   to 'done' and the <code>result</code> must point to the cursor. If no element
   was found, the cursor's <code>element</code> property must return null.</p>
-  <dl title="interface MessagingCursor"
+  <dl title="[NoInterfaceObject] interface MessagingCursor"
       class="idl">
     <dt>readonly attribute any? element</dt>
     <dd>
@@ -1414,7 +1425,7 @@ Style guide to contributors:
   <h2><a>MessagingEvent</a> Interface</h2>
   <p>The <a>MessagingEvent</a> interface represents events related to a message
   sent or received.
-  <dl title="interface MessagingEvent : Event"
+  <dl title="[NoInterfaceObject] interface MessagingEvent"
       class="idl">
     <dt>readonly attribute any message</dt>
     <dd>MUST return the <code>SmsMessage</code> or <code>MmsMessage</code>
@@ -1422,36 +1433,43 @@ Style guide to contributors:
   </dl>
 </section>
 
-<!------------------------ Interface SmsDeliveryReportEvent ------------------>
-<section>
-  <h2><a>SmsDeliveryReportEvent</a> Interface</h2>
-  <p>The <a>SmsDeliveryReportEvent</a> interface represents events related to a
-  delivery report of a sent SMS message.
-  <dl title="interface SmsDeliveryReportEvent : Event"
-      class="idl">
-    <dt>readonly attribute DOMString id</dt>
-    <dd>MUST return the identifier of the SMS message to which this delivery
-    report event is related.</dd>
-  </dl>
-</section>
 
-<!------------------------ Interface MmsDeliveryReportEvent ------------------>
+<!------------------------ Interface DeliveryReportEvent ------------------>
 <section>
-  <h2><a>MmsDeliveryReportEvent</a> Interface</h2>
-  <p>The <a>MmsDeliveryReportEvent</a> interface represents events related
-  to a delivery report of a sent MMS message.
-  <dl title="interface MmsDeliveryReportEvent : Event"
+  <h2><a>DeliveryReportEvent</a> Interface</h2>
+  <p>The <a>DeliveryReportEvent</a> interface represents events related
+  to a delivery report of a sent message.
+  <dl title="[NoInterfaceObject] interface DeliveryReportEvent : Event"
       class="idl">
+    <dt>readonly attribute DOMString serviceID</dt>
+    <dd>MUST return the identifier of the service used to send the message to
+    which this delivery report event is related.</dd>
     <dt>readonly attribute DOMString id</dt>
-    <dd>MUST return the identifier of the MMS message to which this delivery
+    <dd>MUST return the identifier of the message to which this delivery
     report event is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
     <dd>MUST return an array contining the addresses of the subset of the
-    original recipients of the MMS message to which this delivery report event
-    is related. As delivery reports related to just part of the recipients of
-    the MMS message are possible, this array may not contain the full list of
-    recipients to which the MMS message was sent.
+    original recipients of the message to which this delivery report event is
+    related. As delivery reports related to just part of the recipients of the
+    MMS message are possible, this array may not contain the full list of
+    recipients to which the MMS message was sent. If the delivery report is
+    related to an SMS message then the array will contain a single element
+    corresponding to the single recipient of the SMS message.
     </dd>
+  </dl>
+</section>
+
+
+<!------------------------ Interface ServiceChangeEvent -------------------------->
+<section>
+  <h2><a>ServiceChangeEvent</a> Interface</h2>
+  <p>The <a>ServiceChangeEvent</a> interface represents events related to
+  messaging services enabled or disabled.
+  <dl title="[NoInterfaceObject] interface ServiceChangeEvent : Event"
+      class="idl">
+    <dt>readonly attribute DOMString serviceID</dt>
+    <dd>MUST return the identifier of the messaging service which is enabled or
+    disabled.</dd>
   </dl>
 </section>
 
@@ -1495,7 +1513,7 @@ Style guide to contributors:
     the message (just of MMS type) has not yet been downloaded
     ('not-downloaded').
     
-    <dt>attribute DOMString? serviceId</dt>
+    <dt>attribute DOMString? serviceID</dt>
     <dd>Indicates that just messages associated to the messaging service with
     this identifier are to be provided in the results of this filter.</dd>
 
@@ -1510,7 +1528,7 @@ Style guide to contributors:
 <section>
   <h2><a>FilterOptions</a> Dictionary</h2>
   <dl title="dictionary FilterOptions" class="idl">
-    <dt>attribute DOMString sortBy</dt>
+    <dt>DOMString sortBy</dt>
     <dd>Indicates the attribute on which the filtered messages are sorted.</dd>
 
     <dt>optional DOMString sortOrder</dt>
