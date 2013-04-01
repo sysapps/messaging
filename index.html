@@ -924,6 +924,38 @@ Style guide to contributors:
   <dl title="[NoInterfaceObject] interface MmsManager : MessagingManager"
   class="idl">
 
+    <dt>DOMString getFetchMode ()</dt>
+    <dd>This method requests to retrieve the fetch mode associated to a specific
+    service (the one identified by the <code>serviceID</code> attribute, if
+    provided, or the first element in the <code>serviceIDs</code> attribute of
+    the <code>MmsManager</code> otherwise). It can have one of the following
+    values: 'manual' or 'automatic'.
+    <dl class='parameters'>
+         <dt>optional DOMString serviceID</dt>
+         <dd>
+           Identifier of the service whose fetch mode is queried.
+         </dd>
+     </dl>
+    </dd>
+
+    <dt>void setFetchMode ()</dt>
+    <dd>This method issues a request to the messaging system to set to 'manual'
+    or 'automatic' the MMS message fetch mode of the specific service, the one
+    identified by the <code>serviceID</code> attribute, if provided, or all
+    services otherwise).
+    <dl class='parameters'>
+         <dt>DOMString fetchMode</dt>
+         <dd>
+           Fetch mode that is requested to be set for a specific service. The
+           allowed values for this attribute are 'manual' and 'automatic'
+         </dd>
+         <dt>optional DOMString serviceID</dt>
+         <dd>
+           Identifier of the service whose fetch mode is requested to be set
+         </dd>
+     </dl>
+    </dd>
+   
     <dt> MessagingRequest send ()</dt>
     <dd>This method issues a request to the messaging system to send an MMS
     message with the content and recipients included in the
@@ -959,7 +991,7 @@ Style guide to contributors:
    </dl>  
 
   <div class='note'>
-  It is FFS whether any MMS setting (e.g. fetch mode, creation mode) needs to be
+  It is FFS whether MMS settings (e.g. fetch mode, creation mode) needs to be
   managed through the MmsManager interface.
   </div>
    
@@ -1067,7 +1099,7 @@ Style guide to contributors:
     </ol>
    </ol>
 
-  <p>The User Agent MAY fire additional <code>ProgressEvent</code>s
+  <p>The User Agent MAY fire additional <code>ProgressEvents</code>
   [[!PROGRESS-EVENTS]] on the <code>MessagingRequest</code> object associated to
   the sending and fetching of an MMS message, in order to report on the progress
   of such operations
