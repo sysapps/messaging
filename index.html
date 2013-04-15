@@ -534,14 +534,14 @@ Style guide to contributors:
       <li>set the <code>type</code> of the <code>SmsMessage</code> to 'sms'
       <li>set the <code>serviceID</code> of the <code>SmsMessage</code> to the
       identifier of the service at which the message has been received.
-      <li>set the <code>sender</code> of the <code>SmsMessage</code> to the
+      <li>set the <code>from</code> of the <code>SmsMessage</code> to the
       sender of the SMS message, i.e. the value of the TP Originating Address
       (TP-OA) field of the SMS message
       <li>set the <code>timestamp</code> of the <code>SmsMessage</code> to the
       timestamp of the SMS message, i.e. the value if the TP Service Centre
       Time Stamp (TP-SCTS) field of the SMS message
       <li>set the <code>read</code> of the <code>SmsMessage</code> to 'false'
-      <li>set the <code>recipient</code> of the <code>SmsMessage</code> to the
+      <li>set the <code>to</code> of the <code>SmsMessage</code> to the
       recipient of the SMS message, i.e. the value of the TP Destination
       Address (TP-DA) field of the SMS message
       <li>set the <code>messageClass</code> of the <code>SmsMessage</code> to
@@ -568,7 +568,7 @@ Style guide to contributors:
       <li>set the <code>type</code> of the <code>MmsMessage</code> to 'mms'
       <li>set the <code>serviceID</code> of the <code>MmsMessage</code> to the
       identifier of the service at which the message has been received.
-      <li>set the <code>sender</code> of the <code>MmsMessage</code> to the
+      <li>set the <code>from</code> of the <code>MmsMessage</code> to the
       value of the 'From' field of the MMS message
       <li>set the <code>timestamp</code> of the <code>MmsMessage</code> to
       the value of the 'Date' field of the MMS message
@@ -806,10 +806,10 @@ Style guide to contributors:
       the <code>serviceID</code> parameter, if provided, or otherwise to the
       first element in the <code>serviceIDs</code> attribute of the
       <code>SmsManager</code>
-      <li>set the <code>sender</code> of the <code>SmsMessage</code> to the
+      <li>set the <code>from</code> of the <code>SmsMessage</code> to the
       number of the mobile subscription used to send this SMS message
       <li>set the <code>read</code> of the <code>SmsMessage</code> to 'true'
-      <li>set the <code>recipient</code> of the <code>SmsMessage</code> to
+      <li>set the <code>to</code> of the <code>SmsMessage</code> to
       the value of the <code>to</code> parameter
       <li>set the <code>body</code> of the <code>SmsMessage</code> to the value
       of the <code>text</code> parameter
@@ -1015,7 +1015,7 @@ Style guide to contributors:
       the <code>serviceID</code> parameter, if provided, or otherwise to the
       first element in the <code>serviceIDs</code> attribute of the
       <code>MmsManager</code>.
-      <li>set the <code>sender</code> of the <code>MmsMessage</code> to the
+      <li>set the <code>from</code> of the <code>MmsMessage</code> to the
       number of the mobile subscription used to send this MMS message
       <li>set the <code>read</code> of the <code>MmsMessage</code> to 'true'
       <li>set the <code>to</code> of the <code>MmsMessage</code> to the
@@ -1213,7 +1213,7 @@ Style guide to contributors:
     <dd>MUST return the messaging service id</a> used to send / receive this
     message.</dd>
 
-    <dt>readonly attribute DOMString sender</dt>
+    <dt>readonly attribute DOMString from</dt>
     <dd>MUST return the sender of the message, i.e. the TP Originating Address
     (TP-OA) of the SMS message or the 'From' field of the MMS message.</dd>
 
@@ -1237,7 +1237,7 @@ Style guide to contributors:
   intended to represent binary SMS, which are out of the scope of this API.
   <dl title="[NoInterfaceObject] interface SmsMessage : Message"
       class="idl">
-    <dt>readonly attribute DOMString recipient</dt>
+    <dt>readonly attribute DOMString to</dt>
     <dd>MUST return the recipient of the message, i.e. the TP Destination
     Address (TP-DA) of the SMS message.</dd>
 
@@ -1551,7 +1551,7 @@ Style guide to contributors:
     <dd>Indicates that messages with timestamp after this date will not be
     provided in the results of this filter.</dd>
 
-    <dt>attribute DOMString? sender</dt>
+    <dt>attribute DOMString? from</dt>
     <dd>Indicates that just messages sent from this number are to be provided in
     the results of this filter.</dd>
 
