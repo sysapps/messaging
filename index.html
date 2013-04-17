@@ -552,6 +552,8 @@ Style guide to contributors:
       Data (TP-UD) field of the SMS message
       <li>set the <code>state</code> of the <code>SmsMessage</code> to
       'received'
+      <li>set the <code>deliveryStatus</code> of the <code>SmsMessage</code> to
+      'not-applicable'
       <li><a>queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
       to the newly created <code>SmsMessage</code> instance.
@@ -604,6 +606,9 @@ Style guide to contributors:
       <li>set the <code>state</code> of the <code>MmsMessage</code> to
       'received' if the message has been downloaded or otherwise to
       'not-downloaded'
+      <li>add a new element in the <code>deliveryStatus</code> array of the
+      <code>MmsMessage</code> for each of recipients in the 'To', 'Cc' and 'Bcc'
+      fields with value 'not-applicable'
       <li><a>queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
       to the newly created <code>MmsMessage</code> instance.
@@ -818,7 +823,8 @@ Style guide to contributors:
       <li>set the <code>state</code> of the <code>SmsMessage</code> to
       'sending'
       <li>set the <code>deliveryStatus</code> of the <code>SmsMessage</code> to
-      'pending' if a delivery report has been requested.
+      'pending' if a delivery report has been requested or to 'not-applicable'
+      otherwise.
       <li>Make a request to the system to send an SMS message with text passed
       in the <code>text</code> parameter to the number of the recipient
       indicated in the <code>to</code> parameter, using the proper service as
@@ -1036,7 +1042,8 @@ Style guide to contributors:
       <li>add a new element in the <code>deliveryStatus</code> array of the
       <code>MmsMessage</code> for each of the addresses included in the
       <code>to</code>, <code>cc</code> and <code>bcc</code> parameters, with
-      value 'pending' if a delivery report has been requested.
+      value 'pending' if a delivery report has been requested or with value
+      'not-applicable' otherwise.
       <li>Make a request to the system to send an MMS message with the content
       passed in the <code>content</code> parameter to the number(s) of indicated
       in the <code>to</code> parameter, using the proper service as described
@@ -1252,12 +1259,12 @@ Style guide to contributors:
     <dt>readonly attribute DOMString? deliveryStatus</dt>
     <dd>MUST return 'success' if the SMS message has been succesfully delivered
     to the recipient, 'pending' if it is pending delivery, 'error' if the
-    delivery has failed. It MUST return null if the delivery status is not
-    applicable either because a delivery report has not been requested or the
-    message is an inbound message.
+    delivery has failed. It MUST return 'not-applicable' if the delivery status
+    is not applicable either because a delivery report has not been requested or
+    the message is an inbound message.
     </dd>
 
-   <dt>readonly attribute DOMString? messageClass</dt>
+   <dt>readonly attribute DOMString messageClass</dt>
     <dd>MUST return the SMS message class, with possible values: 'class-0',
     'class-1', 'class-2', 'class-3' or 'normal' (same as 'class-1'), according
     to the value indicated in the TP-Data-Coding-Scheme (TP-DCS) field of the
@@ -1278,19 +1285,19 @@ Style guide to contributors:
     <dd>MUST return an array containing the recipient(s) included
     in the 'To' field of the MMS message.</dd>
 
-    <dt>readonly attribute DOMString[]? cc</dt>
+    <dt>readonly attribute DOMString[] cc</dt>
     <dd>MUST return an array containing the recipient(s) included
     in the 'Cc' field of the MMS message.</dd>
 
-    <dt>readonly attribute DOMString[]? bcc</dt>
+    <dt>readonly attribute DOMString[] bcc</dt>
     <dd>MUST return an array containing the recipient(s) included
     in the 'Bcc' field of the MMS message.</dd>
 
-    <dt>readonly attribute DOMString? subject</dt>
+    <dt>readonly attribute DOMString subject</dt>
     <dd>MUST return the subject of the MMS message, corresponding to the
     'Subject' field of the MMS message.</dd>
 
-    <dt>readonly attribute Document? smil</dt>
+    <dt>readonly attribute Document smil</dt>
     <dd>MUST return the SMIL document, i.e. the presentation element that
     determines the way the content of the MMS message MUST be displayed.</dd>
 
@@ -1302,15 +1309,15 @@ Style guide to contributors:
     values: 'received', 'draft', 'sending', 'sent', 'failed' and
     'not-downloaded'.</dd>
 
-    <dt>readonly attribute DOMString? deliveryStatus[]</dt>
+    <dt>readonly attribute DOMString deliveryStatus[]</dt>
     <dd>MUST return an array with each of the elements indicating the delivery
     status to each of the recipients of the message, in order starting with the
     recipients in the 'To' field, followed by those in 'Cc' and ending with
     those in 'Bcc'. The possible values indicate whether the MMS message has
     been succesfully delivered to the recipient ('success'), it is pending
-    delivery ('pending'), the delivery has failed ('error'). It MUST return null
-    if a delivery report has not been requested or the message is an inbound
-    message.</dd>
+    delivery ('pending'), the delivery has failed ('error'). It MUST return
+    'not-applicable' if a delivery report has not been requested or the message
+    is an inbound message.</dd>
 
   </dl>
 </section>
@@ -1404,7 +1411,7 @@ Style guide to contributors:
     return the union of the participants of all the messages in the
     conversation.</dd>
 
-    <dt>readonly attribute DOMString? subject</dt>
+    <dt>readonly attribute DOMString subject</dt>
     <dd>MUST return the subject of the conversation, if there is a single
     one.</dd>
 
