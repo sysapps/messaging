@@ -1238,10 +1238,9 @@ Style guide to contributors:
 <!------------------------ Interface SmsMessage ------------------------------>
 <section>
   <h2><a>SmsMessage</a> Interface</h2>
-  <p>The <a>SmsMessage</a> interface represents an SMS message as defined in the
-  <a href="http://www.3gpp.org/ftp/Specs/html-info/23040.htm">Technical
-  realization of the Short Message Service (SMS)</a>. This interface is not
-  intended to represent binary SMS, which are out of the scope of this API.
+  <p>The <a>SmsMessage</a> interface represents an SMS message as defined in
+  [[!GSM-SMS]]. This interface is not intended to represent binary SMS, which
+  are out of the scope of this API.
   <dl title="[NoInterfaceObject] interface SmsMessage : Message"
       class="idl">
     <dt>readonly attribute DOMString to</dt>
@@ -1276,9 +1275,8 @@ Style guide to contributors:
 <!------------------------ Interface MmsMessage ------------------------------>
 <section>
   <h2><a>MmsMessage</a> Interface</h2>
-  <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in <a
-  href="http://technical.openmobilealliance.org/Technical/release_program/mms_v1_3.aspx">
-  OMA MMS 1.3</a>.
+  <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in 
+  [[!MMS13]].
   <dl title="[NoInterfaceObject] interface MmsMessage : Message"
       class="idl">
     <dt>readonly attribute DOMString[] to</dt>
