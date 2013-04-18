@@ -464,7 +464,7 @@ Style guide to contributors:
     identifier of the different services for this type of messaging service
     (e.g. 'sms_sim1').</dd>
   
-    <dt>MessagingRequest deleteAll ()</dt>
+    <dt>MessagingRequest clear ()</dt>
     <dd>This method makes a request to delete all the messages associated to the
     messaging service passed as parameter.
       <dl class='parameters'>
@@ -614,7 +614,7 @@ Style guide to contributors:
       to the newly created <code>MmsMessage</code> instance.
     </ol>
 
-  <p> The <dfn><code>deleteAll</code></dfn> method when invoked MUST run the
+  <p> The <dfn><code>clear</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
      <li>Make a request to the system to delete all the messages associated to
