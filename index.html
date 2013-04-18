@@ -205,8 +205,7 @@ Style guide to contributors:
     caller to be notified about the result of the operation.
       <dl class='parameters'>
          <dt>DOMString id</dt> <dd>
-           Unique identifier of the message that is requested to be
-           retrieved
+           Identifier of the message that is requested to be retrieved
          </dd>
      </dl>
     </dd>
@@ -217,7 +216,7 @@ Style guide to contributors:
     notify the request result (success or error) to the caller.
       <dl class='parameters'>
          <dt>DOMString id</dt> <dd>
-           Unique identifier of the message that is requested to be deleted
+           Identifier of the message that is requested to be deleted
          </dd>
      </dl>
     </dd>
@@ -229,7 +228,7 @@ Style guide to contributors:
     caller.
       <dl class='parameters'>
          <dt>DOMString id</dt> <dd>
-           Unique identifier of the conversation whose messages are requested to
+           Identifier of the conversation whose messages are requested to
            be deleted
          </dd>
      </dl>
@@ -242,7 +241,7 @@ Style guide to contributors:
     about the result (success, error) of the operation.
       <dl class='parameters'>
          <dt>DOMString id</dt> <dd>
-           Unique identifier of the message that is requested to be marked as
+           Identifier of the message that is requested to be marked as
            read or unread
          </dd> <dt>boolean value</dt> <dd>
           Indicates whether the message is to be marked as read (if 'true') or
@@ -258,8 +257,8 @@ Style guide to contributors:
     about the result (success, error) of the operation.
       <dl class='parameters'>
          <dt>DOMString id</dt> <dd>
-           Unique identifier of the conversation whose messages are requested to
-           be marked as read or unread
+           Identifier of the conversation whose messages are requested to be
+           marked as read or unread
          </dd> <dt>boolean value</dt> <dd>
           Indicates whether the messages in the conversation are to be marked as
           read (if 'true') or unread (if 'false')
@@ -526,8 +525,8 @@ Style guide to contributors:
   <p>Upon a new SMS message being received, the <a>user agent</a> MUST:
     <ol>
       <li>create a new instance of <code>SmsMessage</code>
-      <li>generate a identifier for this message that is unique in the frame of
-      the user agent, i.e. there cannot be any other message with the same
+      <li>generate a identifier for this message that is globally unique within
+      the implementation, i.e. there cannot be any other message with the same
       identifier
       <li>set the <code>id</code> of the <code>SmsMessage</code> to the
       generated identifier
@@ -562,8 +561,8 @@ Style guide to contributors:
   <p>Upon a new MMS message being received, the <a>user agent</a> MUST:
     <ol>
       <li>create a new instance of <code>MmsMessage</code>
-      <li>generate a identifier for this message that is unique in the frame of
-      the user agent, i.e. there cannot be any other message with the same
+      <li>generate a identifier for this message that is globally unique within
+      the implementation, i.e. there cannot be any other message with the same
       identifier
       <li>set the <code>id</code> of the <code>MmsMessage</code> to the
       generated identifier
@@ -800,8 +799,8 @@ Style guide to contributors:
      <li>Create a new instance of <code>SmsMessage</code> and a new instance of
      <code>MessagingRequest</code> and:
      <ol>
-      <li>generate a identifier for this message that is unique in the frame of
-      the user agent, i.e. there cannot be any other message with the same
+      <li>generate a identifier for this message that is globally unique within
+      the implementation, i.e. there cannot be any other message with the same
       identifier
       <li>set the <code>id</code> of the <code>SmsMessage</code> to the
       generated identifier
@@ -1010,8 +1009,8 @@ Style guide to contributors:
      <li>Create a new instance of <code>MmsMessage</code> and a new instance
      of <code>MessagingRequest</code> and:
      <ol>
-      <li>generate a identifier for this message that is unique in the frame of
-      the user agent, i.e. there cannot be any other message with the same
+      <li>generate a identifier for this message that is globally unique within
+      the implementation, i.e. there cannot be any other message with the same
       identifier
       <li>set the <code>id</code> of the <code>MmsMessage</code> to the
       generated identifier
@@ -1209,9 +1208,7 @@ Style guide to contributors:
              interface Message"
       class="idl">
     <dt>readonly attribute DOMString id</dt>
-    <dd>MUST return the identifier of the message, which is unique in the frame
-    of the user agent, i.e. there cannot be two messages with the same
-    identifier.</dd>
+    <dd>MUST return the identifier of the message.</dd>
 
     <dt>readonly attribute DOMString type</dt>
     <dd>MUST return the type of message ('sms' or 'mms').</dd>
@@ -1392,8 +1389,8 @@ Style guide to contributors:
   <dl title="[NoInterfaceObject] interface Conversation"
       class="idl">
     <dt>readonly attribute DOMString id</dt>
-    <dd>MUST return the identifier of the conversation, which is unique in the
-    frame of the user agent, i.e. there cannot be any other conversation with
+    <dd>MUST return the identifier of the conversation, which is globally unique
+    within the implementation, i.e. there cannot be any other conversation with
     the same identifier.</dd>
 
     <dt>readonly attribute DOMString type</dt>
