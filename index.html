@@ -1481,7 +1481,7 @@ Style guide to contributors:
   sent or received.
   <dl title="[NoInterfaceObject] interface MessagingEvent"
       class="idl">
-    <dt>readonly attribute any message</dt>
+    <dt>readonly attribute (SmsMessage or MmsMessage) message</dt>
     <dd>MUST return the <code>SmsMessage</code> or <code>MmsMessage</code>
     object to which this event is related.</dd>
   </dl>
