@@ -592,13 +592,12 @@ Style guide to contributors:
       <ol>
         <li>a new <code>Blob</code> object including the media type and the
         actual content of the attachment.
-        <li>the <code>contentID</code> attribute filled with the Content-ID
-        associated to this element in the incoming MMS message, if present, and
-        that may be used to reference this element from the SMIL object
+        <li>the <code>contentID</code> attribute filled with the Content-ID used
+        to reference this element from the SMIL object in the incoming MMS
+        message, if present.
         <li>the <code>contentLocation</code> attribute filled with the
-        Content-Location associated to this element in the incoming MMS message,
-        if present, and that may be used to reference this element from the SMIL
-        object
+        Content-Location used to reference this element from the SMIL object in
+        the incoming MMS message, if present.
       </ol>
       <li>set the <code>state</code> of the <code>MmsMessage</code> to
       'received' if the message has been downloaded or otherwise to
@@ -1355,20 +1354,21 @@ Style guide to contributors:
 <section>
   <h2><a>MmsAttachment</a> Dictionary</h2>
   <dl title="dictionary MmsAttachment" class="idl">
-    <dt>optional DOMString contentId</dt>
+    <dt>optional DOMString contentID</dt>
     <dd>
     The Content-ID parameter that MAY be used to refer to the attachment from
-    the SMIL presentation object. At least one of Content-ID and
-    Content-Location needs to be specified if the MMS Message contains an SMIL
-    presentation object. 
+    the SMIL presentation object as described in [[!MMS13]] and [[!MIME-ENC]].
+    At least one of contentID and contentLocation MUST be specified if the
+    MMS Message contains an SMIL presentation object. 
     </dd>
     <dt>optional DOMString contentLocation</dt>
     <dd>
     The Content-Location parameter that MAY be used to refer to the attachment
-    from the SMIL presentation object. At least one of Content-ID and
-    Content-Location needs to be specified if the MMS Message contains an SMIL
-    presentation object. It may also be used as a hint to define the filename
-    when the attachment is stored at the file system.
+    from the SMIL presentation object as described in [[!MMS13]] and
+    [[!MIME-ENC]]. At least one of contentID and contentLocation MUST be
+    specified if the MMS Message contains an SMIL presentation object. It may
+    also be used as a hint to define the filename when the attachment is stored
+    at the file system.
     </dd>
     <dt>Blob content</dt>
     <dd>
