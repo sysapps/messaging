@@ -1102,6 +1102,26 @@ Style guide to contributors:
     </ol>
    </ol>
 
+  <p>
+    An example of manual fetch of an MMS is provided below:
+  
+  <pre class="example highlight">
+        var message = receivedMessageEvent.message
+        if (message.state == 'not-downloaded') {
+        var req = navigator.messaging.mms.fetch (message.id)
+        req.onprogress = function() {
+                window.console.log(e.loaded + ' bytes out of ' + e.total + '
+                downloaded ...');
+        }
+        req.onsuccess = function() {
+                window.console.log('Message Fetched!');
+        }
+        req.onerror = function(e) {
+                window.console.error(e.target.error.name);
+        }
+  </pre>
+   
+   
   <p>The User Agent MAY fire additional <code>ProgressEvents</code>
   [[!PROGRESS-EVENTS]] on the <code>MessagingRequest</code> object associated to
   the sending and fetching of an MMS message, in order to report on the progress
@@ -1135,6 +1155,11 @@ Style guide to contributors:
     request, and is specified in the description of each method that returns a
     <code>MessagingRequest</code> object, e.g. <code>delete</code> method of the
     <code>Messaging</code> object.</dd>
+
+    <dt class="no-docs">
+      attribute EventHandler onprogress
+    </dt>
+    <dd></dd>
 
     <dt class="no-docs">
       attribute EventHandler onsuccess
@@ -1479,7 +1504,7 @@ Style guide to contributors:
   <h2><a>MessagingEvent</a> Interface</h2>
   <p>The <a>MessagingEvent</a> interface represents events related to a message
   sent or received.
-  <dl title="[NoInterfaceObject] interface MessagingEvent"
+  <dl title="[NoInterfaceObject] interface MessagingEvent : ProgressEvent"
       class="idl">
     <dt>readonly attribute (SmsMessage or MmsMessage) message</dt>
     <dd>MUST return the <code>SmsMessage</code> or <code>MmsMessage</code>
