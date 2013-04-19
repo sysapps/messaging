@@ -200,22 +200,22 @@ Style guide to contributors:
     </dd>
 
     <dt> MessagingRequest getMessage ()</dt> <dd>This method makes a request to
-    retrieve the message identified by the <code>id</code> parameter.
+    retrieve the message identified by the <code>messageID</code> parameter.
     It returns a new <code>MessagingRequest</code> object which allows the
     caller to be notified about the result of the operation.
       <dl class='parameters'>
-         <dt>DOMString id</dt> <dd>
+         <dt>DOMString messageID</dt> <dd>
            Identifier of the message that is requested to be retrieved
          </dd>
      </dl>
     </dd>
 
     <dt> MessagingRequest deleteMessage ()</dt> <dd>This method requests the
-    deletion of the message with identifier equal to the <code>id</code>
+    deletion of the message with identifier equal to the <code>messageID</code>
     parameter. A new <code>MessagingRequest</code> is returned in order to
     notify the request result (success or error) to the caller.
       <dl class='parameters'>
-         <dt>DOMString id</dt> <dd>
+         <dt>DOMString messageID</dt> <dd>
            Identifier of the message that is requested to be deleted
          </dd>
      </dl>
@@ -223,11 +223,11 @@ Style guide to contributors:
 
     <dt> MessagingRequest deleteConversation ()</dt> <dd>This method requests
     the deletion of all the messages in the conversation with identifier equal
-    to the <code>id</code> parameter. A new <code>MessagingRequest</code> is
+    to the <code>conversationID</code> parameter. A new <code>MessagingRequest</code> is
     returned in order to notify the request result (success or error) to the
     caller.
       <dl class='parameters'>
-         <dt>DOMString id</dt> <dd>
+         <dt>DOMString conversationID</dt> <dd>
            Identifier of the conversation whose messages are requested to
            be deleted
          </dd>
@@ -236,11 +236,11 @@ Style guide to contributors:
 
     <dt> MessagingRequest markMessageRead ()</dt> <dd>This method requests to
     mark as read or unread the message with identifier equal to the
-    <code>id</code> parameter. The method returns a new
+    <code>messageID</code> parameter. The method returns a new
     <code>MessagingRequest</code> that will allow the caller to be notified
     about the result (success, error) of the operation.
       <dl class='parameters'>
-         <dt>DOMString id</dt> <dd>
+         <dt>DOMString messageID</dt> <dd>
            Identifier of the message that is requested to be marked as
            read or unread
          </dd> <dt>boolean value</dt> <dd>
@@ -252,11 +252,11 @@ Style guide to contributors:
 
     <dt> MessagingRequest markConversationRead ()</dt> <dd>This method
     requests to mark as read or unread all the messages in the conversation with
-    identifier equal to the <code>id</code> parameter. The method returns a new
+    identifier equal to the <code>conversationID</code> parameter. The method returns a new
     <code>MessagingRequest</code> that will allow the caller to be notified
     about the result (success, error) of the operation.
       <dl class='parameters'>
-         <dt>DOMString id</dt> <dd>
+         <dt>DOMString conversationID</dt> <dd>
            Identifier of the conversation whose messages are requested to be
            marked as read or unread
          </dd> <dt>boolean value</dt> <dd>
@@ -326,7 +326,7 @@ Style guide to contributors:
   the following steps:
     <ol>
      <li>Make a request to the system to get the message with identifier equal
-     to the <code>id</code> parameter passed in the request.
+     to the <code>messageID</code> parameter passed in the request.
      <li>Create a new <code>MessagingRequest</code> object and set
      <code>readyState</code> of the <code>MessagingRequest</code> object to
      'processing' and return the <code>MessagingRequest</code> to the caller
@@ -338,7 +338,7 @@ Style guide to contributors:
       <code>MessagingRequest</code> object to 'done'
       <li>set the <code>result</code> of the <code>MessagingRequest</code>
       object to the <code>SmsMessage</code> or <code>MmsMessage</code> whose
-      identifier matches the <code>id</code> parameter
+      identifier matches the <code>messageID</code> parameter
       <li>invoke the <code>onsuccess</code> <a class="internalDFN"
       href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>
@@ -349,7 +349,7 @@ Style guide to contributors:
   following steps:
     <ol>
      <li>Make a request to the system to delete the message with identifier
-     equal to the <code>id</code> parameter passed in the request
+     equal to the <code>messageID</code> parameter passed in the request
      <li>Create a new <code>MessagingRequest</code> object and set
      <code>readyState</code> of the <code>MessagingRequest</code> object to
      'processing' and return the <code>MessagingRequest</code> to the caller
@@ -371,7 +371,7 @@ Style guide to contributors:
   run the following steps:
     <ol>
      <li>Make a request to the system to delete the messages in the conversation
-     with identifier equal to the <code>id</code> parameter passed in the
+     with identifier equal to the <code>conversationID</code> parameter passed in the
      request
      <li>Create a new <code>MessagingRequest</code> object and set
      <code>readyState</code> of the <code>MessagingRequest</code> object to
@@ -395,7 +395,7 @@ Style guide to contributors:
     <ol>
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
-     message with identifier equal to the <code>id</code> parameter passed in
+     message with identifier equal to the <code>messageID</code> parameter passed in
      the request.
      <li>Create a new <code>MessagingRequest</code> object and set
      <code>readyState</code> of the <code>MessagingRequest</code> object to
@@ -419,7 +419,7 @@ Style guide to contributors:
     <ol>
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
-     messages in the conversation with identifier equal to the <code>id</code>
+     messages in the conversation with identifier equal to the <code>conversationID</code>
      parameter passed in the request.
      <li>Create a new <code>MessagingRequest</code> object and set
      <code>readyState</code> of the <code>MessagingRequest</code> object to
@@ -528,7 +528,7 @@ Style guide to contributors:
       <li>generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier
-      <li>set the <code>id</code> of the <code>SmsMessage</code> to the
+      <li>set the <code>messageID</code> of the <code>SmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>SmsMessage</code> to 'sms'
       <li>set the <code>serviceID</code> of the <code>SmsMessage</code> to the
@@ -564,7 +564,7 @@ Style guide to contributors:
       <li>generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier
-      <li>set the <code>id</code> of the <code>MmsMessage</code> to the
+      <li>set the <code>messageID</code> of the <code>MmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>MmsMessage</code> to 'mms'
       <li>set the <code>serviceID</code> of the <code>MmsMessage</code> to the
@@ -643,7 +643,7 @@ Style guide to contributors:
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
         <ol>
-          <li>the <code>id</code> attribute set to the identifier of the
+          <li>the <code>messageID</code> attribute set to the identifier of the
           <code>SmsMessage</code> to which this confirmation is related,
           <li>the <code>serviceID</code> attribute set to the identifier of the
       service used to send such message, and
@@ -663,7 +663,7 @@ Style guide to contributors:
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
         <ol>
-          <li>the <code>id</code> attribute set to the identifier of the
+          <li>the <code>messageID</code> attribute set to the identifier of the
           <code>MmsMessage</code> to which this confirmation is related,
           <li>the <code>serviceID</code> attribute set to the identifier of the
           service used to send such message, and
@@ -799,7 +799,7 @@ Style guide to contributors:
       <li>generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier
-      <li>set the <code>id</code> of the <code>SmsMessage</code> to the
+      <li>set the <code>messageID</code> of the <code>SmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>SmsMessage</code> to 'sms'
       <li>set the <code>serviceID</code> of the <code>SmsMessage</code> to the
@@ -979,12 +979,12 @@ Style guide to contributors:
 
     <dt> MessagingRequest fetch ()</dt>
     <dd>This method requests to fetch an MMS message with identifier equal to
-    the indicated in the <code>id</code> parameter from the URL indicated in the
+    the indicated in the <code>messageID</code> parameter from the URL indicated in the
     MMS notification. The method returns a new <code>MessagingRequest</code>
     that will allow the caller to be notified about the result (success, error)
     of the operation.
       <dl class='parameters'>
-         <dt>DOMString id</dt>
+         <dt>DOMString messageID</dt>
          <dd>
            Identifier of the MMS message that is requested to be download.
          </dd>
@@ -1009,7 +1009,7 @@ Style guide to contributors:
       <li>generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier
-      <li>set the <code>id</code> of the <code>MmsMessage</code> to the
+      <li>set the <code>messageID</code> of the <code>MmsMessage</code> to the
       generated identifier
       <li>set the <code>type</code> of the <code>MmsMessage</code> to 'mms'
       <li>set the <code>serviceID</code> of the <code>MmsMessage</code> to the
@@ -1082,7 +1082,7 @@ Style guide to contributors:
    following steps:
     <ol>
      <li>Create a new <code>MessagingRequest</code> object
-     <li>If the <code>id</code> parameter passed in the request matches with an
+     <li>If the <code>messageID</code> parameter passed in the request matches with an
      MMS message that has already been fetched, or to an SMS message go to step
      5.1, otherwise make a request to the system to fetch the MMS message
      <li>set the <code>readyState</code> of the <code>MessagingRequest</code>
@@ -1204,7 +1204,7 @@ Style guide to contributors:
   <dl title="[NoInterfaceObject]
              interface Message"
       class="idl">
-    <dt>readonly attribute DOMString id</dt>
+    <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
 
     <dt>readonly attribute DOMString type</dt>
@@ -1386,7 +1386,7 @@ Style guide to contributors:
   participants or because they have the same subject.
   <dl title="[NoInterfaceObject] interface Conversation"
       class="idl">
-    <dt>readonly attribute DOMString id</dt>
+    <dt>readonly attribute DOMString conversationID</dt>
     <dd>MUST return the identifier of the conversation, which is globally unique
     within the implementation, i.e. there cannot be any other conversation with
     the same identifier.</dd>
@@ -1418,7 +1418,7 @@ Style guide to contributors:
     <dt>readonly attribute unsigned long unreadCount</dt>
     <dd>MUST return the number of unread messages in the conversation.</dd>
 
-    <dt>readonly attribute DOMString lastMessageId</dt>
+    <dt>readonly attribute DOMString lastMessageID</dt>
     <dd>MUST return the identifier of the message in the conversation with the
     most recent timestamp .</dd>
 
@@ -1498,7 +1498,7 @@ Style guide to contributors:
     <dt>readonly attribute DOMString serviceID</dt>
     <dd>MUST return the identifier of the service used to send the message to
     which this delivery report event is related.</dd>
-    <dt>readonly attribute DOMString id</dt>
+    <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message to which this delivery
     report event is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
