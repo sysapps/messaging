@@ -1734,47 +1734,47 @@ if (message.state == 'not-downloaded') {
 </section>
 
 
-<!------------------------ Interface MessagingFilter ------------------------->
+<!------------------------ Dictionary MessagingFilter ------------------------>
 <section>
-  <h2><a>MessagingFilter</a> Interface</h2>
-  <p>The <a>MessagingFilter</a> interface represents a filter that is used to
+  <h2><a>MessagingFilter</a> Dictionary</h2>
+  <p>The <a>MessagingFilter</a> Dictionary represents a filter that is used to
   select a set of messages (e.g. to be provided upon invoking the
   <code>findMessages</code> or the <code>findConversations</code> method in the
   <code>Messaging</code> interface).
-  <dl title="interface MessagingFilter : AbstractFilter"
+  <dl title="dictionary MessagingFilter"
       class="idl">
-    <dt>attribute MessageType? type</dt>
+    <dt>optional MessageType type</dt>
     <dd>Indicates whether just the SMS or MMS messages are to be provided in the
     results of this filter, respectively if it is set to string value 'SMS' or
     'MMS'.
     </dd>
 
-    <dt>attribute Date? startDate</dt>
+    <dt>optional Date startDate</dt>
     <dd>Indicates that messages with timestamp previous to this date will not be
     provided in the results of this filter.</dd>
 
-    <dt>attribute Date? endDate</dt>
+    <dt>optional Date endDate</dt>
     <dd>Indicates that messages with timestamp after this date will not be
     provided in the results of this filter.</dd>
 
-    <dt>attribute DOMString? from</dt>
+    <dt>optional DOMString from</dt>
     <dd>Indicates that just messages sent from this number are to be provided in
     the results of this filter.</dd>
 
-    <dt>attribute DOMString[]? recipients</dt>
+    <dt>optional DOMString[] recipients</dt>
     <dd>Indicates that just messages sent to one of these numbers are to be
     provided in the results of this filter.</dd>
 
-    <dt>attribute (SmsState or MmsState)? state</dt>
+    <dt>optional (SmsState or MmsState) state</dt>
     <dd>Indicates whether the results of this filter just needs to return the
     messages matching the indicated state.
     
-    <dt>attribute DOMString? serviceID</dt>
+    <dt>optional DOMString serviceID</dt>
     <dd>Indicates that just messages associated to the messaging service with
     this identifier are to be provided in the results of this filter.</dd>
 
-    <dt>attribute boolean? read</dt>
-    <dd>Indicates whether just read or unread messages are to be provided in the
+    <dt>optional boolean read</dt>
+    <dd>optional whether just read or unread messages are to be provided in the
     results of this filter, respectively if it is set to 'true' or 'false'.</dd>
 
   </dl>
