@@ -142,7 +142,9 @@ req.onerror = function(e) {
     
 <!------------------------ Interface MessagingManager ------------------------------->
 <section>
-  <h2><a>MessagingManager</a> Interface</h2> <p>The <a>MessagingManager</a> interface
+  <h2><a>MessagingManager</a> Interface</h2>
+  
+  <p>The <a>MessagingManager</a> interface
   represents the initial entry point for getting access to the mobile messaging
   services, i.e. SMS and MMS.
   
@@ -466,10 +468,11 @@ req.onerror = function(e) {
     (e.g. 'sms_sim1').</dd>
 
     <dt> SmsSegmentInfo getSegmentInfoForText ()</dt>
-    <dd>This method returns an SmsSegmentInfo object including information on
-    the number of concatenated SMS segments needed to send the text in the
-    <code>text</code> parameter, the number of characters available per segment
-    and the maximum number of available characters in the last segment.
+    <dd>This method returns an <code>SmsSegmentInfo</code> object including
+    information on the number of concatenated SMS segments needed to send the
+    text in the <code>text</code> parameter, the number of characters available
+    per segment and the maximum number of available characters in the last
+    segment.
       <dl class='parameters'>
          <dt>DOMString text</dt>
          <dd>
@@ -619,7 +622,9 @@ req.onerror = function(e) {
      <ol>
       <li>Set the <code>state</code> of the <code>SmsMessage</code> to 'sent'.
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
-      timestamp when the SMS message was actually sent.
+      timestamp when the SMS message reached the Short Message Center, i.e. the
+      value of the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter returned in
+      the SMS-SUBMIT-REPORT Protocol Data Unit.
       <li>Set the <code>readyState</code> of the <code>MessagingRequest</code>
       object to 'done'.
       <li>Set the <code>result</code> of the <code>MessagingRequest</code>
@@ -675,8 +680,9 @@ req.onerror = function(e) {
       sender of the SMS message, i.e. the value of the TP Originating Address
       (TP-OA) field of the SMS message.
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
-      timestamp of the SMS message, i.e. the value if the TP Service Centre
-      Time Stamp (TP-SCTS) field of the SMS message.
+      timestamp of the SMS message, i.e. the value of the
+      TP-Service-Centre-Time-Stamp (TP-SCTS) parameter received in the SMS
+      DELIVER Protocol Data Unit.
       <li>Set the <code>read</code> of the <code>SmsMessage</code> to 'false'.
       <li>Set the <code>to</code> of the <code>SmsMessage</code> to the
       recipient of the SMS message, i.e. the value of the TP Destination
@@ -1039,7 +1045,8 @@ req.onerror = function(e) {
      <ol>
       <li>Set the <code>state</code> of the <code>MmsMessage</code> to 'sent'.
       <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to the
-      timestamp when the MMS message was actually sent.
+      timestamp when the MMS message was sent, i.e. the date when the M-Send.req
+      Protocol Data Unit was send from the MMS Client to the MMS Server.
       <li>Set the <code>readyState</code> of the <code>MessagingRequest</code>
       object to 'done'.
       <li>Set the <code>result</code> of the <code>MessagingRequest</code>
@@ -1078,6 +1085,10 @@ req.onerror = function(e) {
         <ol>
           <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
           value of the 'From' field of the MMS notification, if present.
+          <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to
+          the timestamp of the binary SMS message used to transport the MMS
+          notification, i.e. the value of the TP-Service-Centre-Time-Stamp
+          (TP-SCTS) parameter received in the SMS-DELIVER Protocol Data Unit.
           <li>Add a new element in the <code>to</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'To' field of the
           MMS notification, if present.
@@ -1099,7 +1110,7 @@ req.onerror = function(e) {
           Once the MMS has been fetched continue with following steps.
           <li>Run the <dfn id="dfn-fill-mms-message">steps for filling the
           <code>MmsMessage</code> object with the data contained in the MMS
-          message</dfn>.
+          message enclosed in the M-Retrieve.conf Protocol Data Unit</dfn>.  
           <ol>
               <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
               value of the 'From' field of the MMS message.
@@ -1415,8 +1426,9 @@ if (message.state == 'not-downloaded') {
     (TP-OA) of the SMS message.</dd>
 
     <dt>readonly attribute Date timestamp</dt>
-    <dd>MUST return the time the message was sent at, i.e. the TP Service Centre
-    Time Stamp (TP-SCTS) of the SMS message.</dd>
+    <dd>MUST return the time the message reached the Short Message Center,
+    indicated in the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter of the SMS
+    message.</dd>
 
     <dt>readonly attribute boolean read</dt>
     <dd>MUST return 'true' if the message has been marked as read, or 'false'
