@@ -77,15 +77,15 @@ Style guide to contributors:
     An example of use is provided below:
   
   <pre class="example highlight">
-        var req = navigator.messaging.sms.send (
-          '+1234567890', 'How are you?');
-          
-        req.onsuccess = function() {
-                window.console.log('Message Sent!');
-        }
-        req.onerror = function(e) {
-                window.console.error(e.target.error.name);
-        }
+var req = navigator.messaging.sms.send (
+  '+1234567890', 'How are you?');
+  
+req.onsuccess = function() {
+        window.console.log('Message Sent!');
+}
+req.onerror = function(e) {
+        window.console.error(e.target.error.name);
+}
   </pre>
 </section>
     
@@ -1106,19 +1106,20 @@ Style guide to contributors:
     An example of manual fetch of an MMS is provided below:
   
   <pre class="example highlight">
-        var message = receivedMessageEvent.message
-        if (message.state == 'not-downloaded') {
-        var req = navigator.messaging.mms.fetch (message.id)
-        req.onprogress = function() {
-                window.console.log(e.loaded + ' bytes out of ' + e.total + '
-                downloaded ...');
-        }
-        req.onsuccess = function() {
-                window.console.log('Message Fetched!');
-        }
-        req.onerror = function(e) {
-                window.console.error(e.target.error.name);
-        }
+var message = receivedMessageEvent.message
+if (message.state == 'not-downloaded') {
+  var req = navigator.messaging.mms.fetch (message.id)
+  req.onprogress = function() {
+          window.console.log(e.loaded + ' bytes out of ' + e.total + '
+          downloaded ...');
+  }
+  req.onsuccess = function() {
+          window.console.log('Message Fetched!');
+  }
+  req.onerror = function(e) {
+          window.console.error(e.target.error.name);
+  }
+}
   </pre>
    
    
