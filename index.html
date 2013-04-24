@@ -850,12 +850,11 @@ req.onerror = function(e) {
     identifier of the different services for this type of messaging service
     (e.g. 'sms_sim1').</dd>
 
-    <dt>DOMString getFetchMode ()</dt>
+    <dt>FetchMode getFetchMode ()</dt>
     <dd>This method requests to retrieve the fetch mode associated to a specific
     service (the one identified by the <code>serviceID</code> attribute, if
     provided, or the first element in the <code>serviceIDs</code> attribute of
-    the <code>MmsManager</code> otherwise). It can have one of the following
-    values: 'manual' or 'automatic'.
+    the <code>MmsManager</code> otherwise).
     <dl class='parameters'>
          <dt>optional DOMString serviceID</dt>
          <dd>
@@ -865,15 +864,16 @@ req.onerror = function(e) {
     </dd>
 
     <dt>void setFetchMode ()</dt>
-    <dd>This method issues a request to the messaging system to set to 'manual'
-    or 'automatic' the MMS message fetch mode of the specific service, the one
-    identified by the <code>serviceID</code> attribute, if provided, or all
-    services otherwise).
+    <dd>This method issues a request to the messaging system to set to <a
+    class="internalDFN" href="#idl-def-FetchMode.manual">manual</a>
+    or <a class="internalDFN" href="#idl-def-FetchMode.automatic">automatic</a>
+    the MMS message fetch mode of the specific service, the one identified by
+    the <code>serviceID</code> attribute, if provided, or all services
+    otherwise).
     <dl class='parameters'>
-         <dt>DOMString fetchMode</dt>
+         <dt>FetchMode fetchMode</dt>
          <dd>
-           Fetch mode that is requested to be set for a specific service. The
-           allowed values for this attribute are 'manual' and 'automatic'.
+           Fetch mode that is requested to be set for a specific service.
          </dd>
          <dt>optional DOMString serviceID</dt>
          <dd>
@@ -1077,7 +1077,8 @@ req.onerror = function(e) {
       <li>Set the <code>serviceID</code> of the <code>MmsMessage</code> to the
       identifier of the service at which the message has been received.
       <li>Set the <code>read</code> of the <code>MmsMessage</code> to 'false'.
-      <li>if the fetch mode is manual:     
+      <li>if the fetch mode is <a class="internalDFN"
+      href="#idl-def-FetchMode.manual">manual</a>: 
         <ol>
           <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
           value of the 'From' field of the MMS notification, if present.
@@ -1099,7 +1100,8 @@ req.onerror = function(e) {
           <li>Set the <code>state</code> of the <code>MmsMessage</code> to
           'not-downloaded'.
         </ol>
-      <li>if the fetch mode is otherwise automatic:     
+      <li>if the fetch mode is otherwise <a class="internalDFN"
+      href="#idl-def-FetchMode.automatic">automatic</a>: 
         <ol>
           <li>Make a request to the system to fetch the MMS message from the URL
           indicated in the X-Mms-Content-Location field of the MMS notification.
@@ -1166,8 +1168,8 @@ req.onerror = function(e) {
      handler</a> of the <code>MessagingRequest</code> object.
      <li>When the request has been completed:
      <ol>
-      <li>Run the <a href="#dfn-fill-mms-message">steps for filling the
-      <code>MmsMessage</code> object with the data contained in the MMS message</a>.
+      <li>Run the <a class="internalDFN" href="#dfn-fill-mms-message">steps for filling the
+      MmsMessage object with the data contained in the MMS message</a>.
       <li>Set the <code>readyState</code> of the
       <code>MessagingRequest</code> object to 'done'.
       <li>Set the <code>result</code> of the <code>MessagingRequest</code>
@@ -1972,6 +1974,21 @@ if (message.state == 'not-downloaded') {
               report has not been requested or because the message is an inbound
               message
           </dd>
+    </dl>
+
+    <p>The MMS fetch mode can have the following values:
+    <dl class="idl" title="enum FetchMode">
+          <dt>automatic</dt>
+          <dd>
+              MMS message is fecthed right after the reception of the MMS
+              notification.
+          </dd>
+
+          <dt>manual</dt>
+          <dd>
+              The message is not fecthed until the user manually requests it.
+          </dd>
+
     </dl>
 
     </section>
