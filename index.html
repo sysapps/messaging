@@ -459,7 +459,7 @@ req.onerror = function(e) {
   <dl title="[NoInterfaceObject] interface SmsManager : EventTarget"
   class="idl">
 
-    <dt>readonly attribute DOMString type</dt> <dd>MUST return the type of the
+    <dt>readonly attribute MessageType type</dt> <dd>MUST return the type of the
     messaging service manager. It can have the following values: 'sms' or
     'mms'.</dd>
   
@@ -744,7 +744,7 @@ req.onerror = function(e) {
     </ol>
    </ol>
   </section>
-
+ 
   <section>
     <h2>Event handlers</h2>
     <p>The following are the <a class="internalDFN"
@@ -844,7 +844,7 @@ req.onerror = function(e) {
   <dl title="[NoInterfaceObject] interface MmsManager : EventTarget"
   class="idl">
 
-    <dt>readonly attribute DOMString type</dt> <dd>MUST return the type of the
+    <dt>readonly attribute MessageType type</dt> <dd>MUST return the type of the
     messaging service manager. It can have the following values: 'sms' or
     'mms'.</dd>
   
@@ -1414,7 +1414,7 @@ if (message.state == 'not-downloaded') {
     <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
 
-    <dt>readonly attribute DOMString type</dt>
+    <dt>readonly attribute MessageType type</dt>
     <dd>MUST return the type of message, i.e. 'sms'.</dd>
 
     <dt>readonly attribute DOMString serviceID</dt>
@@ -1442,16 +1442,11 @@ if (message.state == 'not-downloaded') {
     <dd>MUST return text of the SMS message, i.e. the SM element contained
     within the TP User Data (TP-UD) field of the SMS message.</dd>
 
-    <dt>readonly attribute DOMString state</dt>
-    <dd>MUST return the status of the SMS message, with the following possible
-    values: 'received', 'draft', 'sending', 'sent' and 'failed'.</dd>
+    <dt>readonly attribute SmsState state</dt>
+    <dd>MUST return the status of the SMS message.</dd>
 
-    <dt>readonly attribute DOMString? deliveryStatus</dt>
-    <dd>MUST return 'success' if the SMS message has been succesfully delivered
-    to the recipient, 'pending' if it is pending delivery, 'error' if the
-    delivery has failed. It MUST return 'not-applicable' if the delivery status
-    is not applicable either because a delivery report has not been requested or
-    the message is an inbound message.
+    <dt>readonly attribute DeliveryStatus? deliveryStatus</dt>
+    <dd>MUST return the delivery status of the SMS message.
     </dd>
 
    <dt>readonly attribute DOMString messageClass</dt>
@@ -1473,7 +1468,7 @@ if (message.state == 'not-downloaded') {
     <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
 
-    <dt>readonly attribute DOMString type</dt>
+    <dt>readonly attribute MessageType type</dt>
     <dd>MUST return the type of message, i.e. 'mms'.</dd>
 
     <dt>readonly attribute DOMString serviceID</dt>
@@ -1515,20 +1510,14 @@ if (message.state == 'not-downloaded') {
     <dt>readonly attribute MmsAttachments[]? attachments</dt>
     <dd>MUST return the set of attachments of the MMS message.</dd>
 
-    <dt>readonly attribute DOMString state</dt>
-    <dd>MUST return the status of the message, with the following possible
-    values: 'received', 'draft', 'sending', 'sent', 'failed' and
-    'not-downloaded'.</dd>
+    <dt>readonly attribute MmsState state</dt>
+    <dd>MUST return the status of the MMS message.</dd>
 
-    <dt>readonly attribute DOMString deliveryStatus[]</dt>
+    <dt>readonly attribute DeliveryStatus deliveryStatus[]</dt>
     <dd>MUST return an array with each of the elements indicating the delivery
     status to each of the recipients of the message, in order starting with the
     recipients in the 'To' field, followed by those in 'Cc' and ending with
-    those in 'Bcc'. The possible values indicate whether the MMS message has
-    been succesfully delivered to the recipient ('success'), it is pending
-    delivery ('pending'), the delivery has failed ('error'). It MUST return
-    'not-applicable' if a delivery report has not been requested or the message
-    is an inbound message.</dd>
+    those in 'Bcc'.</dd>
 
   </dl>
 </section>
@@ -1610,7 +1599,7 @@ if (message.state == 'not-downloaded') {
     within the implementation, i.e. there cannot be any other conversation with
     the same identifier.</dd>
 
-    <dt>readonly attribute DOMString type</dt>
+    <dt>readonly attribute MessageType type</dt>
     <dd>MUST return the type of conversation, with value 'participants' if the
     conversation is defined as the set of messages exchanged among the same set
     of parties, and 'subject' if the conversation is defined as the set of
@@ -1756,7 +1745,7 @@ if (message.state == 'not-downloaded') {
   <code>Messaging</code> interface).
   <dl title="interface MessagingFilter : AbstractFilter"
       class="idl">
-    <dt>attribute DOMString? type</dt>
+    <dt>attribute MessageType? type</dt>
     <dd>Indicates whether just the SMS or MMS messages are to be provided in the
     results of this filter, respectively if it is set to string value 'SMS' or
     'MMS'.
@@ -1778,13 +1767,9 @@ if (message.state == 'not-downloaded') {
     <dd>Indicates that just messages sent to one of these numbers are to be
     provided in the results of this filter.</dd>
 
-    <dt>attribute DOMString? state</dt>
+    <dt>attribute (SmsState or MmsState)? state</dt>
     <dd>Indicates whether the results of this filter just needs to return the
-    messages that have been received ('received'), sent ('sent'), are in process
-    of being sent ('sending'), for which an error has happened during the
-    sending process ('error') or for which a notification has been received but
-    the message (just of MMS type) has not yet been downloaded
-    ('not-downloaded').
+    messages matching the indicated state.
     
     <dt>attribute DOMString? serviceID</dt>
     <dd>Indicates that just messages associated to the messaging service with
@@ -1887,6 +1872,115 @@ if (message.state == 'not-downloaded') {
   </dl>
 </section>
 
+<!------------------------ Interface Enumerations ---------------------------->
+  <section>
+    <h2>Enumerations</h2>
+
+    <p>The attibute <code>type</code> can have the following values:
+    <dl class="idl" title="enum MessageType">
+          <dt>sms</dt>
+          <dd>
+              Corresponding to SMS message(s).
+          </dd>
+
+          <dt>mms</dt>
+          <dd>
+              Corresponding to MMS message(s).
+          </dd>
+    </dl>
+
+    <p>The attibute <code>state</code> in an <code>SmsMessage</code> can have
+    the following values:
+    <dl class="idl" title="enum SmsState">
+          <dt>received</dt>
+          <dd>
+              The message is an inbound message.
+          </dd>
+
+          <dt>draft</dt>
+          <dd>
+              The message is a draft, i.e. it has not yet been sent.
+          </dd>
+
+          <dt>sending</dt>
+          <dd>
+              The message is in process of being sent.
+          </dd>
+
+          <dt>sent</dt>
+          <dd>
+              The message has been successfully sent.
+          </dd>
+
+          <dt>failed</dt>
+          <dd>
+              The message is an outbound message whose submission has failed.
+          </dd>
+    </dl>
+
+    <p>The attibute <code>state</code> in an <code>MmsMessage</code> can have
+    the following values:
+    <dl class="idl" title="enum MmsState">
+          <dt>not-downloaded</dt>
+          <dd>
+              The message is an inbound message, for which an MMS mnotification
+              has been received but that has not yet been downloaded.
+          </dd>
+
+          <dt>received</dt>
+          <dd>
+              The message is an inbound message.
+          </dd>
+
+          <dt>draft</dt>
+          <dd>
+              The message is a draft, i.e. it has not yet been sent.
+          </dd>
+
+          <dt>sending</dt>
+          <dd>
+              The message is in process of being sent.
+          </dd>
+
+          <dt>sent</dt>
+          <dd>
+              The message has been successfully sent.
+          </dd>
+
+          <dt>failed</dt>
+          <dd>
+              The message is an outbound message whose submission has failed.
+          </dd>
+    </dl>
+
+    <p>The attibute <code>deliveryStatus</code> can have the following values:
+    <dl class="idl" title="enum DeliveryStatus">
+          <dt>success</dt>
+          <dd>
+              The message has been succesfully delivered to the recipient.
+          </dd>
+
+          <dt>pending</dt>
+          <dd>
+              The message is pending delivery.
+          </dd>
+
+          <dt>error</dt>
+          <dd>
+              The delivery of the message has failed.
+          </dd>
+
+          <dt>not-applicable</dt>
+          <dd>
+              The delivery status is not applicable either because a delivery
+              report has not been requested or because the message is an inbound
+              message
+          </dd>
+    </dl>
+
+    </section>
+  
+  
 <!------------------------ Acknowledgements ---------------------------------->
 <section>
   <h2>Acknowledgements</h2>
