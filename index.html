@@ -113,7 +113,7 @@ req.onerror = function(e) {
   href="http://dev.w3.org/html5/spec/webappapis.html#queue-a-task"> queue a
   task</a></dfn> and <dfn><a
   href="http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event">
-  fire a simple event</a></dfn> are defined in [[!HTML5]].
+  fire an event</a></dfn> are defined in [[!HTML5]].
   
   <p>The terms <a
   href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers"><dfn
@@ -524,26 +524,26 @@ req.onerror = function(e) {
     <dt class="no-docs">
       attribute EventHandler onreceived
     </dt>
-    <dd>The simple event <code>received</code> MUST be fired when a new
+    <dd>The event <code>received</code> MUST be fired when a new
     message is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onsent
     </dt>
-    <dd>The simple event <code>sent</code> MUST be fired when a new
+    <dd>The event <code>sent</code> MUST be fired when a new
     message is sent using this messaging service manager.</dd>
     
     <dt class="no-docs">
       attribute EventHandler ondeliverysuccess
     </dt>
-    <dd>The simple event <code>deliverysuccess</code> of type
+    <dd>The event <code>deliverysuccess</code> of type
     <a>DeliveryReportEvent</a> MUST be fired when a new succesful delivery
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler ondeliveryfailure
     </dt>
-    <dd>The simple event <code>deliveryfailure</code> of type
+    <dd>The event <code>deliveryfailure</code> of type
     <a>DeliveryReportEvent</a> MUST be fired when a new failure delivery
     report is received on this messaging service manager.</dd>
 
@@ -632,8 +632,8 @@ req.onerror = function(e) {
       <li>Invoke the <code>onsuccess</code> <a class="internalDFN"
       href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>.
-      <li><a>Queue a task</a> to <a>fire a simple event</a> named
-      <code>sent</code> with the <code>message</code> attribute set to the sent
+      <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
+      with the <code>message</code> attribute set to the sent
       <code>MmsMessage</code>.
      </ol>
     </ol>
@@ -708,7 +708,7 @@ req.onerror = function(e) {
       <li>Set the <code>deliveryStatus</code> parameter of the
       <code>SmsMessage</code> to 'success' or 'error' depending on the reported
       result.
-      <li><a>Queue a task</a> to <a>fire a simple event</a> named
+      <li><a>Queue a task</a> to <a>fire an event</a> named
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
         <ol>
@@ -932,26 +932,26 @@ req.onerror = function(e) {
     <dt class="no-docs">
       attribute EventHandler onreceived
     </dt>
-    <dd>The simple event <code>received</code> MUST be fired when a new
+    <dd>The event <code>received</code> MUST be fired when a new
     message is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onsent
     </dt>
-    <dd>The simple event <code>sent</code> MUST be fired when a new
+    <dd>The event <code>sent</code> MUST be fired when a new
     message is sent using this messaging service manager.</dd>
     
     <dt class="no-docs">
       attribute EventHandler ondeliverysuccess
     </dt>
-    <dd>The simple event <code>deliverysuccess</code> of type
+    <dd>The event <code>deliverysuccess</code> of type
     <a>DeliveryReportEvent</a> MUST be fired when a new succesful delivery
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler ondeliveryfailure
     </dt>
-    <dd>The simple event <code>deliveryfailure</code> of type
+    <dd>The event <code>deliveryfailure</code> of type
     <a>DeliveryReportEvent</a> MUST be fired when a new failure delivery
     report is received on this messaging service manager.</dd>
 
@@ -1054,7 +1054,7 @@ req.onerror = function(e) {
       <li>Invoke the <code>onsuccess</code> <a class="internalDFN"
       href="#dfn-eventhandler">event handlers</a> of the
       <code>MessagingRequest</code>.
-      <li><a>Queue a task</a> to <a>fire a simple event</a> named
+      <li><a>Queue a task</a> to <a>fire an event</a> named
       <code>sent</code> with the <code>message</code> attribute set to the sent
       <code>MmsMessage</code>.
      </ol>
@@ -1215,7 +1215,7 @@ if (message.state == 'not-downloaded') {
       <code>MmsMessage</code> corresponding to the recipients to which the
       delivery report refers to 'success' or 'error' depending on the reported
       result.
-      <li><a>Queue a task</a> to <a>fire a simple event</a> named
+      <li><a>Queue a task</a> to <a>fire an event</a> named
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
         <ol>
