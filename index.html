@@ -1263,20 +1263,19 @@ if (message.state == 'not-downloaded') {
   </p>
 
 
-<!------------------------ Interface Message --------------------------------->
+<!------------------------ Interface SmsMessage ------------------------------>
 <section>
-  <h2><a>Message</a> Interface</h2>
-  <p>The <a>Message</a> interface is a generic interface from which the
-  <a>SmsMessage</a> and the <a>MmsMessage</a> inherit and that includes the
-  common attributes to both types of message.
-  <dl title="[NoInterfaceObject]
-             interface Message"
+  <h2><a>SmsMessage</a> Interface</h2>
+  <p>The <a>SmsMessage</a> interface represents an SMS message as defined in
+  [[!GSM-SMS]]. This interface is not intended to represent binary SMS, which
+  are out of the scope of this API.
+  <dl title="[NoInterfaceObject] interface SmsMessage"
       class="idl">
     <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
 
     <dt>readonly attribute DOMString type</dt>
-    <dd>MUST return the type of message ('sms' or 'mms').</dd>
+    <dd>MUST return the type of message, i.e. 'sms'.</dd>
 
     <dt>readonly attribute DOMString serviceID</dt>
     <dd>MUST return the messaging service id</a> used to send / receive this
@@ -1284,27 +1283,16 @@ if (message.state == 'not-downloaded') {
 
     <dt>readonly attribute DOMString from</dt>
     <dd>MUST return the sender of the message, i.e. the TP Originating Address
-    (TP-OA) of the SMS message or the 'From' field of the MMS message.</dd>
+    (TP-OA) of the SMS message.</dd>
 
     <dt>readonly attribute Date timestamp</dt>
     <dd>MUST return the time the message was sent at, i.e. the TP Service Centre
-    Time Stamp (TP-SCTS) of the SMS message or the 'Date' field of the MMS
-    message.</dd>
+    Time Stamp (TP-SCTS) of the SMS message.</dd>
 
     <dt>readonly attribute boolean read</dt>
     <dd>MUST return 'true' if the message has been marked as read, or 'false'
     otherwise.</dd>
-  </dl>
-</section>
 
-<!------------------------ Interface SmsMessage ------------------------------>
-<section>
-  <h2><a>SmsMessage</a> Interface</h2>
-  <p>The <a>SmsMessage</a> interface represents an SMS message as defined in
-  [[!GSM-SMS]]. This interface is not intended to represent binary SMS, which
-  are out of the scope of this API.
-  <dl title="[NoInterfaceObject] interface SmsMessage : Message"
-      class="idl">
     <dt>readonly attribute DOMString to</dt>
     <dd>MUST return the recipient of the message, i.e. the TP Destination
     Address (TP-DA) of the SMS message.</dd>
@@ -1339,8 +1327,30 @@ if (message.state == 'not-downloaded') {
   <h2><a>MmsMessage</a> Interface</h2>
   <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in 
   [[!MMS13]].
-  <dl title="[NoInterfaceObject] interface MmsMessage : Message"
+  <dl title="[NoInterfaceObject] interface MmsMessage"
       class="idl">
+    <dt>readonly attribute DOMString messageID</dt>
+    <dd>MUST return the identifier of the message.</dd>
+
+    <dt>readonly attribute DOMString type</dt>
+    <dd>MUST return the type of message, i.e. 'mms'.</dd>
+
+    <dt>readonly attribute DOMString serviceID</dt>
+    <dd>MUST return the messaging service id</a> used to send / receive this
+    message.</dd>
+
+    <dt>readonly attribute DOMString from</dt>
+    <dd>MUST return the sender of the message, i.e. the 'From' field of the MMS
+    message.</dd>
+
+    <dt>readonly attribute Date timestamp</dt>
+    <dd>MUST return the time the message was sent at, i.e. the 'Date' field of
+    the MMS message.</dd>
+
+    <dt>readonly attribute boolean read</dt>
+    <dd>MUST return 'true' if the message has been marked as read, or 'false'
+    otherwise.</dd>
+
     <dt>readonly attribute DOMString[] to</dt>
     <dd>MUST return an array containing the recipient(s) included
     in the 'To' field of the MMS message.</dd>
