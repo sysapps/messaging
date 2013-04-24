@@ -524,44 +524,42 @@ req.onerror = function(e) {
     <dt class="no-docs">
       attribute EventHandler onreceived
     </dt>
-    <dd>The event <code>received</code> MUST be fired when a new
-    message is received on this messaging service manager.</dd>
+    <dd>Handles the <code>received</code> event of type <a>MessagingEvent</a>,
+    fired when a new message is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onsent
     </dt>
-    <dd>The event <code>sent</code> MUST be fired when a new
-    message is sent using this messaging service manager.</dd>
+    <dd>Handles the <code>sent</code> event of type <a>MessagingEvent</a>, fired
+    when a new message is sent using this messaging service manager.</dd>
     
     <dt class="no-docs">
       attribute EventHandler ondeliverysuccess
     </dt>
-    <dd>The event <code>deliverysuccess</code> of type
-    <a>DeliveryReportEvent</a> MUST be fired when a new succesful delivery
+    <dd>Handles the <code>deliverysuccess</code> event of type
+    <a>DeliveryReportEvent</a>, fired when a new succesful delivery
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler ondeliveryfailure
     </dt>
-    <dd>The event <code>deliveryfailure</code> of type
-    <a>DeliveryReportEvent</a> MUST be fired when a new failure delivery
+    <dd>Handles the <code>deliveryfailure</code> event of type
+    <a>DeliveryReportEvent</a>, fired when a new failure delivery
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onserviceadded
     </dt>
-    <dd>The <code>serviceadded</code> event of type <a>ServiceChangeEvent</a>
-    MUST be fired whenever a new messaging service is enabled in the system. The
-    <code>serviceID</code> property of the event MUST contain the identifier of
-    the new messaging service.</dd>
+    <dd>Handles the <code>serviceadded</code> event of type
+    <a>ServiceChangeEvent</a>, fired whenever a new messaging service is enabled
+    on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onserviceremoved
     </dt>
-    <dd>The <code>serviceremoved</code> event of type <a>ServiceChangeEvent</a>
-    MUST be fired when an existing messaging service is disabled in the system.
-    The <code>serviceID</code> property of the event MUST contain the identifier
-    of the disabled messaging service.</dd>
+    <dd>Handles the <code>serviceremoved</code> event of type
+    <a>ServiceChangeEvent</a>, fired when an existing messaging service is
+    disabled on this messaging service manager.</dd>
 
    </dl>
   
@@ -697,7 +695,7 @@ req.onerror = function(e) {
       'received'.
       <li>Set the <code>deliveryStatus</code> of the <code>SmsMessage</code> to
       'not-applicable'.
-      <li><a>Queue a task</a> to <a>fire an event</a> named.
+      <li><a>Queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
       to the newly created <code>SmsMessage</code> instance.
     </ol>
@@ -932,44 +930,42 @@ req.onerror = function(e) {
     <dt class="no-docs">
       attribute EventHandler onreceived
     </dt>
-    <dd>The event <code>received</code> MUST be fired when a new
-    message is received on this messaging service manager.</dd>
+    <dd>Handles the <code>received</code> event of type <a>MessagingEvent</a>,
+    fired when a new message is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onsent
     </dt>
-    <dd>The event <code>sent</code> MUST be fired when a new
-    message is sent using this messaging service manager.</dd>
+    <dd>Handles the <code>sent</code> event of type <a>MessagingEvent</a>, fired
+    when a new message is sent using this messaging service manager.</dd>
     
     <dt class="no-docs">
       attribute EventHandler ondeliverysuccess
     </dt>
-    <dd>The event <code>deliverysuccess</code> of type
-    <a>DeliveryReportEvent</a> MUST be fired when a new succesful delivery
+    <dd>Handles the <code>deliverysuccess</code> event of type
+    <a>DeliveryReportEvent</a>, fired when a new succesful delivery
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler ondeliveryfailure
     </dt>
-    <dd>The event <code>deliveryfailure</code> of type
-    <a>DeliveryReportEvent</a> MUST be fired when a new failure delivery
+    <dd>Handles the <code>deliveryfailure</code> event of type
+    <a>DeliveryReportEvent</a>, fired when a new failure delivery
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onserviceadded
     </dt>
-    <dd>The <code>serviceadded</code> event of type <a>ServiceChangeEvent</a>
-    MUST be fired whenever a new messaging service is enabled in the system. The
-    <code>serviceID</code> property of the event MUST contain the identifier of
-    the new messaging service.</dd>
+    <dd>Handles the <code>serviceadded</code> event of type
+    <a>ServiceChangeEvent</a>, fired whenever a new messaging service is enabled
+    on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onserviceremoved
     </dt>
-    <dd>The <code>serviceremoved</code> event of type <a>ServiceChangeEvent</a>
-    MUST be fired when an existing messaging service is disabled in the system.
-    The <code>serviceID</code> property of the event MUST contain the identifier
-    of the disabled messaging service.</dd>
+    <dd>Handles the <code>serviceremoved</code> event of type
+    <a>ServiceChangeEvent</a>, fired when an existing messaging service is
+    disabled on this messaging service manager.</dd>
      
    </dl>  
 
