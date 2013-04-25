@@ -1743,37 +1743,37 @@ if (message.state == 'not-downloaded') {
   <code>Messaging</code> interface).
   <dl title="dictionary MessagingFilter"
       class="idl">
-    <dt>optional MessageType type</dt>
+    <dt>MessageType type</dt>
     <dd>Indicates whether just the SMS or MMS messages are to be provided in the
     results of this filter, respectively if it is set to string value 'SMS' or
     'MMS'.
     </dd>
 
-    <dt>optional Date startDate</dt>
+    <dt>Date startDate</dt>
     <dd>Indicates that messages with timestamp previous to this date will not be
     provided in the results of this filter.</dd>
 
-    <dt>optional Date endDate</dt>
+    <dt>Date endDate</dt>
     <dd>Indicates that messages with timestamp after this date will not be
     provided in the results of this filter.</dd>
 
-    <dt>optional DOMString from</dt>
+    <dt>DOMString from</dt>
     <dd>Indicates that just messages sent from this number are to be provided in
     the results of this filter.</dd>
 
-    <dt>optional DOMString[] recipients</dt>
+    <dt>DOMString[] recipients</dt>
     <dd>Indicates that just messages sent to one of these numbers are to be
     provided in the results of this filter.</dd>
 
-    <dt>optional (SmsState or MmsState) state</dt>
+    <dt>(SmsState or MmsState) state</dt>
     <dd>Indicates whether the results of this filter just needs to return the
     messages matching the indicated state.
     
-    <dt>optional DOMString serviceID</dt>
+    <dt>DOMString serviceID</dt>
     <dd>Indicates that just messages associated to the messaging service with
     this identifier are to be provided in the results of this filter.</dd>
 
-    <dt>optional boolean read</dt>
+    <dt>boolean read</dt>
     <dd>optional whether just read or unread messages are to be provided in the
     results of this filter, respectively if it is set to 'true' or 'false'.</dd>
 
