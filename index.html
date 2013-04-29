@@ -1734,46 +1734,46 @@ if (message.state == 'not-downloaded') {
 </section>
 
 
-<!------------------------ Interface MessagingFilter ------------------------->
+<!------------------------ Dictionary MessagingFilter ------------------------>
 <section>
-  <h2><a>MessagingFilter</a> Interface</h2>
-  <p>The <a>MessagingFilter</a> interface represents a filter that is used to
+  <h2><a>MessagingFilter</a> Dictionary</h2>
+  <p>The <a>MessagingFilter</a> Dictionary represents a filter that is used to
   select a set of messages (e.g. to be provided upon invoking the
   <code>findMessages</code> or the <code>findConversations</code> method in the
   <code>Messaging</code> interface).
-  <dl title="interface MessagingFilter : AbstractFilter"
+  <dl title="dictionary MessagingFilter"
       class="idl">
-    <dt>attribute MessageType? type</dt>
+    <dt>MessageType type</dt>
     <dd>Indicates whether just the SMS or MMS messages are to be provided in the
     results of this filter, respectively if it is set to string value 'SMS' or
     'MMS'.
     </dd>
 
-    <dt>attribute Date? startDate</dt>
+    <dt>Date startDate</dt>
     <dd>Indicates that messages with timestamp previous to this date will not be
     provided in the results of this filter.</dd>
 
-    <dt>attribute Date? endDate</dt>
+    <dt>Date endDate</dt>
     <dd>Indicates that messages with timestamp after this date will not be
     provided in the results of this filter.</dd>
 
-    <dt>attribute DOMString? from</dt>
+    <dt>DOMString from</dt>
     <dd>Indicates that just messages sent from this number are to be provided in
     the results of this filter.</dd>
 
-    <dt>attribute DOMString[]? recipients</dt>
+    <dt>sequence&lt;DOMString&gt; recipients</dt>
     <dd>Indicates that just messages sent to one of these numbers are to be
     provided in the results of this filter.</dd>
 
-    <dt>attribute (SmsState or MmsState)? state</dt>
+    <dt>(SmsState or MmsState) state</dt>
     <dd>Indicates whether the results of this filter just needs to return the
     messages matching the indicated state.
     
-    <dt>attribute DOMString? serviceID</dt>
+    <dt>DOMString serviceID</dt>
     <dd>Indicates that just messages associated to the messaging service with
     this identifier are to be provided in the results of this filter.</dd>
 
-    <dt>attribute boolean? read</dt>
+    <dt>boolean read</dt>
     <dd>Indicates whether just read or unread messages are to be provided in the
     results of this filter, respectively if it is set to 'true' or 'false'.</dd>
 
@@ -1781,7 +1781,7 @@ if (message.state == 'not-downloaded') {
 </section>
 
 <!------------------------ Dictionary FilterOptions -------------------------->
-<section>
+<!--section>
   <h2><a>FilterOptions</a> Dictionary</h2>
   <dl title="dictionary FilterOptions" class="idl">
     <dt>DOMString sortBy</dt>
@@ -1808,7 +1808,7 @@ if (message.state == 'not-downloaded') {
   </p>
 
 <!------------------------ Interface CompositeFilter ------------------------->
-<section>
+<!--section>
   <h2><a>CompositeFilter</a> Interface</h2>
   <p>The <a>CompositeFilter</a> interface represents a filter that is the result
   of combining several filters with an operator ('and' / 'or').
@@ -1826,7 +1826,7 @@ if (message.state == 'not-downloaded') {
     
 
 <!------------------------ Interface AttributeFilter-------------------------->
-<section>
+<!--section>
   <h2><a>AttributeFilter</a> Interface</h2>
   <p>The <a>AttributeFilter</a> interface represents a filter of messages
   based on the value of a specific attribute.
@@ -1849,7 +1849,7 @@ if (message.state == 'not-downloaded') {
 
 
 <!------------------------ Interface AttributeRangeFilter -------------------->
-<section>
+<!--section>
   <h2><a>AttributeRangeFilter</a> Interface</h2>
   <p>The <a>AttributeRangeFilter</a> interface represents a filter of messages
   with the value of a specific attribute within a range of values.
