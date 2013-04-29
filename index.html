@@ -471,11 +471,11 @@ req.onerror = function(e) {
      </dl>
     </dd>
     
-    <dt> MessagingRequest send ()</dt>
+    <dt> Future send ()</dt>
     <dd>This method issues a request to the messaging system to send an SMS
     message with the text of the <code>text</code> parameter to the destination
     number indicated in the <code>to</code> parameter.
-    A <code>MessagingRequest</code> object will be returned in order to notify
+    A <code>Future</code> object will be returned in order to notify
     the result of the request.
       <dl class='parameters'>
          <dt>DOMString to</dt>
@@ -494,7 +494,7 @@ req.onerror = function(e) {
      </dl>
     </dd>
 
-    <dt>MessagingRequest clear ()</dt>
+    <dt>Future clear ()</dt>
     <dd>This method makes a request to delete all the messages associated to the
     messaging service passed as parameter.
       <dl class='parameters'>
@@ -554,8 +554,7 @@ req.onerror = function(e) {
   <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
-     <li>Create a new instance of <code>SmsMessage</code> and a new instance of
-     <code>MessagingRequest</code> and:
+     <li>Create a new instance of <code>SmsMessage</code>:
      <ol>
       <li>Generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
@@ -586,40 +585,33 @@ req.onerror = function(e) {
       in the <code>text</code> parameter to the number of the recipient
       indicated in the <code>to</code> parameter, using the proper service as
       described above.
-      <li>Set <code>readyState</code> of the <code>MessagingRequest</code>
-      object to 'processing'.
-      <li>Return the <code>MessagingRequest</code> to the caller and <a>queue a
-      task</a> to monitor SMS sending progress.
+      <li><a>Queue a task</a> to monitor SMS sending progress.
      </ol>
-     <li>If there is an error
+     <li>Let <var>future</var> be a new <code>Future</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>future</var> to the caller.
+     <li>If an <var>error</var> occurs run these substeps and terminate these
+     steps
       <ol>
-        <li>Set the <code>state</code> of the <code>SmsMessage</code> to
-        'error'.
         <li>If a delivery report had been requested set the
         <code>deliveryStatus</code> of the <code>SmsMessage</code> to 'error'.
-        <li>Invoke the <code>onerror</code> <a class="internalDFN"
-        href="#dfn-eventhandler">event handlers</a> of the
-        <code>MessagingRequest</code> object.
+        <li>call <var>resolver</var>'s <code>reject(value)</code>method with
+        <var>error</var> as <code>value</code> argument.
      </ol>
-     <li>When the requests has been completed:
+     <li>When the request has been successfully completed:
      <ol>
       <li>Set the <code>state</code> of the <code>SmsMessage</code> to 'sent'.
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
       timestamp when the SMS message reached the Short Message Center, i.e. the
       value of the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter returned in
       the SMS-SUBMIT-REPORT Protocol Data Unit.
-      <li>Set the <code>readyState</code> of the <code>MessagingRequest</code>
-      object to 'done'.
-      <li>Set the <code>result</code> of the <code>MessagingRequest</code>
-      object to the <code>SmsMessage</code> that has been sent.
-      <li>Invoke the <code>onsuccess</code> <a class="internalDFN"
-      href="#dfn-eventhandler">event handlers</a> of the
-      <code>MessagingRequest</code>.
+      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
+      the sent <code>SmsMessage</code> as <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
       with the <code>message</code> attribute set to the sent
-      <code>MmsMessage</code>.
-     </ol>
+      <code>SmsMessage</code>.
     </ol>
+   </ol>
 
   <p> The <dfn><code>getSegmentInfoForText</code></dfn> method when invoked MUST
   return a <code>SmsSegmentInfo</code> object that contains the following
@@ -710,20 +702,18 @@ req.onerror = function(e) {
      <li>Make a request to the system to delete all the messages associated to
      the messaging service with identifier equal to the <code>serviceID</code>
      parameter.
-     <li>Create a new <code>MessagingRequest</code> object and set
-     <code>readyState</code> of the <code>MessagingRequest</code> object to
-     'processing' and return the <code>MessagingRequest</code> to the caller.
-     <li>If there is an error invoke the <code>onerror</code> <a>event
-     handler</a> of the <code>MessagingRequest</code> object.
-     <li>When the request has been completed:
+     <li>Let <var>future</var> be a new <code>Future</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>future</var> to the caller.
+     <li>If an <var>error</var> occurs call <var>resolver</var>'s
+     <code>reject(value)</code>method with <var>error</var> as
+     <code>value</code> argument.
+     <li>When the request has been successfully completed:
      <ol>
-      <li>Set the <code>readyState</code> of the
-      <code>MessagingRequest</code> object to 'done'.
-      <li>Set the <code>result</code> of the <code>MessagingRequest</code>
-      object to 'true'.
-      <li>Invoke the <code>onsuccess</code> <a class="internalDFN"
-      href="#dfn-eventhandler">event handlers</a> of the
-      <code>MessagingRequest</code>.
+      <li>Let <var>serviceID</var> be the <code>serviceID</code> parameter
+      passed in the request
+      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
+      <var>serviceID</var> as <code>value</code> argument.
     </ol>
    </ol>
   </section>
