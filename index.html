@@ -1516,9 +1516,7 @@ if (message.state == 'not-downloaded') {
   <code>Conversation</code> elements or of messages (<code>SmsMessage</code>
   and/or <code>MmsMessage</code> elements).</p>
   <p>A <a>MessagingCursor</a> always has, an <dfn>associated request</dfn> which
-  is the <a>MessagingRequest</a> that created it. In other words, a
-  <a>MessagingCursor</a> is always the <code>result</code> of a
-  <a>MessagingRequest</a> and can't be created in any other way.</p>
+  is the <a>Future</a> that created it.</p>
   <p>As soon as the <a>MessagingCursor</a> is <dfn>accessing an element</dfn>,
   it MUST put its <a>associated request</a> in the 'processing'
   <code>readyState</code>, and set the <code>result</code> to null. Then, the UA
