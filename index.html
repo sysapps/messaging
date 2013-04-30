@@ -241,9 +241,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
          <dt>DOMString messageID</dt> <dd>
            Identifier of the message that is requested to be marked as
            read or unread
-         </dd> <dt>boolean value</dt> <dd>
-          Indicates whether the message is to be marked as read (if 'true') or
-          unread (if 'false')
+         </dd>
+         <dt>optional boolean value = true</dt>
+         <dd>
+          Indicates whether the message is to be marked as read (if 'true',
+          which is the default) or unread (if 'false')
          </dd>
      </dl>
     </dd>
@@ -257,9 +259,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
          <dt>DOMString conversationID</dt> <dd>
            Identifier of the conversation whose messages are requested to be
            marked as read or unread
-         </dd> <dt>boolean value</dt> <dd>
+         </dd>
+         <dt>optional boolean value = true</dt>
+         <dd>
           Indicates whether the messages in the conversation are to be marked as
-          read (if 'true') or unread (if 'false')
+          read (if 'true', which is the default) or unread (if 'false')
          </dd>
      </dl>
     </dd>
