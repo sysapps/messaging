@@ -148,7 +148,7 @@ req.onerror = function(e) {
   represents the initial entry point for getting access to the mobile messaging
   services, i.e. SMS and MMS.
   
-  <dl title="[NoInterfaceObject] interface MessagingManager" class="idl">
+  <dl title="interface MessagingManager" class="idl">
 
     <dt>readonly attribute SmsManager sms</dt> <dd>Provides access to the
     SMS service's specific functionality.</dd>
@@ -456,7 +456,7 @@ req.onerror = function(e) {
   <p>The <a>SmsManager</a> interface represents the SMS messaging service
   manager.
   
-  <dl title="[NoInterfaceObject] interface SmsManager : EventTarget"
+  <dl title="interface SmsManager : EventTarget"
   class="idl">
 
     <dt>readonly attribute MessageType type</dt> <dd>MUST return the type of the
@@ -839,7 +839,7 @@ req.onerror = function(e) {
   <p>The <a>MmsManager</a> interface represents the MMS messaging service
   manager.
   
-  <dl title="[NoInterfaceObject] interface MmsManager : EventTarget"
+  <dl title="interface MmsManager : EventTarget"
   class="idl">
 
     <dt>readonly attribute MessageType type</dt> <dd>MUST return the type of the
@@ -1407,7 +1407,7 @@ if (message.state == 'not-downloaded') {
   <p>The <a>SmsMessage</a> interface represents an SMS message as defined in
   [[!GSM-SMS]]. This interface is not intended to represent binary SMS, which
   are out of the scope of this API.
-  <dl title="[NoInterfaceObject] interface SmsMessage"
+  <dl title="interface SmsMessage"
       class="idl">
     <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
@@ -1461,7 +1461,7 @@ if (message.state == 'not-downloaded') {
   <h2><a>MmsMessage</a> Interface</h2>
   <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in 
   [[!MMS13]].
-  <dl title="[NoInterfaceObject] interface MmsMessage"
+  <dl title="interface MmsMessage"
       class="idl">
     <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
@@ -1590,7 +1590,7 @@ if (message.state == 'not-downloaded') {
   <p>The <a>Conversation</a> interface represents a set of messages that are
   grouped together either because they are exchanged among the same set of
   participants or because they have the same subject.
-  <dl title="[NoInterfaceObject] interface Conversation"
+  <dl title="interface Conversation"
       class="idl">
     <dt>readonly attribute DOMString conversationID</dt>
     <dd>MUST return the identifier of the conversation, which is globally unique
@@ -1652,7 +1652,7 @@ if (message.state == 'not-downloaded') {
   retrieved, the <a>associated request</a>'s <code>readyState</code> must be set
   to 'done' and the <code>result</code> must point to the cursor. If no element
   was found, the cursor's <code>element</code> property must return null.</p>
-  <dl title="[NoInterfaceObject] interface MessagingCursor"
+  <dl title="interface MessagingCursor"
       class="idl">
     <dt>readonly attribute any? element</dt>
     <dd>
@@ -1685,7 +1685,7 @@ if (message.state == 'not-downloaded') {
   <h2><a>MessagingEvent</a> Interface</h2>
   <p>The <a>MessagingEvent</a> interface represents events related to a message
   sent or received.
-  <dl title="[NoInterfaceObject] interface MessagingEvent : ProgressEvent"
+  <dl title="interface MessagingEvent : ProgressEvent"
       class="idl">
     <dt>readonly attribute (SmsMessage or MmsMessage) message</dt>
     <dd>MUST return the <code>SmsMessage</code> or <code>MmsMessage</code>
@@ -1699,7 +1699,7 @@ if (message.state == 'not-downloaded') {
   <h2><a>DeliveryReportEvent</a> Interface</h2>
   <p>The <a>DeliveryReportEvent</a> interface represents events related
   to a delivery report of a sent message.
-  <dl title="[NoInterfaceObject] interface DeliveryReportEvent : Event"
+  <dl title="interface DeliveryReportEvent : Event"
       class="idl">
     <dt>readonly attribute DOMString serviceID</dt>
     <dd>MUST return the identifier of the service used to send the message to
@@ -1725,7 +1725,7 @@ if (message.state == 'not-downloaded') {
   <h2><a>ServiceChangeEvent</a> Interface</h2>
   <p>The <a>ServiceChangeEvent</a> interface represents events related to
   messaging services enabled or disabled.
-  <dl title="[NoInterfaceObject] interface ServiceChangeEvent : Event"
+  <dl title="interface ServiceChangeEvent : Event"
       class="idl">
     <dt>readonly attribute DOMString serviceID</dt>
     <dd>MUST return the identifier of the messaging service which is enabled or
