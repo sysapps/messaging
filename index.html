@@ -1716,7 +1716,7 @@ if (message.state == 'not-downloaded') {
 <section>
   <h2><a>ReceivedMessage</a> Interface</h2>
   <p>The <a>ReceivedMessage</a> interface represents a system message related to
-  a received message. This event is originated from the system and will wake up
+  a received message. This event is originated from the system and will start
   the application if it is not currently running.
 
   <p>The application that consumes this API SHOULD set a message handler for the
@@ -1737,7 +1737,7 @@ if (message.state == 'not-downloaded') {
   <h2><a>DeliveryReport</a> Interface</h2>
   <p>The <a>DeliveryReport</a> interface represents a system message related to
   a delivery report of a sent message. This event is originated from the system
-  and will wake up the application if it is not currently running. 
+  and will start the application if it is not currently running. 
 
   <p>The application that consumes this API MAY set a message handler for the
   <code>DeliveryReport</code> system message to listen for when a system
