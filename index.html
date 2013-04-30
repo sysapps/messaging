@@ -698,6 +698,10 @@ req.onerror = function(e) {
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
       to the newly created <code>SmsMessage</code> instance.
+      <li><a>Queue a task</a> to fire a system message named
+      <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
+      <code>message</code> attribute set to the newly created
+      <code>SmsMessage</code> instance.
     </ol>
 
   <p>Upon a delivery report of a previously sent SMS message being received, the
@@ -709,6 +713,18 @@ req.onerror = function(e) {
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
+        <ol>
+          <li>the <code>messageID</code> attribute set to the identifier of the
+          <code>SmsMessage</code> to which this confirmation is related,
+          <li>the <code>serviceID</code> attribute set to the identifier of the
+      service used to send such message, and
+          <li>the <code>recipients</code> attribute set to the recipient of such
+          message.
+        </ol>
+      <li><a>Queue a task</a> to fire a system message of type
+      <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
+      <a>deliveryfailure</a> respectively if the delivery was successfull or
+      not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the identifier of the
           <code>SmsMessage</code> to which this confirmation is related,
@@ -1149,6 +1165,10 @@ req.onerror = function(e) {
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
       to the newly created <code>MmsMessage</code> instance.
+      <li><a>Queue a task</a> to fire a system message named
+      <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
+      <code>message</code> attribute set to the newly created
+      <code>MmsMessage</code> instance.
     </ol>
     </ol>    
     
@@ -1223,6 +1243,18 @@ if (message.state == 'not-downloaded') {
           service used to send such message, and
           <li>the <code>recipients</code> attribute set to the subset of the
           original recipients to which this delivery report is related.
+        </ol>
+      <li><a>Queue a task</a> to fire a system message of type
+      <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
+      <a>deliveryfailure</a> respectively if the delivery was successfull or
+      not, with
+        <ol>
+          <li>the <code>messageID</code> attribute set to the identifier of the
+          <code>MmsMessage</code> to which this confirmation is related,
+          <li>the <code>serviceID</code> attribute set to the identifier of the
+      service used to send such message, and
+          <li>the <code>recipients</code> attribute set to the recipient of such
+          message.
         </ol>
     </ol>
 
@@ -1675,6 +1707,58 @@ if (message.state == 'not-downloaded') {
       <br>If this method is called while the cursor is in the process of
       <a>accessing an element</a>, the method MUST throw an
       <code>"InvalidStateError"</code> error as defined in [[!DOM4]].
+    </dd>
+  </dl>
+</section>
+
+
+<!------------------------ Interface ReceivedMessage ------------------------->
+<section>
+  <h2><a>ReceivedMessage</a> Interface</h2>
+  <p>The <a>ReceivedMessage</a> interface represents a system message related to
+  a received message. This event is originated from the system and will wake up
+  the application if it is not currently running.
+
+  <p>The application that consumes this API SHOULD set a message handler for the
+  <code>ReceivedMessage</code> system message to listen for when a system
+  message related to a received message is fired.
+
+  <dl title="interface ReceivedMessage"
+      class="idl">
+    <dt>readonly attribute (SmsMessage or MmsMessage) message</dt>
+    <dd>MUST return the <code>SmsMessage</code> or <code>MmsMessage</code>
+    object to which this system message is related.</dd>
+  </dl>
+</section>
+
+
+<!------------------------ Interface DeliveryReport -------------------------->
+<section>
+  <h2><a>DeliveryReport</a> Interface</h2>
+  <p>The <a>DeliveryReport</a> interface represents a system message related to
+  a delivery report of a sent message. This event is originated from the system
+  and will wake up the application if it is not currently running. 
+
+  <p>The application that consumes this API MAY set a message handler for the
+  <code>DeliveryReport</code> system message to listen for when a system
+  message related to a received delivery report is fired.
+
+  <dl title="interface DeliveryReport"
+      class="idl">
+    <dt>readonly attribute DOMString serviceID</dt>
+    <dd>MUST return the identifier of the service used to send the message to
+    which this delivery report is related.</dd>
+    <dt>readonly attribute DOMString messageID</dt>
+    <dd>MUST return the identifier of the message to which this delivery
+    report is related.</dd>
+    <dt>readonly attribute DOMString[] recipients</dt>
+    <dd>MUST return an array contining the addresses of the subset of the
+    original recipients of the message to which this delivery report is
+    related. As delivery reports related to just part of the recipients of the
+    MMS message are possible, this array may not contain the full list of
+    recipients to which the MMS message was sent. If the delivery report is
+    related to an SMS message then the array will contain a single element
+    corresponding to the single recipient of the SMS message.
     </dd>
   </dl>
 </section>
