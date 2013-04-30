@@ -467,7 +467,7 @@ req.onerror = function(e) {
     identifier of the different services for this type of messaging service
     (e.g. 'sms_sim1').</dd>
 
-    <dt> SmsSegmentInfo getSegmentInfoForText ()</dt>
+    <dt> SmsSegmentInfo segmentInfo ()</dt>
     <dd>This method returns an <code>SmsSegmentInfo</code> object including
     information on the number of concatenated SMS segments needed to send the
     text in the <code>text</code> parameter, the number of characters available
@@ -636,7 +636,7 @@ req.onerror = function(e) {
      </ol>
     </ol>
 
-  <p> The <dfn><code>getSegmentInfoForText</code></dfn> method when invoked MUST
+  <p> The <dfn><code>segmentInfo</code></dfn> method when invoked MUST
   return a <code>SmsSegmentInfo</code> object that contains the following
   elements:
     <ol>
