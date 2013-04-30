@@ -1401,8 +1401,9 @@ function onMessageReceived(message) {
     'Subject' field of the MMS message.</dd>
 
     <dt>readonly attribute DOMString smil</dt>
-    <dd>MUST return the SMIL document, i.e. the presentation element that
-    determines the way the content of the MMS message MUST be displayed.</dd>
+    <dd>MUST return the SMIL, i.e. the presentation element, unparsed as
+    DOMString, that the messaging client needs to use to determine the way the
+    content of the MMS message is displayed.</dd>
 
     <dt>readonly attribute MmsAttachments[]? attachments</dt>
     <dd>MUST return the set of attachments of the MMS message.</dd>
