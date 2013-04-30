@@ -603,7 +603,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
       timestamp when the SMS message reached the Short Message Center, i.e. the
       value of the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter returned in
-      the SMS-SUBMIT-REPORT Protocol Data Unit.
+      the SMS-SUBMIT-REPORT Protocol Data Unit [[!GSM-SMS]].
       <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
       the sent <code>SmsMessage</code> as <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
@@ -652,21 +652,21 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       identifier of the service at which the message has been received.
       <li>Set the <code>from</code> of the <code>SmsMessage</code> to the
       sender of the SMS message, i.e. the value of the TP Originating Address
-      (TP-OA) field of the SMS message.
+      (TP-OA) field of the SMS message [[!GSM-SMS]].
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
       timestamp of the SMS message, i.e. the value of the
       TP-Service-Centre-Time-Stamp (TP-SCTS) parameter received in the SMS
-      DELIVER Protocol Data Unit.
+      DELIVER Protocol Data Unit [[!GSM-SMS]].
       <li>Set the <code>read</code> of the <code>SmsMessage</code> to 'false'.
       <li>Set the <code>to</code> of the <code>SmsMessage</code> to the
       recipient of the SMS message, i.e. the value of the TP Destination
-      Address (TP-DA) field of the SMS message.
+      Address (TP-DA) field of the SMS message [[!GSM-SMS]].
       <li>Set the <code>messageClass</code> of the <code>SmsMessage</code> to
       the message class indicated in the TP-Data-Coding-Scheme (TP-DCS) field of
-      the SMS.
+      the SMS message [[!GSM-SMS]].
       <li>Set the <code>body</code> element to the text of the received SMS
       message, i.e. the value of the SM element contained within the TP User
-      Data (TP-UD) field of the SMS message.
+      Data (TP-UD) field of the SMS message [[!GSM-SMS]].
       <li>Set the <code>state</code> of the <code>SmsMessage</code> to
       'received'.
       <li>Set the <code>deliveryStatus</code> of the <code>SmsMessage</code> to
@@ -1067,18 +1067,19 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to
           the timestamp of the binary SMS message used to transport the MMS
           notification, i.e. the value of the TP-Service-Centre-Time-Stamp
-          (TP-SCTS) parameter received in the SMS-DELIVER Protocol Data Unit.
+          (TP-SCTS) parameter received in the SMS-DELIVER Protocol Data Unit
+          [[!GSM-SMS]].
           <li>Add a new element in the <code>to</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'To' field of the
-          MMS notification, if present.
+          MMS notification [[!MMS13]], if present.
           <li>Add a new element in the <code>cc</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'Cc' field of the
-          MMS notification, if present.
+          MMS notification [[!MMS13]], if present.
           <li>Add a new element in the <code>bcc</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'Bcc' field of the
-          MMS notification, if present.
+          MMS notification [[!MMS13]], if present.
           <li>Set the <code>subject</code> element to the value of the 'Subject'
-          field of the MMS notification, if present.
+          field of the MMS notification [[!MMS13]], if present.
           <li>Set the <code>state</code> of the <code>MmsMessage</code> to
           'not-downloaded'.
         </ol>
@@ -1093,22 +1094,22 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           message enclosed in the M-Retrieve.conf Protocol Data Unit</dfn>.  
           <ol>
               <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
-              value of the 'From' field of the MMS message.
+              value of the 'From' field of the MMS message [[!MMS13]].
               <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to
-              the value of the 'Date' field of the MMS message.
+              the value of the 'Date' field of the MMS message [[!MMS13]].
               <li>Add a new element in the <code>to</code> array of the
               <code>MmsMessage</code> for each of recipients in the 'To' field of the
-              MMS message, if present.
+              MMS message [[!MMS13]], if present.
               <li>Add a new element in the <code>cc</code> array of the
               <code>MmsMessage</code> for each of recipients in the 'Cc' field of the
-              MMS message, if present.
+              MMS message [[!MMS13]], if present.
               <li>Add a new element in the <code>bcc</code> array of the
               <code>MmsMessage</code> for each of recipients in the 'Bcc' field of the
-              MMS message, if present.
+              MMS message [[!MMS13]], if present.
               <li>Set the <code>subject</code> element to the value of the 'Subject'
-              field of the MMS message, if present.
+              field of the MMS message [[!MMS13]], if present.
               <li>Set the <code>smil</code> element to a <code>DOMString</code>
-              containing the SMIL object of the received MMS message, if present.
+              containing the SMIL object of the received MMS message [[!MMS13]], if present.
               <li>For each of the media files attached to the received MMS message add a
               new element to the <code>attachments</code> array with:
               <ol>
@@ -1116,10 +1117,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
                 actual content of the attachment.
                 <li>The <code>contentID</code> attribute filled with the Content-ID used
                 to reference this element from the SMIL object in the incoming MMS
-                message, if present.
+                message [[!MMS13]], if present.
                 <li>The <code>contentLocation</code> attribute filled with the
                 Content-Location used to reference this element from the SMIL object in
-                the incoming MMS message, if present.
+                the incoming MMS message [[!MMS13]], if present.
               </ol>
           </ol>
           <li>Set the <code>state</code> of the <code>MmsMessage</code> to
