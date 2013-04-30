@@ -143,7 +143,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   represents the initial entry point for getting access to the mobile messaging
   services, i.e. SMS and MMS.
   
-  <dl title="[NoInterfaceObject] interface MessagingManager" class="idl">
+  <dl title="interface MessagingManager" class="idl">
 
     <dt>readonly attribute SmsManager sms</dt> <dd>Provides access to the
     SMS service's specific functionality.</dd>
@@ -436,7 +436,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p>The <a>SmsManager</a> interface represents the SMS messaging service
   manager.
   
-  <dl title="[NoInterfaceObject] interface SmsManager : EventTarget"
+  <dl title="interface SmsManager : EventTarget"
   class="idl">
 
     <dt>readonly attribute MessageType type</dt> <dd>MUST return the type of the
@@ -447,7 +447,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     identifier of the different services for this type of messaging service
     (e.g. 'sms_sim1').</dd>
 
-    <dt> SmsSegmentInfo getSegmentInfoForText ()</dt>
+    <dt> SmsSegmentInfo segmentInfo ()</dt>
     <dd>This method returns an <code>SmsSegmentInfo</code> object including
     information on the number of concatenated SMS segments needed to send the
     text in the <code>text</code> parameter, the number of characters available
@@ -608,7 +608,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     </ol>
    </ol>
 
-  <p> The <dfn><code>getSegmentInfoForText</code></dfn> method when invoked MUST
+  <p> The <dfn><code>segmentInfo</code></dfn> method when invoked MUST
   return a <code>SmsSegmentInfo</code> object that contains the following
   elements:
     <ol>
@@ -793,23 +793,23 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 
 <!------------------------ Interface SmsSegmentInfo -------------------------->
 <section>
-  <h2><a>SmsSegmentInfo</a> Interface</h2>
-  <p>The <a>SmsSegmentInfo</a> interface contains information about the
+  <h2><a>SmsSegmentInfo</a> Dictionary</h2>
+  <p>The <a>SmsSegmentInfo</a> dictionary contains information about the
   segmentation of a given text to be sent as SMS.
-  <dl title="[NoInterfaceObject] interface SmsSegmentInfo"
+  <dl title="dictionary SmsSegmentInfo"
       class="idl">
-    <dt>readonly attribute long segments</dt>
+    <dt>long segments</dt>
     <dd>MUST return the total number of SMS segments needed to send the input
     string, taking into account the encoding to be used to send such message as
     well as the overhead associated to concatenated SMS messages.</dd>
 
-    <dt>readonly attribute long charsPerSegment</dt>
+    <dt>long charsPerSegment</dt>
     <dd>MUST return the number of characters available per SMS segment as per
     the encoding to be used to send the SMS message. In case the variable length
      encoding, the value of this element MUST be calculated asumming the minimum
      length for all the characters.</dd>
 
-    <dt>readonly attribute long charsAvailableInLastSegment</dt>
+    <dt>long charsAvailableInLastSegment</dt>
     <dd>MUST return the maximum number of available characters in the last
     segment needed to send the input string. In case the variable length
     encoding, the value of this element MUST be calculated asumming the minimum
@@ -825,7 +825,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p>The <a>MmsManager</a> interface represents the MMS messaging service
   manager.
   
-  <dl title="[NoInterfaceObject] interface MmsManager : EventTarget"
+  <dl title="interface MmsManager : EventTarget"
   class="idl">
 
     <dt>readonly attribute MessageType type</dt> <dd>MUST return the type of the
@@ -1308,7 +1308,7 @@ function onMessageReceived(message) {
   <p>The <a>SmsMessage</a> interface represents an SMS message as defined in
   [[!GSM-SMS]]. This interface is not intended to represent binary SMS, which
   are out of the scope of this API.
-  <dl title="[NoInterfaceObject] interface SmsMessage"
+  <dl title="interface SmsMessage"
       class="idl">
     <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
@@ -1348,11 +1348,9 @@ function onMessageReceived(message) {
     <dd>MUST return the delivery status of the SMS message.
     </dd>
 
-   <dt>readonly attribute DOMString messageClass</dt>
-    <dd>MUST return the SMS message class, with possible values: 'class-0',
-    'class-1', 'class-2', 'class-3' or 'normal' (same as 'class-1'), according
-    to the value indicated in the TP-Data-Coding-Scheme (TP-DCS) field of the
-    SMS.</dd>
+   <dt>readonly attribute MessageClass messageClass</dt>
+    <dd>MUST return the SMS message class, according to the value indicated in
+    the TP-Data-Coding-Scheme (TP-DCS) field of the SMS.</dd>
 
   </dl>
 </section>
@@ -1362,7 +1360,7 @@ function onMessageReceived(message) {
   <h2><a>MmsMessage</a> Interface</h2>
   <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in 
   [[!MMS13]].
-  <dl title="[NoInterfaceObject] interface MmsMessage"
+  <dl title="interface MmsMessage"
       class="idl">
     <dt>readonly attribute DOMString messageID</dt>
     <dd>MUST return the identifier of the message.</dd>
@@ -1425,33 +1423,33 @@ function onMessageReceived(message) {
 <section>
   <h2><a>MmsContent</a> Dictionary</h2>
   <dl title="dictionary MmsContent" class="idl">
-    <dt>optional attribute DOMString subject</dt>
+    <dt>DOMString subject</dt>
     <dd>Indicates the subject of the MMS message, corresponding to the
     'Subject' field of the MMS message.</dd>
 
-    <dt>optional DOMString[] to</dt>
+    <dt>DOMString[] to</dt>
     <dd>Indicates the recipient(s) included in the 'To' field of the MMS
     message.
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional DOMString[] cc</dt>
+    <dt>DOMString[] cc</dt>
     <dd>Indicates the recipient(s) included in the 'Cc' field of the MMS
     message.
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional DOMString[] bcc</dt>
+    <dt>DOMString[] bcc</dt>
     <dd>Indicates the recipient(s) included in the 'Bcc' field of the MMS
     message. 
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional DOMString smil</dt>
+    <dt>DOMString smil</dt>
     <dd>Contains the SMIL component, i.e. the presentation element that
     determines the way the content of the MMS message MUST be displayed.</dd>
 
-    <dt>optional MmsAttachment[] attachments</dt>
+    <dt>MmsAttachment[] attachments</dt>
     <dd>Contains the set of attachments of the MMS message.</dd>
   </dl>    
 </section>
@@ -1461,14 +1459,14 @@ function onMessageReceived(message) {
 <section>
   <h2><a>MmsAttachment</a> Dictionary</h2>
   <dl title="dictionary MmsAttachment" class="idl">
-    <dt>optional DOMString contentID</dt>
+    <dt>DOMString contentID</dt>
     <dd>
     The Content-ID parameter that MAY be used to refer to the attachment from
     the SMIL presentation object as described in [[!MMS13]] and [[!MIME-ENC]].
     At least one of contentID and contentLocation MUST be specified if the
     MMS Message contains an SMIL presentation object. 
     </dd>
-    <dt>optional DOMString contentLocation</dt>
+    <dt>DOMString contentLocation</dt>
     <dd>
     The Content-Location parameter that MAY be used to refer to the attachment
     from the SMIL presentation object as described in [[!MMS13]] and
@@ -1491,7 +1489,7 @@ function onMessageReceived(message) {
   <p>The <a>Conversation</a> interface represents a set of messages that are
   grouped together either because they are exchanged among the same set of
   participants or because they have the same subject.
-  <dl title="[NoInterfaceObject] interface Conversation"
+  <dl title="interface Conversation"
       class="idl">
     <dt>readonly attribute DOMString conversationID</dt>
     <dd>MUST return the identifier of the conversation, which is globally unique
@@ -1551,7 +1549,7 @@ function onMessageReceived(message) {
   retrieved, the <a>associated request</a>'s <code>readyState</code> must be set
   to 'done' and the <code>result</code> must point to the cursor. If no element
   was found, the cursor's <code>element</code> property must return null.</p>
-  <dl title="[NoInterfaceObject] interface MessagingCursor"
+  <dl title="interface MessagingCursor"
       class="idl">
     <dt>readonly attribute any? element</dt>
     <dd>
@@ -1636,7 +1634,7 @@ function onMessageReceived(message) {
   <h2><a>MessagingEvent</a> Interface</h2>
   <p>The <a>MessagingEvent</a> interface represents events related to a message
   sent or received.
-  <dl title="[NoInterfaceObject] interface MessagingEvent : ProgressEvent"
+  <dl title="interface MessagingEvent : ProgressEvent"
       class="idl">
     <dt>readonly attribute (SmsMessage or MmsMessage) message</dt>
     <dd>MUST return the <code>SmsMessage</code> or <code>MmsMessage</code>
@@ -1650,7 +1648,7 @@ function onMessageReceived(message) {
   <h2><a>DeliveryReportEvent</a> Interface</h2>
   <p>The <a>DeliveryReportEvent</a> interface represents events related
   to a delivery report of a sent message.
-  <dl title="[NoInterfaceObject] interface DeliveryReportEvent : Event"
+  <dl title="interface DeliveryReportEvent : Event"
       class="idl">
     <dt>readonly attribute DOMString serviceID</dt>
     <dd>MUST return the identifier of the service used to send the message to
@@ -1676,7 +1674,7 @@ function onMessageReceived(message) {
   <h2><a>ServiceChangeEvent</a> Interface</h2>
   <p>The <a>ServiceChangeEvent</a> interface represents events related to
   messaging services enabled or disabled.
-  <dl title="[NoInterfaceObject] interface ServiceChangeEvent : Event"
+  <dl title="interface ServiceChangeEvent : Event"
       class="idl">
     <dt>readonly attribute DOMString serviceID</dt>
     <dd>MUST return the identifier of the messaging service which is enabled or
@@ -1738,7 +1736,7 @@ function onMessageReceived(message) {
     <dt>DOMString sortBy</dt>
     <dd>Indicates the attribute on which the filtered messages are sorted.</dd>
 
-    <dt>optional DOMString sortOrder</dt>
+    <dt>DOMString sortOrder</dt>
     <dd>Indicates the order on which the filtered messages are sorted with
     possible values 'ascending' and 'descending'.</dd>
 
@@ -1838,6 +1836,34 @@ function onMessageReceived(message) {
           </dd>
     </dl>
 
+    <p>The attibute <code>messageClass</code> in an <code>SmsMessage</code> can have
+    the following values:
+    <dl class="idl" title="enum MessageClass">
+          <dt>class-0</dt>
+          <dd>
+              The message is of class 0.
+          </dd>
+
+          <dt>class-1</dt>
+          <dd>
+              The message is of class 1.
+          </dd>
+
+          <dt>class-2</dt>
+          <dd>
+              The message is of class 2.
+          </dd>
+
+          <dt>class-3</dt>
+          <dd>
+              The message is of class 3.
+          </dd>
+
+          <dt>normal</dt>
+          <dd>
+              The message is of class 1 (same as 'class-1').
+          </dd>
+    </dl>
     <p>The attibute <code>state</code> in an <code>SmsMessage</code> can have
     the following values:
     <dl class="idl" title="enum SmsState">
