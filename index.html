@@ -1447,11 +1447,9 @@ if (message.state == 'not-downloaded') {
     <dd>MUST return the delivery status of the SMS message.
     </dd>
 
-   <dt>readonly attribute DOMString messageClass</dt>
-    <dd>MUST return the SMS message class, with possible values: 'class-0',
-    'class-1', 'class-2', 'class-3' or 'normal' (same as 'class-1'), according
-    to the value indicated in the TP-Data-Coding-Scheme (TP-DCS) field of the
-    SMS.</dd>
+   <dt>readonly attribute MessageClass messageClass</dt>
+    <dd>MUST return the SMS message class, according to the value indicated in
+    the TP-Data-Coding-Scheme (TP-DCS) field of the SMS.</dd>
 
   </dl>
 </section>
@@ -1887,6 +1885,34 @@ if (message.state == 'not-downloaded') {
           </dd>
     </dl>
 
+    <p>The attibute <code>messageClass</code> in an <code>SmsMessage</code> can have
+    the following values:
+    <dl class="idl" title="enum MessageClass">
+          <dt>class-0</dt>
+          <dd>
+              The message is of class 0.
+          </dd>
+
+          <dt>class-1</dt>
+          <dd>
+              The message is of class 1.
+          </dd>
+
+          <dt>class-2</dt>
+          <dd>
+              The message is of class 2.
+          </dd>
+
+          <dt>class-3</dt>
+          <dd>
+              The message is of class 3.
+          </dd>
+
+          <dt>normal</dt>
+          <dd>
+              The message is of class 1 (same as 'class-1').
+          </dd>
+    </dl>
     <p>The attibute <code>state</code> in an <code>SmsMessage</code> can have
     the following values:
     <dl class="idl" title="enum SmsState">
