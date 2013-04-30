@@ -807,23 +807,23 @@ req.onerror = function(e) {
 
 <!------------------------ Interface SmsSegmentInfo -------------------------->
 <section>
-  <h2><a>SmsSegmentInfo</a> Interface</h2>
-  <p>The <a>SmsSegmentInfo</a> interface contains information about the
+  <h2><a>SmsSegmentInfo</a> Dictionary</h2>
+  <p>The <a>SmsSegmentInfo</a> dictionary contains information about the
   segmentation of a given text to be sent as SMS.
-  <dl title="[NoInterfaceObject] interface SmsSegmentInfo"
+  <dl title="[NoInterfaceObject] dictionary SmsSegmentInfo"
       class="idl">
-    <dt>readonly attribute long segments</dt>
+    <dt>long segments</dt>
     <dd>MUST return the total number of SMS segments needed to send the input
     string, taking into account the encoding to be used to send such message as
     well as the overhead associated to concatenated SMS messages.</dd>
 
-    <dt>readonly attribute long charsPerSegment</dt>
+    <dt>long charsPerSegment</dt>
     <dd>MUST return the number of characters available per SMS segment as per
     the encoding to be used to send the SMS message. In case the variable length
      encoding, the value of this element MUST be calculated asumming the minimum
      length for all the characters.</dd>
 
-    <dt>readonly attribute long charsAvailableInLastSegment</dt>
+    <dt>long charsAvailableInLastSegment</dt>
     <dd>MUST return the maximum number of available characters in the last
     segment needed to send the input string. In case the variable length
     encoding, the value of this element MUST be calculated asumming the minimum
