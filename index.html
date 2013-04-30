@@ -1524,33 +1524,33 @@ if (message.state == 'not-downloaded') {
 <section>
   <h2><a>MmsContent</a> Dictionary</h2>
   <dl title="dictionary MmsContent" class="idl">
-    <dt>optional attribute DOMString subject</dt>
+    <dt>DOMString subject</dt>
     <dd>Indicates the subject of the MMS message, corresponding to the
     'Subject' field of the MMS message.</dd>
 
-    <dt>optional DOMString[] to</dt>
+    <dt>DOMString[] to</dt>
     <dd>Indicates the recipient(s) included in the 'To' field of the MMS
     message.
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional DOMString[] cc</dt>
+    <dt>DOMString[] cc</dt>
     <dd>Indicates the recipient(s) included in the 'Cc' field of the MMS
     message.
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional DOMString[] bcc</dt>
+    <dt>DOMString[] bcc</dt>
     <dd>Indicates the recipient(s) included in the 'Bcc' field of the MMS
     message. 
     There MUST be at least one recipient in any of the <code>to</code>,
     <code>cc</code> or <code>bcc</code> attributes.</dd>
 
-    <dt>optional DOMString smil</dt>
+    <dt>DOMString smil</dt>
     <dd>Contains the SMIL component, i.e. the presentation element that
     determines the way the content of the MMS message MUST be displayed.</dd>
 
-    <dt>optional MmsAttachment[] attachments</dt>
+    <dt>MmsAttachment[] attachments</dt>
     <dd>Contains the set of attachments of the MMS message.</dd>
   </dl>    
 </section>
@@ -1560,14 +1560,14 @@ if (message.state == 'not-downloaded') {
 <section>
   <h2><a>MmsAttachment</a> Dictionary</h2>
   <dl title="dictionary MmsAttachment" class="idl">
-    <dt>optional DOMString contentID</dt>
+    <dt>DOMString contentID</dt>
     <dd>
     The Content-ID parameter that MAY be used to refer to the attachment from
     the SMIL presentation object as described in [[!MMS13]] and [[!MIME-ENC]].
     At least one of contentID and contentLocation MUST be specified if the
     MMS Message contains an SMIL presentation object. 
     </dd>
-    <dt>optional DOMString contentLocation</dt>
+    <dt>DOMString contentLocation</dt>
     <dd>
     The Content-Location parameter that MAY be used to refer to the attachment
     from the SMIL presentation object as described in [[!MMS13]] and
@@ -1787,7 +1787,7 @@ if (message.state == 'not-downloaded') {
     <dt>DOMString sortBy</dt>
     <dd>Indicates the attribute on which the filtered messages are sorted.</dd>
 
-    <dt>optional DOMString sortOrder</dt>
+    <dt>DOMString sortOrder</dt>
     <dd>Indicates the order on which the filtered messages are sorted with
     possible values 'ascending' and 'descending'.</dd>
 
