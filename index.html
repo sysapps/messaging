@@ -1404,8 +1404,8 @@ function onMessageReceived(message) {
 
     <dt>readonly attribute unsigned long? expiry</dt>
     <dd>MUST return the number of seconds the message will be stored in the
-    Multimedia Messaging Service Center available for download since the date of
-    submission of the MMS Notification.</dd>
+    Multimedia Messaging Service Center and thus available for download. This
+    time is calculated since the date the MMS Notification was sent.</dd>
 
     <dt>readonly attribute boolean read</dt>
     <dd>MUST return 'true' if the message has been marked as read, or 'false'
