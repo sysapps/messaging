@@ -616,9 +616,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <ol>
       <li>Set the <code>state</code> of the <code>SmsMessage</code> to 'sent'.
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
-      timestamp when the SMS message reached the Short Message Center, i.e. the
-      value of the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter returned in
-      the SMS-SUBMIT-REPORT Protocol Data Unit [[!GSM-SMS]].
+      device's date when the SMS message was sent, i.e. when the SMS-SUBMIT
+      Protocol Data Unit was sent.
       <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
       the sent <code>SmsMessage</code> as <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
@@ -1043,8 +1042,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <ol>
       <li>Set the <code>state</code> of the <code>MmsMessage</code> to 'sent'.
       <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to the
-      timestamp when the MMS message was sent, i.e. the date when the M-Send.req
-      Protocol Data Unit was send from the MMS Client to the MMS Server.
+      device's date when the MMS message was sent, i.e. the date when the
+      M-Send.req Protocol Data Unit was sent by the MMS Client.
       <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
       the sent <code>MmsMessage</code> as <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named
@@ -1347,9 +1346,11 @@ function onMessageReceived(message) {
     (TP-OA) of the SMS message.</dd>
 
     <dt>readonly attribute Date timestamp</dt>
-    <dd>MUST return the time the message reached the Short Message Center,
-    indicated in the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter of the SMS
-    message.</dd>
+    <dd>MUST return, for received messages the time the message reached the
+    Short Message Center, indicated in the TP-Service-Centre-Time-Stamp
+    (TP-SCTS) parameter of the SMS message, and for sent messages the the
+    device's date when the SMS message was sent, i.e. when the SMS-SUBMIT
+    Protocol Data Unit was sent.</dd>
 
     <dt>readonly attribute boolean read</dt>
     <dd>MUST return 'true' if the message has been marked as read, or 'false'
@@ -1399,8 +1400,12 @@ function onMessageReceived(message) {
     message.</dd>
 
     <dt>readonly attribute Date timestamp</dt>
-    <dd>MUST return the time the message was sent at, i.e. the 'Date' field of
-    the MMS message.</dd>
+    <dd>MUST return, for received messages the time the message reached the
+    Multimedia Messaging Service Center, i.e. the 'Date' field of the MMS
+    message, for received but not downloaded messages the timestamp of the
+    binary SMS message used to transport the MMS notification and for sent
+    messages the device's date when the MMS message was sent, i.e. the date when
+    the M-Send.req Protocol Data Unit was sent by the MMS Client.</dd>
 
     <dt>readonly attribute unsigned long? expiry</dt>
     <dd>MUST return the number of seconds the message will be stored in the
