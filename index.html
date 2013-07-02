@@ -579,7 +579,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>serviceID</code> of the <code>SmsMessage</code> to the
       identifier of the service used to send the message, i.e. the one passed in
       the <code>serviceID</code> parameter, if provided, or otherwise to the
-      first element in the <code>serviceIDs</code> attribute of the
+      first item in the <code>serviceIDs</code> attribute of the
       <code>SmsManager</code>.
       <li>Set the <code>from</code> of the <code>SmsMessage</code> to the
       number of the mobile subscription used to send this SMS message.
@@ -634,7 +634,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      SMS segments needed to send the text passed in the <code>text</code>
      parameter using the service with identifier equal to the one passed in the
      <code>serviceID</code> parameter, if provided, or otherwise to the first
-     element in the <code>serviceIDs</code> attribute of the
+     item in the <code>serviceIDs</code> attribute of the
      <code>SmsManager</code>. Note that the application SHOULD NOT split the
      text in a set of strings that fit each into a single SMS segment as it
      would result in different independent SMS messages being sent, but SHOULD
@@ -857,7 +857,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     <dt>FetchMode getFetchMode ()</dt>
     <dd>This method requests to retrieve the fetch mode associated to a specific
     service (the one identified by the <code>serviceID</code> attribute, if
-    provided, or the first element in the <code>serviceIDs</code> attribute of
+    provided, or the first item in the <code>serviceIDs</code> attribute of
     the <code>MmsManager</code> otherwise).
     <dl class='parameters'>
          <dt>optional DOMString serviceID</dt>
@@ -995,7 +995,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>serviceID</code> of the <code>MmsMessage</code> to the
       identifier of the service used to send the message, i.e. the one passed in
       the <code>serviceID</code> parameter, if provided, or otherwise to the
-      first element in the <code>serviceIDs</code> attribute of the
+      first item in the <code>serviceIDs</code> attribute of the
       <code>MmsManager</code>.
       <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
       number of the mobile subscription used to send this MMS message.
@@ -1015,11 +1015,14 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       parameter.
       <li>Set the <code>state</code> of the <code>MmsMessage</code> to
       'sending'.
-      <li>Add a new element in the <code>deliveryStatus</code> array of the
-      <code>MmsMessage</code> for each of the addresses included in the
-      <code>to</code>, <code>cc</code> and <code>bcc</code> parameters, with
-      value 'pending' if a delivery report has been requested or with value
-      'not-applicable' otherwise.
+      <li>Add a new item in the <code>deliveryStatusArray</code> of the
+      <code>MmsMessage</code> for each unique recipient included in the
+      <code>to</code>, <code>cc</code> and <code>bcc</code> parameters (i.e. a
+      single item if the same address has multiple ocurrences across these
+      parameters), with the <code>recipient</code> attribute set to this
+      recipient's address and the <code>deliveryStatus</code> attribute set to
+      'pending', if a delivery report has been requested, or 'not-applicable'
+      otherwise.
       <li>Make a request to the system to send an MMS message with the content
       passed in the <code>content</code> parameter to the number(s) of indicated
       in the <code>to</code> parameter, using the proper service as described
@@ -1032,9 +1035,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>If an <var>error</var> occurs run these substeps and terminate these
      steps
       <ol>
-        <li>If a delivery report had been requested set the different elements
-        in the <code>deliveryStatus</code> array of the <code>MmsMessage</code>
-        to 'error'.
+        <li>If a delivery report had been requested set the
+        <code>deliveryStatus</code> attribute of the different items in the
+        <code>deliveryStatusArray</code> attribute of the
+        <code>MmsMessage</code> to 'error'.
         <li>call <var>resolver</var>'s <code>reject(value)</code>method with
         <var>error</var> as <code>value</code> argument.
      </ol>
@@ -1085,16 +1089,16 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           [[!GSM-SMS]].
           <li>Set the <code>expiry</code> of the <code>MmsMessage</code> to the
           value of the 'X-Mms-Expiry' field of the MMS notification.
-          <li>Add a new element in the <code>to</code> array of the
+          <li>Add a new item in the <code>to</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'To' field of the
           MMS notification [[!MMS13]], if present.
-          <li>Add a new element in the <code>cc</code> array of the
+          <li>Add a new item in the <code>cc</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'Cc' field of the
           MMS notification [[!MMS13]], if present.
-          <li>Add a new element in the <code>bcc</code> array of the
+          <li>Add a new item in the <code>bcc</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'Bcc' field of the
           MMS notification [[!MMS13]], if present.
-          <li>Set the <code>subject</code> element to the value of the 'Subject'
+          <li>Set the <code>subject</code> attribute to the value of the 'Subject'
           field of the MMS notification [[!MMS13]], if present.
           <li>Set the <code>state</code> of the <code>MmsMessage</code> to
           'not-downloaded'.
@@ -1113,37 +1117,40 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
               value of the 'From' field of the MMS message [[!MMS13]].
               <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to
               the value of the 'Date' field of the MMS message [[!MMS13]].
-              <li>Add a new element in the <code>to</code> array of the
+              <li>Add a new item in the <code>to</code> array of the
               <code>MmsMessage</code> for each of recipients in the 'To' field of the
               MMS message [[!MMS13]], if present.
-              <li>Add a new element in the <code>cc</code> array of the
+              <li>Add a new item in the <code>cc</code> array of the
               <code>MmsMessage</code> for each of recipients in the 'Cc' field of the
               MMS message [[!MMS13]], if present.
-              <li>Add a new element in the <code>bcc</code> array of the
+              <li>Add a new item in the <code>bcc</code> array of the
               <code>MmsMessage</code> for each of recipients in the 'Bcc' field of the
               MMS message [[!MMS13]], if present.
-              <li>Set the <code>subject</code> element to the value of the 'Subject'
+              <li>Set the <code>subject</code> attribute to the value of the 'Subject'
               field of the MMS message [[!MMS13]], if present.
-              <li>Set the <code>smil</code> element to a <code>DOMString</code>
+              <li>Set the <code>smil</code> attribute to a <code>DOMString</code>
               containing the SMIL object of the received MMS message [[!MMS13]], if present.
               <li>For each of the media files attached to the received MMS message add a
-              new element to the <code>attachments</code> array with:
+              new item to the <code>attachments</code> array with:
               <ol>
                 <li>A new <code>Blob</code> object including the media type and the
                 actual content of the attachment.
                 <li>The <code>contentID</code> attribute filled with the Content-ID used
-                to reference this element from the SMIL object in the incoming MMS
+                to reference this attachment from the SMIL object in the incoming MMS
                 message [[!MMS13]], if present.
                 <li>The <code>contentLocation</code> attribute filled with the
-                Content-Location used to reference this element from the SMIL object in
+                Content-Location used to reference this attachment from the SMIL object in
                 the incoming MMS message [[!MMS13]], if present.
               </ol>
           </ol>
           <li>Set the <code>state</code> of the <code>MmsMessage</code> to
           'received'.
-          <li>Add a new element in the <code>deliveryStatus</code> array of the
-          <code>MmsMessage</code> for each of recipients in the 'To', 'Cc' and 'Bcc'
-          fields with value 'not-applicable'.
+          <li>Add a new item in the <code>deliveryStatusArray</code> of the
+          <code>MmsMessage</code> for each unique recipient included in the
+          'To', 'Cc' and 'Bcc' fields (i.e. a single item if the same address
+          has multiple ocurrences across these parameters), with the
+          <code>recipient</code> attribute set to this recipient's address and
+          the <code>deliveryStatus</code> attribute set to 'not-applicable'.
         </ol>
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
@@ -1210,10 +1217,16 @@ function onMessageReceived(message) {
   <p>Upon a delivery report of a previously sent MMS message being received, the
   <a>user agent</a> MUST
     <ol>
-      <li>Set the elements of the <code>deliveryStatus</code> array of the
-      <code>MmsMessage</code> corresponding to the recipients to which the
-      delivery report refers to 'success' or 'error' depending on the reported
-      result.
+      <li>For each of the items in the <code>deliveryStatusArray</code>
+      attribute of the <code>MmsMessage</code> whose <code>recipient</code>
+      attribute matches one of the recipients of the MMS to which the delivery
+      report is related, set its <code>deliveryStatus</code> attribute 
+        <ol>
+          <li>to 'success', if the value of the X-Mms-Status element [[!MMS13]]
+          in the delivery report is 'Retrieved', or
+          <li>to 'error', if the value of the X-Mms-Status element [[!MMS13]] in
+          the delivery report is 'Expired', 'Rejected' or 'Unreachable'
+        </ol>
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
@@ -1437,17 +1450,15 @@ function onMessageReceived(message) {
     DOMString, that the messaging client needs to use to determine the way the
     content of the MMS message is displayed.</dd>
 
-    <dt>readonly attribute MmsAttachments[]? attachments</dt>
+    <dt>readonly attribute MmsAttachment[]? attachments</dt>
     <dd>MUST return the set of attachments of the MMS message.</dd>
 
     <dt>readonly attribute MmsState state</dt>
     <dd>MUST return the status of the MMS message.</dd>
 
-    <dt>readonly attribute DeliveryStatus[] deliveryStatus</dt>
-    <dd>MUST return an array with each of the elements indicating the delivery
-    status to each of the recipients of the message, in order starting with the
-    recipients in the 'To' field, followed by those in 'Cc' and ending with
-    those in 'Bcc'.</dd>
+    <dt>readonly attribute MmsDeliveryStatus[] deliveryStatusArray</dt>
+    <dd>MUST return an array with each of the items indicating the delivery
+    status to each of the recipients of the message.</dd>
 
   </dl>
 </section>
@@ -1516,6 +1527,21 @@ function onMessageReceived(message) {
   </dl>    
 </section>
     
+<!------------------------ Dictionary MmsDeliveryStatus -------------------->
+<section>
+  <h2><a>MmsDeliveryStatus</a> Dictionary</h2>
+  <dl title="dictionary MmsDeliveryStatus" class="idl">
+    <dt>DeliveryStatus deliveryStatus</dt>
+    <dd>
+    The delivery status of the MMS message
+    </dd>
+    <dt>DOMString recipient</dt>
+    <dd>
+    The recipient of the MMS to which the delivery status is related.
+    </dd>
+  </dl>    
+</section>
+    
 <!------------------------ Interface Conversation ---------------------------->
 <section>
   <h2><a>Conversation</a> Interface</h2>
@@ -1538,7 +1564,7 @@ function onMessageReceived(message) {
     <dt>readonly attribute DOMString[] participants</dt>
     <dd>MUST return an array containing the participants in the conversation. In
     case the conversation is of type 'subject' and there are messages in the
-    conversation with a different set of participants then this element MUST
+    conversation with a different set of participants then this attribute MUST
     return the union of the participants of all the messages in the
     conversation.</dd>
 
@@ -1655,7 +1681,7 @@ function onMessageReceived(message) {
     related. As delivery reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
     recipients to which the MMS message was sent. If the delivery report is
-    related to an SMS message then the array will contain a single element
+    related to an SMS message then the array will contain a single item
     corresponding to the single recipient of the SMS message.
     </dd>
   </dl>
@@ -1695,7 +1721,7 @@ function onMessageReceived(message) {
     related. As delivery reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
     recipients to which the MMS message was sent. If the delivery report is
-    related to an SMS message then the array will contain a single element
+    related to an SMS message then the array will contain a single item
     corresponding to the single recipient of the SMS message.
     </dd>
   </dl>
