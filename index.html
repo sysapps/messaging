@@ -1133,8 +1133,12 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
               <li>For each of the media files attached to the received MMS message add a
               new item to the <code>attachments</code> array with:
               <ol>
-                <li>A new <code>Blob</code> object including the media type and the
-                actual content of the attachment.
+                <li>A new <code>Blob</code> object including the actual content
+                of the attachment, the media type and the encoding. The encoding
+                is indicated in the <code>type</code> attribute of the
+                <code>Blob</code> object by means of appending a
+                <code>charset</code> parameter after the media type as
+                explained in [[!HTTP11]], e.g. "text/plain; charset=utf-8".
                 <li>The <code>contentID</code> attribute filled with the Content-ID used
                 to reference this attachment from the SMIL object in the incoming MMS
                 message [[!MMS13]], if present.
@@ -1521,8 +1525,7 @@ function onMessageReceived(message) {
     </dd>
     <dt>Blob content</dt>
     <dd>
-    The Blob object containing the media type and the binary content of the
-    attachment.
+    The Blob object containing the media type and the content of the attachment.
     </dd>
   </dl>    
 </section>
