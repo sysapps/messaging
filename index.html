@@ -1169,8 +1169,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     <ol>
      <li>If the <code>messageID</code> parameter passed in the request matches
      with an MMS message that has already been fetched, or to an SMS message go
-     to next step, otherwise make a request to the system to fetch the MMS
-     message.
+     to next step, otherwise set the <code>state</code> of the
+     <code>MmsMessage</code> to 'fetching' and make a request to the system to
+     fetch the MMS message.
      <li>Let <var>future</var> be a new <code>Future</code> object and
      <var>resolver</var> its associated <code>resolver</code>
      <li>Return <var>future</var> to the caller.
@@ -1885,10 +1886,17 @@ function onMessageReceived(message) {
     <dl class="idl" title="enum MmsState">
           <dt>not-downloaded</dt>
           <dd>
-              The message is an inbound message, for which an MMS mnotification
+              The message is an inbound message, for which an MMS notification
               has been received but that has not yet been downloaded.
           </dd>
 
+          <dt>fetching</dt>
+          <dd>
+              The message is an inbound message, for which an MMS notification
+              has been received and the message is in the process of being
+              downloaded.
+          </dd>
+          
           <dt>received</dt>
           <dd>
               The message is an inbound message.
