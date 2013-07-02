@@ -616,9 +616,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <ol>
       <li>Set the <code>state</code> of the <code>SmsMessage</code> to 'sent'.
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
-      timestamp when the SMS message reached the Short Message Center, i.e. the
-      value of the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter returned in
-      the SMS-SUBMIT-REPORT Protocol Data Unit [[!GSM-SMS]].
+      device's date when the SMS message was sent, i.e. when the SMS-SUBMIT
+      Protocol Data Unit was sent.
       <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
       the sent <code>SmsMessage</code> as <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
@@ -1047,8 +1046,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <ol>
       <li>Set the <code>state</code> of the <code>MmsMessage</code> to 'sent'.
       <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to the
-      timestamp when the MMS message was sent, i.e. the date when the M-Send.req
-      Protocol Data Unit was send from the MMS Client to the MMS Server.
+      device's date when the MMS message was sent, i.e. the date when the
+      M-Send.req Protocol Data Unit was sent by the MMS Client.
       <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
       the sent <code>MmsMessage</code> as <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named
@@ -1088,6 +1087,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           notification, i.e. the value of the TP-Service-Centre-Time-Stamp
           (TP-SCTS) parameter received in the SMS-DELIVER Protocol Data Unit
           [[!GSM-SMS]].
+          <li>Set the <code>expiry</code> of the <code>MmsMessage</code> to the
+          value of the 'X-Mms-Expiry' field of the MMS notification.
           <li>Add a new item in the <code>to</code> array of the
           <code>MmsMessage</code> for each of recipients in the 'To' field of the
           MMS notification [[!MMS13]], if present.
@@ -1358,9 +1359,11 @@ function onMessageReceived(message) {
     (TP-OA) of the SMS message.</dd>
 
     <dt>readonly attribute Date timestamp</dt>
-    <dd>MUST return the time the message reached the Short Message Center,
-    indicated in the TP-Service-Centre-Time-Stamp (TP-SCTS) parameter of the SMS
-    message.</dd>
+    <dd>MUST return, for received messages the time the message reached the
+    Short Message Center, indicated in the TP-Service-Centre-Time-Stamp
+    (TP-SCTS) parameter of the SMS message, and for sent messages the the
+    device's date when the SMS message was sent, i.e. when the SMS-SUBMIT
+    Protocol Data Unit was sent.</dd>
 
     <dt>readonly attribute boolean read</dt>
     <dd>MUST return 'true' if the message has been marked as read, or 'false'
@@ -1410,8 +1413,17 @@ function onMessageReceived(message) {
     message.</dd>
 
     <dt>readonly attribute Date timestamp</dt>
-    <dd>MUST return the time the message was sent at, i.e. the 'Date' field of
-    the MMS message.</dd>
+    <dd>MUST return, for received messages the time the message reached the
+    Multimedia Messaging Service Center, i.e. the 'Date' field of the MMS
+    message, for received but not downloaded messages the timestamp of the
+    binary SMS message used to transport the MMS notification and for sent
+    messages the device's date when the MMS message was sent, i.e. the date when
+    the M-Send.req Protocol Data Unit was sent by the MMS Client.</dd>
+
+    <dt>readonly attribute unsigned long? expiry</dt>
+    <dd>MUST return the number of seconds the message will be stored in the
+    Multimedia Messaging Service Center and thus available for download. This
+    time is calculated since the date the MMS Notification was sent.</dd>
 
     <dt>readonly attribute boolean read</dt>
     <dd>MUST return 'true' if the message has been marked as read, or 'false'
@@ -1792,78 +1804,6 @@ function onMessageReceived(message) {
     result of applying the corresponding filter.</dd>
 
   </dl>    
-</section>
-
-<!--
-  <p class="issue">
-  It needs to be discussed whether to just allow using the above
-  messaging-specific MessagingFilter or otherwise to allow defining filters with
-  a generic syntax (as defined in the following sections) and reflect in this
-  specification on which attributes the implementation is required to filter in
-  an efficient manner (e.g. creating the corresponding indexes).
-  </p>
-
-<!------------------------ Interface CompositeFilter ------------------------->
-<!--section>
-  <h2><a>CompositeFilter</a> Interface</h2>
-  <p>The <a>CompositeFilter</a> interface represents a filter that is the result
-  of combining several filters with an operator ('and' / 'or').
-  <dl title="interface CompositeFilter : AbstractFilter"
-      class="idl">
-    <dt>attribute AbstractFilter[] filters</dt>
-    <dd>The different filters that are combined in the composite
-    filter.</dd>
-
-    <dt>attribute CompositeFilterOperator operator</dt>
-    <dd>Indicates the operator used to combined the different filters. It can
-    have the following possible values: 'and' and 'or'.</dd>
-  </dl>
-</section>
-    
-
-<!------------------------ Interface AttributeFilter-------------------------->
-<!--section>
-  <h2><a>AttributeFilter</a> Interface</h2>
-  <p>The <a>AttributeFilter</a> interface represents a filter of messages
-  based on the value of a specific attribute.
-  <dl title="interface AttributeFilter : AbstractFilter"
-      class="idl">
-    <dt>attribute DOMString filterBy</dt>
-    <dd>The attribute based on whose value the messages are filtered.</dd>
-
-    <dt>attribute AttributeFilterOperator operator</dt>
-    <dd>Indicates the operator applied on the attribute indicated in the
-    <code>filterBy</code> parameter to filter the messages. It can have the
-    following possible values: 'is', 'contains', 'startswith', 'endswith',
-    'exists'.</dd>
-
-    <dt>attribute any filterValue</dt>
-    <dd>The value with which the attribute indicated in the
-    <code>filterBy</code> parameter is compared to filter the messages.</dd>
-  </dl>
-</section>
-
-
-<!------------------------ Interface AttributeRangeFilter -------------------->
-<!--section>
-  <h2><a>AttributeRangeFilter</a> Interface</h2>
-  <p>The <a>AttributeRangeFilter</a> interface represents a filter of messages
-  with the value of a specific attribute within a range of values.
-  <dl title="interface AttributeRangeFilter : AbstractFilter"
-      class="idl">
-    <dt>attribute DOMString filterBy</dt>
-    <dd>The attribute based on whose value the messages are filtered.</dd>
-
-    <dt>attribute any startValue</dt>
-    <dd>The minum value that the attribute indicated in the
-    <code>filterBy</code> parameter may have so that the corresponding message
-    is included in the result of this filter.</dd>
-
-    <dt>attribute any endValue</dt>
-    <dd>The maximum value that the attribute indicated in the
-    <code>filterBy</code> parameter may have so that the corresponding message
-    si included in the result of this filter.</dd>
-  </dl>
 </section>
 
 <!------------------------ Interface Enumerations ---------------------------->
