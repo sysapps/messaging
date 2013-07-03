@@ -856,7 +856,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 
     <dt>FetchMode getFetchMode ()</dt>
     <dd>This method requests to retrieve the fetch mode associated to a specific
-    service (the one identified by the <code>serviceID</code> attribute, if
+    service (the one identified by the <code>serviceID</code> parameter, if
     provided, or the first item in the <code>serviceIDs</code> attribute of
     the <code>MmsManager</code> otherwise).
     <dl class='parameters'>
@@ -870,8 +870,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     <dt>void setFetchMode ()</dt>
     <dd>This method issues a request to the messaging system to set the MMS
     message fetch mode for the service identified by the <code>serviceID</code>
-    attribute, if provided, or for all services otherwise, to the mode indicated
-    in the <code>fetchMode</code> attribute.
+    argument, if provided, or for all services otherwise, to the mode indicated
+    in the <code>fetchMode</code> parameter.
     <dl class='parameters'>
          <dt>FetchMode fetchMode</dt>
          <dd>
@@ -1897,8 +1897,8 @@ function onMessageReceived(message) {
           <dt>fetching</dt>
           <dd>
               The message is an inbound message, for which an MMS notification
-              has been received and the message is in the process of being
-              downloaded.
+              has been received, and whose download has started and not yet
+              finished.
           </dd>
           
           <dt>received</dt>
