@@ -1134,11 +1134,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
               new item to the <code>attachments</code> array with:
               <ol>
                 <li>A new <code>Blob</code> object including the actual content
-                of the attachment, the media type and the encoding. The encoding
-                is indicated in the <code>type</code> attribute of the
+                of the attachment and the media type. The charset encoding
+                is indicated as part of the <code>type</code> attribute of the
                 <code>Blob</code> object by means of appending a
                 <code>charset</code> parameter after the media type as
-                explained in [[!HTTP11]], e.g. "text/plain; charset=utf-8".
+                explained in [[!RFC2046]], e.g. "text/plain; charset=utf-8".
                 <li>The <code>contentID</code> attribute filled with the Content-ID used
                 to reference this attachment from the SMIL object in the incoming MMS
                 message [[!MMS13]], if present.
