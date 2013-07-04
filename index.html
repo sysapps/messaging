@@ -700,6 +700,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>deliveryStatus</code> parameter of the
       <code>SmsMessage</code> to 'success' or 'error' depending on the reported
       result.
+      <li>Set the <code>deliveryTimestamp</code> of the <code>SmsMessage</code>
+      to the delivery time of the SMS message, i.e. the TP-Discharge-Time (TP
+      DT) parameter included in the SMS-STATUS-REPORT Protocol Data Unit
+      [[!GSM-SMS]].
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
@@ -708,8 +712,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           <code>SmsMessage</code> to which this confirmation is related,
           <li>the <code>serviceID</code> attribute set to the identifier of the
       service used to send such message, and
-          <li>the <code>recipients</code> attribute set to the recipient of such
-          message.
+          <li>the first item in the <code>recipients</code> attribute set to the
+          recipient of such message.
+          <li>the first item in the <code>deliveryTimestamps</code> attribute set
+          to delivery time of such message.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
       <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
@@ -720,8 +726,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           <code>SmsMessage</code> to which this confirmation is related,
           <li>the <code>serviceID</code> attribute set to the identifier of the
       service used to send such message, and
-          <li>the <code>recipients</code> attribute set to the recipient of such
-          message.
+          <li>the first item in the <code>recipients</code> attribute set to the
+          recipient of such message.
+          <li>the first item in the <code>deliveryTimestamps</code> attribute set
+          to delivery time of such message.
         </ol>
     </ol>
   
@@ -1013,7 +1021,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       parameter.
       <li>Set the <code>state</code> of the <code>MmsMessage</code> to
       'sending'.
-      <li>Add a new item in the <code>deliveryStatusArray</code> of the
+      <li>Add a new item in the <code>deliveryInfo</code> attribute of the
       <code>MmsMessage</code> for each unique recipient included in the
       <code>to</code>, <code>cc</code> and <code>bcc</code> parameters (i.e. a
       single item if the same address has multiple ocurrences across these
@@ -1035,7 +1043,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <ol>
         <li>If a delivery report had been requested set the
         <code>deliveryStatus</code> attribute of the different items in the
-        <code>deliveryStatusArray</code> attribute of the
+        <code>deliveryInfo</code> array attribute of the
         <code>MmsMessage</code> to 'error'.
         <li>call <var>resolver</var>'s <code>reject(value)</code>method with
         <var>error</var> as <code>value</code> argument.
@@ -1152,8 +1160,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           </ol>
           <li>Set the <code>state</code> of the <code>MmsMessage</code> to
           'received'.
-          <li>Add a new item in the <code>deliveryStatusArray</code> of the
-          <code>MmsMessage</code> for each unique recipient included in the
+          <li>Add a new item in the <code>deliveryInfo</code> array attribute of
+          the <code>MmsMessage</code> for each unique recipient included in the
           'To', 'Cc' and 'Bcc' fields (i.e. a single item if the same address
           has multiple ocurrences across these parameters), with the
           <code>recipient</code> attribute set to this recipient's address and
@@ -1226,15 +1234,23 @@ function onMessageReceived(message) {
   <p>Upon a delivery report of a previously sent MMS message being received, the
   <a>user agent</a> MUST
     <ol>
-      <li>For each of the items in the <code>deliveryStatusArray</code>
+      <li>For each of the items in the <code>deliveryInfo</code> array
       attribute of the <code>MmsMessage</code> whose <code>recipient</code>
       attribute matches one of the recipients of the MMS to which the delivery
-      report is related, set its <code>deliveryStatus</code> attribute 
+      report is related,  
         <ol>
-          <li>to 'success', if the value of the X-Mms-Status element [[!MMS13]]
-          in the delivery report is 'Retrieved', or
-          <li>to 'error', if the value of the X-Mms-Status element [[!MMS13]] in
-          the delivery report is 'Expired', 'Rejected' or 'Unreachable'
+          <li>set its <code>deliveryStatus</code> attribute:
+            <ol>
+              <li>to 'success', in case of successful delivery, i.e. if the
+              value of the X-Mms-Status element in the M-Delivery.ind Protocol
+              Data Unit [[!MMS13]] is 'Retrieved', or
+              <li>to 'error', in case of failed delivery, i.e. if the value of
+              the X-Mms-Status element in the the M-Delivery.ind Protocol Data
+              Unit [[!MMS13]] is 'Expired', 'Rejected' or 'Unreachable'.
+            </ol>
+          <li>set its <code>deliveryTimestamp</code> attribute to the delivery
+          time, i.e. the 'Date' field in the M-Delivery.ind Protocol Data Unit
+          [[!MMS13]], in case of successful delivery.
         </ol>
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
@@ -1245,7 +1261,11 @@ function onMessageReceived(message) {
           <li>the <code>serviceID</code> attribute set to the identifier of the
           service used to send such message, and
           <li>the <code>recipients</code> attribute set to the subset of the
-          original recipients to which this delivery report is related.
+          original recipients to which this delivery report is related, and
+          <li>in case of successful delivery, with each of the items in the
+          <code>deliveryTimestamps</code> attribute set to the delivery time of
+          the MMS message to the corresponding recipient, i.e. that in the
+          same position of the <code>recipients</code> array.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
       <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
@@ -1255,9 +1275,13 @@ function onMessageReceived(message) {
           <li>the <code>messageID</code> attribute set to the identifier of the
           <code>MmsMessage</code> to which this confirmation is related,
           <li>the <code>serviceID</code> attribute set to the identifier of the
-      service used to send such message, and
+          service used to send such message, and
           <li>the <code>recipients</code> attribute set to the recipient of such
-          message.
+          message, and
+          <li>in case of successful delivery, with each of the items in the
+          <code>deliveryTimestamps</code> attribute set to the delivery time of
+          the MMS message to the corresponding recipient, i.e. that in the
+          same position of the <code>recipients</code> array.
         </ol>
     </ol>
 
@@ -1393,7 +1417,13 @@ function onMessageReceived(message) {
     <dd>MUST return the delivery status of the SMS message.
     </dd>
 
-   <dt>readonly attribute MessageClass messageClass</dt>
+    <dt>readonly attribute Date? deliveryTimestamp</dt>
+    <dd>MUST return for sent messages the delivery date as reported in the
+    TP-Discharge-Time (TP DT) parameter included in the SMS-STATUS-REPORT
+    Protocol Data Unit or null if there is no positive knowledge about the
+    delivery of the message. MUST return null for received messages.</dd>
+
+    <dt>readonly attribute MessageClass messageClass</dt>
     <dd>MUST return the SMS message class, according to the value indicated in
     the TP-Data-Coding-Scheme (TP-DCS) field of the SMS.</dd>
 
@@ -1465,9 +1495,10 @@ function onMessageReceived(message) {
     <dt>readonly attribute MmsState state</dt>
     <dd>MUST return the status of the MMS message.</dd>
 
-    <dt>readonly attribute MmsDeliveryStatus[] deliveryStatusArray</dt>
+    <dt>readonly attribute MmsDeliveryInfo[] deliveryInfo</dt>
     <dd>MUST return an array with each of the items indicating the delivery
-    status to each of the recipients of the message.</dd>
+    status and, if applicable, the delivery time to each of the recipients of the
+    message.</dd>
 
   </dl>
 </section>
@@ -1535,18 +1566,23 @@ function onMessageReceived(message) {
   </dl>    
 </section>
     
-<!------------------------ Dictionary MmsDeliveryStatus -------------------->
+<!------------------------ Dictionary MmsDeliveryInfo -------------------->
 <section>
-  <h2><a>MmsDeliveryStatus</a> Dictionary</h2>
-  <dl title="dictionary MmsDeliveryStatus" class="idl">
+  <h2><a>MmsDeliveryInfo</a> Dictionary</h2>
+  <dl title="dictionary MmsDeliveryInfo" class="idl">
     <dt>DeliveryStatus deliveryStatus</dt>
     <dd>
-    The delivery status of the MMS message
+    The delivery status of the MMS message to a specific recipient.
     </dd>
     <dt>DOMString recipient</dt>
     <dd>
     The recipient of the MMS to which the delivery status is related.
     </dd>
+    <dt>Date deliveryTimestamp</dt>
+    <dd>The time the message was delivered to the recipient, i.e. the 'Date'
+    field in the M-Delivery.ind Protocol Data Unit [[!MMS13]]. It is not
+    provided if there is no positive knowledge about the delivery of the
+    message.</dd>
   </dl>    
 </section>
     
@@ -1692,6 +1728,13 @@ function onMessageReceived(message) {
     related to an SMS message then the array will contain a single item
     corresponding to the single recipient of the SMS message.
     </dd>
+    <dt>readonly attribute Date[]? deliveryTimestamps</dt>
+    <dd>MUST return an array containing the delivery dates for each of the
+    recipients to which this delivery report event relates. Each element in the
+    array refers to the recipient in the same position of the
+    <code>recipients</code> array. It MUST return null if case of delivery
+    failure (e.g. message expired)
+    </dd>
   </dl>
 </section>
 
@@ -1731,6 +1774,13 @@ function onMessageReceived(message) {
     recipients to which the MMS message was sent. If the delivery report is
     related to an SMS message then the array will contain a single item
     corresponding to the single recipient of the SMS message.
+    </dd>
+    <dt>readonly attribute Date[]? deliveryTimestamps</dt>
+    <dd>MUST return an array containing the delivery dates for each of the
+    recipients to which this delivery report event relates. Each element in the
+    array refers to the recipient in the same position of the
+    <code>recipients</code> array. It MUST return null if case of delivery
+    failure (e.g. message expired)
     </dd>
   </dl>
 </section>
