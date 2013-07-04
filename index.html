@@ -856,7 +856,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 
     <dt>FetchMode getFetchMode ()</dt>
     <dd>This method requests to retrieve the fetch mode associated to a specific
-    service (the one identified by the <code>serviceID</code> attribute, if
+    service (the one identified by the <code>serviceID</code> parameter, if
     provided, or the first item in the <code>serviceIDs</code> attribute of
     the <code>MmsManager</code> otherwise).
     <dl class='parameters'>
@@ -868,12 +868,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     </dd>
 
     <dt>void setFetchMode ()</dt>
-    <dd>This method issues a request to the messaging system to set to <a
-    class="internalDFN" href="#idl-def-FetchMode.manual">manual</a>
-    or <a class="internalDFN" href="#idl-def-FetchMode.automatic">automatic</a>
-    the MMS message fetch mode of the specific service, the one identified by
-    the <code>serviceID</code> attribute, if provided, or all services
-    otherwise).
+    <dd>This method issues a request to the messaging system to set the MMS
+    message fetch mode for the service identified by the <code>serviceID</code>
+    parameter, if provided, or for all services otherwise, to the mode indicated
+    in the <code>fetchMode</code> parameter.
     <dl class='parameters'>
          <dt>FetchMode fetchMode</dt>
          <dd>
@@ -1078,7 +1076,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       identifier of the service at which the message has been received.
       <li>Set the <code>read</code> of the <code>MmsMessage</code> to 'false'.
       <li>if the fetch mode is <a class="internalDFN"
-      href="#idl-def-FetchMode.manual">manual</a>: 
+      href="#idl-def-FetchMode.manual">manual</a>, <a class="internalDFN"
+      href="#idl-def-FetchMode.never">never</a> or the device is not in the home
+      network and the the fetch mode is <a class="internalDFN"
+      href="#idl-def-FetchMode.automatic-home">automatic-home</a>: 
         <ol>
           <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
           value of the 'From' field of the MMS notification, if present.
@@ -1104,7 +1105,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           'not-downloaded'.
         </ol>
       <li>if the fetch mode is otherwise <a class="internalDFN"
-      href="#idl-def-FetchMode.automatic">automatic</a>: 
+      href="#idl-def-FetchMode.automatic">automatic</a> or the device is in the
+      home network and the the fetch mode is <a class="internalDFN"
+      href="#idl-def-FetchMode.automatic-home">automatic-home</a>: 
         <ol>
           <li>Make a request to the system to fetch the MMS message from the URL
           indicated in the X-Mms-Content-Location field of the MMS notification.
@@ -1164,13 +1167,15 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     
    <p> The <dfn><code>fetch</code></dfn> method can be invoked to fetch an MMS
    message that has not been automatically fetched upon receiving the
-   corresponding MMS notification due to the fetch mode being manual. When this
+   corresponding MMS notification, e.g. due to the fetch mode being <a
+   class="internalDFN" href="#idl-def-FetchMode.manual">manual</a>. When this
    method is invoked the User Agent MUST run the following steps:
     <ol>
      <li>If the <code>messageID</code> parameter passed in the request matches
      with an MMS message that has already been fetched, or to an SMS message go
-     to next step, otherwise make a request to the system to fetch the MMS
-     message.
+     to next step, otherwise set the <code>state</code> of the
+     <code>MmsMessage</code> to 'fetching' and make a request to the system to
+     fetch the MMS message.
      <li>Let <var>future</var> be a new <code>Future</code> object and
      <var>resolver</var> its associated <code>resolver</code>
      <li>Return <var>future</var> to the caller.
@@ -1380,7 +1385,7 @@ function onMessageReceived(message) {
     <dt>readonly attribute SmsState state</dt>
     <dd>MUST return the status of the SMS message.</dd>
 
-    <dt>readonly attribute DeliveryStatus? deliveryStatus</dt>
+    <dt>readonly attribute DeliveryStatus deliveryStatus</dt>
     <dd>MUST return the delivery status of the SMS message.
     </dd>
 
@@ -1885,10 +1890,17 @@ function onMessageReceived(message) {
     <dl class="idl" title="enum MmsState">
           <dt>not-downloaded</dt>
           <dd>
-              The message is an inbound message, for which an MMS mnotification
+              The message is an inbound message, for which an MMS notification
               has been received but that has not yet been downloaded.
           </dd>
 
+          <dt>fetching</dt>
+          <dd>
+              The message is an inbound message, for which an MMS notification
+              has been received, and whose download has started and not yet
+              finished.
+          </dd>
+          
           <dt>received</dt>
           <dd>
               The message is an inbound message.
@@ -1948,11 +1960,25 @@ function onMessageReceived(message) {
               notification.
           </dd>
 
+          <dt>automatic-home</dt>
+          <dd>
+              MMS message is fecthed right after the reception of the MMS
+              notification if the device is located in the home network, i.e.
+              not roaming, otherwise the message will be fetched upon the device
+              entering in the home network again or the user manually requesting
+              it.
+          </dd>
+
           <dt>manual</dt>
           <dd>
               The message is not fecthed until the user manually requests it.
           </dd>
 
+          <dt>never</dt>
+          <dd>
+              MMS message retrieval is completely disabled.
+          </dd>
+          
     </dl>
 
     </section>
