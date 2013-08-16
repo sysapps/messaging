@@ -130,7 +130,17 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   id="dfn-eventhandler">event handler</dfn></a> and <a
   href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
   <dfn id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
-  [[!HTML5]]. 
+  [[!HTML5]].
+  
+  <p>The <dfn><a href="http://dom.spec.whatwg.org/#promise">Promise</a></dfn>
+  interface, the concepts of a <a href=
+  "http://dom.spec.whatwg.org/#concept-resolver"><dfn>resolver</dfn></a>, a <dfn
+  id="dfn-fulfill-algorithm"><a
+  href="http://dom.spec.whatwg.org/#concept-resolver-fulfill"> resolver's
+  fulfill algorithm</a></dfn> and a <dfn id="dfn-reject-algorithm"><a
+  href="http://dom.spec.whatwg.org/#concept-resolver-reject"> resolver's reject
+  algorithm</a></dfn> are defined in [[DOM4]].</p>
+  
 </section>
 
 <!------------------------ Security and privacy ------------------------------>
@@ -166,11 +176,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     <dt>readonly attribute MmsManager mms</dt> <dd>Provides access to the
     MMS service's specific functionality.</dd>
   
-    <dt> Future findMessages ()</dt> <dd>This method makes a request
+    <dt> Promise findMessages ()</dt> <dd>This method makes a request
     to retrieve the messages matching the filter described by the
     <code>filter</code> parameter and according to the filtering options
     described in the <code>options</code>. It returns a new
-    <code>Future</code> that will be used to notify the caller about
+    <code>Promise</code> that will be used to notify the caller about
     the result of the operation, which is a MessagingCursor to access the set of
     messages.
       <dl class='parameters'>
@@ -184,14 +194,14 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future findConversations ()</dt> <dd>This method makes a
+    <dt> Promise findConversations ()</dt> <dd>This method makes a
     request to retrieve the list of conversations in which the messages can be
     grouped using the criteria defined by the <code>groupBy</code> parameter.
     Only those messages matching the filter described in the <code>filter</code>
     parameter SHALL be included in the resulting conversations, what can be
     useful for instance to filter just a specific type of messages (e.g. SMS) or
     to implement message search in a conversational messaging client. It returns
-    a new <code>Future</code> that will be used to notify the caller
+    a new <code>Promise</code> that will be used to notify the caller
     about the result of the operation, which is a MessagingCursor to access the
     set of conversations.
       <dl class='parameters'>
@@ -212,9 +222,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future getMessage ()</dt> <dd>This method makes a request to
+    <dt> Promise getMessage ()</dt> <dd>This method makes a request to
     retrieve the message identified by the <code>messageID</code> parameter.
-    It returns a new <code>Future</code> object which allows the
+    It returns a new <code>Promise</code> object which allows the
     caller to be notified about the result of the operation.
       <dl class='parameters'>
          <dt>DOMString messageID</dt> <dd>
@@ -223,9 +233,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future deleteMessage ()</dt> <dd>This method requests the
+    <dt> Promise deleteMessage ()</dt> <dd>This method requests the
     deletion of the message with identifier equal to the <code>messageID</code>
-    parameter. A new <code>Future</code> is returned in order to
+    parameter. A new <code>Promise</code> is returned in order to
     notify the request result (success or error) to the caller.
       <dl class='parameters'>
          <dt>DOMString messageID</dt> <dd>
@@ -234,9 +244,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future deleteConversation ()</dt> <dd>This method requests
+    <dt> Promise deleteConversation ()</dt> <dd>This method requests
     the deletion of all the messages in the conversation with identifier equal
-    to the <code>conversationID</code> parameter. A new <code>Future</code> is
+    to the <code>conversationID</code> parameter. A new <code>Promise</code> is
     returned in order to notify the request result (success or error) to the
     caller.
       <dl class='parameters'>
@@ -247,10 +257,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future markMessageRead ()</dt> <dd>This method requests to
+    <dt> Promise markMessageRead ()</dt> <dd>This method requests to
     mark as read or unread the message with identifier equal to the
     <code>messageID</code> parameter. The method returns a new
-    <code>Future</code> that will allow the caller to be notified
+    <code>Promise</code> that will allow the caller to be notified
     about the result (success, error) of the operation.
       <dl class='parameters'>
          <dt>DOMString messageID</dt> <dd>
@@ -265,10 +275,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future markConversationRead ()</dt> <dd>This method
+    <dt> Promise markConversationRead ()</dt> <dd>This method
     requests to mark as read or unread all the messages in the conversation with
     identifier equal to the <code>conversationID</code> parameter. The method returns a new
-    <code>Future</code> that will allow the caller to be notified
+    <code>Promise</code> that will allow the caller to be notified
     about the result (success, error) of the operation.
       <dl class='parameters'>
          <dt>DOMString conversationID</dt> <dd>
@@ -290,153 +300,160 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>findMessages</code></dfn>
   method when invoked MUST run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to get the message(s) matching the filter
      included in the <code>filter</code> parameter and according to the
      filtering options described in the <code>options</code> parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messagingCursor</var> be a new <code>MessagingCursor</code>
       object providing access to the results of the retrieval, i.e. the set of
       <code>SmsMessage</code> and/or <code>MmsMessage</code> elements.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messagingCursor</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messagingCursor</em> as the <code>value</code> argument.
     </ol>
    </ol>
      
   <p> The <dfn><code>findConversations</code></dfn> method when invoked MUST
   run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to get the set of conversations in which
      the messages can be grouped, according to the set of participants or the
      subject as indicated in the <code>groupBy</code> parameter, and filtering
      the messages included in those conversations according to the filter
      included in the <code>filter</code> parameter and the filtering options
      described in the <code>options</code> parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messagingCursor</var> be a new <code>MessagingCursor</code>
       object providing access to the results of the retrieval, i.e. the set of
       <code>Conversation</code> elements.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messagingCursor</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messagingCursor</em> as the <code>value</code> argument.
       </ol>
    </ol>
      
   <p> The <dfn><code>getMessage</code></dfn> method when invoked MUST run
   the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to get the message with identifier equal
      to the <code>messageID</code> parameter passed in the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>message</var> be the <code>SmsMessage</code> or
       <code>MmsMessage</code> whose identifier matches the
       <code>messageID</code> parameter.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>message</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>message</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>deleteMessage</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to delete the message with identifier
      equal to the <code>messageID</code> parameter passed in the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messageID</var> be the <code>messageID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messageID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messageID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>deleteConversation</code></dfn> method when invoked MUST
   run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to delete the messages in the conversation
      with identifier equal to the <code>conversationID</code> parameter passed in the
      request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>conversationID</var> be the <code>conversationID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>conversationID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>conversationID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>markMessageRead</code></dfn> method when invoked MUST run
   the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
      message with identifier equal to the <code>messageID</code> parameter passed in
      the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messageID</var> be the <code>messageID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messageID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messageID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>markConversationRead</code></dfn> method when invoked
   MUST run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
      messages in the conversation with identifier equal to the <code>conversationID</code>
      parameter passed in the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>conversationID</var> be the <code>conversationID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>conversationID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>conversationID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
@@ -485,11 +502,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
     
-    <dt> Future send ()</dt>
+    <dt> Promise send ()</dt>
     <dd>This method issues a request to the messaging system to send an SMS
     message with the text of the <code>text</code> parameter to the destination
     number indicated in the <code>to</code> parameter.
-    A <code>Future</code> object will be returned in order to notify
+    A <code>Promise</code> object will be returned in order to notify
     the result of the request.
       <dl class='parameters'>
          <dt>DOMString to</dt>
@@ -508,7 +525,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt>Future clear ()</dt>
+    <dt>Promise clear ()</dt>
     <dd>This method makes a request to delete all the messages associated to the
     messaging service passed as parameter.
       <dl class='parameters'>
@@ -568,6 +585,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Create a new instance of <code>SmsMessage</code>:
      <ol>
       <li>Generate a identifier for this message that is globally unique within
@@ -601,16 +621,14 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       described above.
       <li><a>Queue a task</a> to monitor SMS submission process.
      </ol>
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
      <li>If an <var>error</var> occurs run these substeps and terminate these
      steps
       <ol>
         <li>If a delivery report had been requested set the
         <code>deliveryStatus</code> of the <code>SmsMessage</code> to 'error'.
-        <li>call <var>resolver</var>'s <code>reject(value)</code>method with
-        <var>error</var> as <code>value</code> argument.
+        <li>invoke <em>resolver</em>'s <a class="internalDFN"
+        href="#dfn-reject-algorithm">reject algorithm</a> with <em>error</em> as
+        the <code>value</code> argument.
      </ol>
      <li>When the request has been successfully completed:
      <ol>
@@ -618,8 +636,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
       device's date when the SMS message was sent, i.e. when the SMS-SUBMIT
       Protocol Data Unit was sent.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      the sent <code>SmsMessage</code> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      the sent <code>SmsMessage</code> as the <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
       with the <code>message</code> attribute set to the sent
       <code>SmsMessage</code>.
@@ -736,21 +755,22 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>clear</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to delete all the messages associated to
      the messaging service with identifier equal to the <code>serviceID</code>
      parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>serviceID</var> be the <code>serviceID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>serviceID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>serviceID</em> as the <code>value</code> argument.
     </ol>
    </ol>
   </section>
@@ -892,11 +912,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
    
-    <dt> Future send ()</dt>
+    <dt> Promise send ()</dt>
     <dd>This method issues a request to the messaging system to send an MMS
     message with the content and recipients included in the
     <code>mmsContent</code> parameter.
-    A <code>Future</code> object will be returned in order to notify the result
+    A <code>Promise</code> object will be returned in order to notify the result
     of the request.
     <dl class='parameters'>
          <dt>MmsContent mmsContent</dt>
@@ -911,10 +931,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future fetch ()</dt>
+    <dt> Promise fetch ()</dt>
     <dd>This method requests to fetch an MMS message with identifier equal to
     the indicated in the <code>messageID</code> parameter from the URL indicated in the
-    MMS notification. The method returns a new <code>Future</code> that will
+    MMS notification. The method returns a new <code>Promise</code> that will
     allow the caller to be notified about the result (success, error) of the
     operation.
       <dl class='parameters'>
@@ -925,7 +945,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt>Future clear ()</dt>
+    <dt>Promise clear ()</dt>
     <dd>This method makes a request to delete all the messages associated to the
     messaging service passed as parameter.
       <dl class='parameters'>
@@ -990,6 +1010,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Create a new instance of <code>MmsMessage</code> and:
      <ol>
       <li>Generate a identifier for this message that is globally unique within
@@ -1035,9 +1058,6 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       above.
       <li><a>Queue a task</a> to monitor MMS sending progress.
      </ol>
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
      <li>If an <var>error</var> occurs run these substeps and terminate these
      steps
       <ol>
@@ -1045,8 +1065,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
         <code>deliveryStatus</code> attribute of the different items in the
         <code>deliveryInfo</code> array attribute of the
         <code>MmsMessage</code> to 'error'.
-        <li>call <var>resolver</var>'s <code>reject(value)</code>method with
-        <var>error</var> as <code>value</code> argument.
+        <li>invoke <em>resolver</em>'s <a class="internalDFN"
+        href="#dfn-reject-algorithm">reject algorithm</a> with <em>error</em> as
+        the <code>value</code> argument.
      </ol>
      <li>When the request has been successfully completed:
      <ol>
@@ -1054,8 +1075,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to the
       device's date when the MMS message was sent, i.e. the date when the
       M-Send.req Protocol Data Unit was sent by the MMS Client.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      the sent <code>MmsMessage</code> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      the sent <code>MmsMessage</code> as the <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <code>sent</code> with the <code>message</code> attribute set to the sent
       <code>MmsMessage</code>.
@@ -1183,17 +1205,17 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
    class="internalDFN" href="#idl-def-FetchMode.manual">manual</a>. When this
    method is invoked the User Agent MUST run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>If the <code>messageID</code> parameter passed in the request matches
      with an MMS message that has already been fetched, or to an SMS message go
      to next step, otherwise set the <code>state</code> of the
      <code>MmsMessage</code> to 'fetching' and make a request to the system to
      fetch the MMS message.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Run the <a class="internalDFN" href="#dfn-fill-mms-message">steps for
@@ -1201,8 +1223,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       message</a>.
       <li>Let <var>message</var> be the <code>MmsMessage</code> that has been
       fetched.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>message</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>message</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
@@ -1291,18 +1314,19 @@ function onMessageReceived(message) {
      <li>Make a request to the system to delete all the messages associated to
      the messaging service with identifier equal to the <code>serviceID</code>
      parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>Return <var>promise</var> to the caller.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>serviceID</var> be the <code>serviceID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>serviceID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>serviceID</em> as the <code>value</code> argument.
     </ol>
    </ol>
   </section>
@@ -1644,7 +1668,7 @@ function onMessageReceived(message) {
   <code>Conversation</code> elements or of messages (<code>SmsMessage</code>
   and/or <code>MmsMessage</code> elements).</p>
   <p>A <a>MessagingCursor</a> always has, an <dfn>associated request</dfn> which
-  is the <a>Future</a> that created it.</p>
+  is the <a>Promise</a> that created it.</p>
   <p>As soon as the <a>MessagingCursor</a> is <dfn>accessing an element</dfn>,
   it MUST put its <a>associated request</a> in the 'processing'
   <code>readyState</code>, and set the <code>result</code> to null. Then, the UA
