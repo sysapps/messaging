@@ -68,7 +68,7 @@ Style guide to contributors:
  
   <body>
 
-<!------------------------------ Abstract ------------------------------------>    
+<!-- - - - - - - - - - - - - - - Abstract  - - - - - - - - - - - - - - - - - -->    
 <section id="abstract">
   This specification defines a System Level API which offers a simple interface
   to get access to mobile messaging services. A typical use case of the
@@ -77,11 +77,11 @@ Style guide to contributors:
   the received SMS and MMS messages.
 </section>
 
-<!----------------------- Status of this document ---------------------------->    
+<!-- - - - - - - - - - - - - - - Status of this document - - - - - - - - - - -->   
 <section id="sotd">
 </section>
     
-<!----------------------------- Introduction --------------------------------->
+<!-- - - - - - - - - - - - - - - Introduction  - - - - - - - - - - - - - - - -->
 <section class="informative">
   <h2>Introduction</h2>
   <p>
@@ -100,7 +100,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   </pre>
 </section>
     
-<!---------------------------- Conformance ----------------------------------->
+<!-- - - - - - - - - - - - - - - Conformance - - - - - - - - - - - - - - - - -->
 <section id="conformance">
   <p>This specification defines conformance criteria that apply to a single
   product: the <dfn>user agent</dfn> that implements the interfaces that it
@@ -112,7 +112,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   specification uses that specification and terminology.
 </section>
     
-<!----------------------------- Terminology ---------------------------------->
+<!-- - - - - - - - - - - - - - - Terminology  - - - - - - - - - - - - - - - -->
 <section>
   <h2>Terminology</h2> <p>The <code><a
   href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
@@ -143,13 +143,13 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   
 </section>
 
-<!------------------------ Security and privacy ------------------------------>
+<!-- - - - - - - - - - - - - - - Security and privacy  - - - - - - - - - - - -->
 <section>
       <h2>Security and privacy considerations</h2>
       <p>This API must be only exposed to trusted content
 </section>
 
-<!---------------------- Extended interface Navigator ------------------------>
+<!-- - - - - - - - - - - - - Extended interface Navigator  - - - - - - - - - -->
 <section>
   <h2><a>Navigator</a> Interface</h2>
     <dl title="partial interface Navigator" class="idl">
@@ -160,7 +160,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   </dl>
 </section>
     
-<!------------------------ Interface MessagingManager ------------------------------->
+<!-- - - - - - - - - - - - - Interface MessagingManager  - - - - - - - - - - -->
 <section>
   <h2><a>MessagingManager</a> Interface</h2>
   
@@ -466,7 +466,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 </section>
 
 
-<!------------------------ Interface SmsManager ------------------------------>
+<!-- - - - - - - - - - - - Interface SmsManager  - - - - - - - - - - - - - - -->
 <section>
   <h2><a>SmsManager</a> Interface</h2>
   <p>The <a>SmsManager</a> interface represents the SMS messaging service
@@ -837,7 +837,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 </section>
 
 
-<!------------------------ Interface SmsSegmentInfo -------------------------->
+<!-- - - - - - - - - - - - Interface SmsSegmentInfo  - - - - - - - - - - - - -->
 <section>
   <h2><a>SmsSegmentInfo</a> Dictionary</h2>
   <p>The <a>SmsSegmentInfo</a> dictionary contains information about the
@@ -865,7 +865,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 </section>    
     
 
-<!------------------------ Interface MmsManager ------------------------------>    
+<!-- - - - - - - - - - - - Interface MmsManager  - - - - - - - - - - - - - - -->   
 <section>
   <h2><a>MmsManager</a> Interface</h2>
   <p>The <a>MmsManager</a> interface represents the MMS messaging service
@@ -1391,7 +1391,7 @@ function onMessageReceived(message) {
 </section>    
     
 
-<!------------------------ Interface SmsMessage ------------------------------>
+<!-- - - - - - - - - - - - Interface SmsMessage  - - - - - - - - - - - - - - -->
 <section>
   <h2><a>SmsMessage</a> Interface</h2>
   <p>The <a>SmsMessage</a> interface represents an SMS message as defined in
@@ -1452,7 +1452,7 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Interface MmsMessage ------------------------------>
+<!-- - - - - - - - - - - - Interface MmsMessage  - - - - - - - - - - - - - - -->
 <section>
   <h2><a>MmsMessage</a> Interface</h2>
   <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in 
@@ -1525,7 +1525,7 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Dictionary MmsContent ----------------------------->
+<!-- - - - - - - - - - - - Dictionary MmsContent - - - - - - - - - - - - - - -->
 <section>
   <h2><a>MmsContent</a> Dictionary</h2>
   <dl title="dictionary MmsContent" class="idl">
@@ -1561,7 +1561,7 @@ function onMessageReceived(message) {
 </section>
 
     
-<!------------------------ Dictionary MmsAttachment -------------------------->
+<!-- - - - - - - - - - - - Dictionary MmsAttachment  - - - - - - - - - - - - -->
 <section>
   <h2><a>MmsAttachment</a> Dictionary</h2>
   <dl title="dictionary MmsAttachment" class="idl">
@@ -1588,7 +1588,7 @@ function onMessageReceived(message) {
   </dl>    
 </section>
     
-<!------------------------ Dictionary MmsDeliveryInfo -------------------->
+<!-- - - - - - - - - - - - Dictionary MmsDeliveryInfo  - - - - - - - - - - - -->
 <section>
   <h2><a>MmsDeliveryInfo</a> Dictionary</h2>
   <dl title="dictionary MmsDeliveryInfo" class="idl">
@@ -1608,7 +1608,7 @@ function onMessageReceived(message) {
   </dl>    
 </section>
     
-<!------------------------ Interface Conversation ---------------------------->
+<!-- - - - - - - - - - - - Interface Conversation  - - - - - - - - - - - - - -->
 <section>
   <h2><a>Conversation</a> Interface</h2>
   <p>The <a>Conversation</a> interface represents a set of messages that are
@@ -1659,7 +1659,7 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Interface MessagingCursor ------------------------->
+<!-- - - - - - - - - - - - Interface MessagingCursor - - - - - - - - - - - - -->
 <section>
   <h2><a>MessagingCursor</a> Interface</h2>
   <p>The <a>MessagingCursor</a> interface allows to iterate through a list of
@@ -1702,7 +1702,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface ReceivedMessage ------------------------->
+<!-- - - - - - - - - - - - Interface ReceivedMessage - - - - - - - - - - - - -->
 <section>
   <h2><a>ReceivedMessage</a> Interface</h2>
   <p>The <a>ReceivedMessage</a> interface represents a system message related to
@@ -1722,7 +1722,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface DeliveryReport -------------------------->
+<!-- - - - - - - - - - - - Interface DeliveryReport  - - - - - - - - - - - - -->
 <section>
   <h2><a>DeliveryReport</a> Interface</h2>
   <p>The <a>DeliveryReport</a> interface represents a system message related to
@@ -1761,7 +1761,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface MessagingEvent -------------------------->
+<!-- - - - - - - - - - - - Interface MessagingEvent  - - - - - - - - - - - - -->
 <section>
   <h2><a>MessagingEvent</a> Interface</h2>
   <p>The <a>MessagingEvent</a> interface represents events related to a message
@@ -1775,7 +1775,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface DeliveryReportEvent ------------------>
+<!-- - - - - - - - - - - - Interface DeliveryReportEvent - - - - - - - - - - -->
 <section>
   <h2><a>DeliveryReportEvent</a> Interface</h2>
   <p>The <a>DeliveryReportEvent</a> interface represents events related
@@ -1808,7 +1808,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface ServiceChangeEvent ---------------------->
+<!-- - - - - - - - - - - - Interface ServiceChangeEvent  - - - - - - - - - - -->
 <section>
   <h2><a>ServiceChangeEvent</a> Interface</h2>
   <p>The <a>ServiceChangeEvent</a> interface represents events related to
@@ -1822,7 +1822,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Dictionary MessagingFilter ------------------------>
+<!-- - - - - - - - - - - - Dictionary MessagingFilter  - - - - - - - - - - - -->
 <section>
   <h2><a>MessagingFilter</a> Dictionary</h2>
   <p>The <a>MessagingFilter</a> Dictionary represents a filter that is used to
@@ -1868,7 +1868,7 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Dictionary FilterOptions -------------------------->
+<!-- - - - - - - - - - - - Dictionary FilterOptions  - - - - - - - - - - - - -->
 <section>
   <h2><a>FilterOptions</a> Dictionary</h2>
   <dl title="dictionary FilterOptions" class="idl">
@@ -1886,7 +1886,7 @@ function onMessageReceived(message) {
   </dl>    
 </section>
 
-<!------------------------ Interface Enumerations ---------------------------->
+<!-- - - - - - - - - - - - Interface Enumerations  - - - - - - - - - - - - - -->
   <section>
     <h2>Enumerations</h2>
 
@@ -2059,7 +2059,7 @@ function onMessageReceived(message) {
     </section>
   
   
-<!------------------------ Acknowledgements ---------------------------------->
+<!-- - - - - - - - - - - - Acknowledgements  - - - - - - - - - - - - - - - - -->
 <section>
   <h2>Acknowledgements</h2>
   <p>The editors would like to express their gratitude to the Mozilla B2G Team
