@@ -275,11 +275,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Promise markConversationRead ()</dt> <dd>This method
-    requests to mark as read or unread all the messages in the conversation with
-    identifier equal to the <code>conversationID</code> parameter. The method returns a new
-    <code>Promise</code> that will allow the caller to be notified
-    about the result (success, error) of the operation.
+    <dt> Promise markConversationRead ()</dt> <dd>This method requests to mark
+    as read or unread all the messages in the conversation with identifier equal
+    to the <code>conversationID</code> parameter. The method returns a new
+    <code>Promise</code> that will allow the caller to be notified about the
+    result (success, error) of the operation.
       <dl class='parameters'>
          <dt>DOMString conversationID</dt> <dd>
            Identifier of the conversation whose messages are requested to be
@@ -396,15 +396,15 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <var>resolver</var> its associated <code>resolver</code>
      <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to delete the messages in the conversation
-     with identifier equal to the <code>conversationID</code> parameter passed in the
-     request.
+     with identifier equal to the <code>conversationID</code> parameter passed
+     in the request.
      <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
      class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
      <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
-      <li>Let <var>conversationID</var> be the <code>conversationID</code> parameter
-      passed in the request
+      <li>Let <var>conversationID</var> be the <code>conversationID</code>
+      parameter passed in the request
       <li>Invoke <em>resolver</em>'s <a class="internalDFN"
       href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
       <em>conversationID</em> as the <code>value</code> argument.
@@ -419,8 +419,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
-     message with identifier equal to the <code>messageID</code> parameter passed in
-     the request.
+     message with identifier equal to the <code>messageID</code> parameter
+     passed in the request.
      <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
      class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
      <em>error</em> as the <code>value</code> argument.
@@ -442,15 +442,15 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
-     messages in the conversation with identifier equal to the <code>conversationID</code>
-     parameter passed in the request.
+     messages in the conversation with identifier equal to the
+     <code>conversationID</code> parameter passed in the request.
      <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
      class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
      <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
-      <li>Let <var>conversationID</var> be the <code>conversationID</code> parameter
-      passed in the request
+      <li>Let <var>conversationID</var> be the <code>conversationID</code>
+      parameter passed in the request
       <li>Invoke <em>resolver</em>'s <a class="internalDFN"
       href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
       <em>conversationID</em> as the <code>value</code> argument.
@@ -601,17 +601,15 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       the <code>serviceID</code> parameter, if provided, or otherwise to the
       first item in the <code>serviceIDs</code> attribute of the
       <code>SmsManager</code>.
-      <li>Set the <code>from</code> of <em>smsMessage</em> to the
-      number of the mobile subscription used to send this SMS message.
+      <li>Set the <code>from</code> of <em>smsMessage</em> to the number of the
+      mobile subscription used to send this SMS message.
       <li>Set the <code>read</code> of <em>smsMessage</em> to 'true'.
-      <li>Set the <code>to</code> of <em>smsMessage</em> to
-      the value of the <code>to</code> parameter.
-      <li>Set the <code>body</code> of <em>smsMessage</em> to the value
-      of the <code>text</code> parameter.
-      <li>Set the <code>messageClass</code> of <em>smsMessage</em> to
-      'class1'.
-      <li>Set the <code>state</code> of <em>smsMessage</em> to
-      'sending'.
+      <li>Set the <code>to</code> of <em>smsMessage</em> to the value of the
+      <code>to</code> parameter.
+      <li>Set the <code>body</code> of <em>smsMessage</em> to the value of the
+      <code>text</code> parameter.
+      <li>Set the <code>messageClass</code> of <em>smsMessage</em> to 'class1'.
+      <li>Set the <code>state</code> of <em>smsMessage</em> to 'sending'.
       <li>Set the <code>deliveryStatus</code> of <em>smsMessage</em> to
       'pending' if a delivery report has been requested or to 'not-applicable'
       otherwise.
@@ -690,12 +688,12 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       TP-Service-Centre-Time-Stamp (TP-SCTS) parameter received in the SMS
       DELIVER Protocol Data Unit [[!GSM-SMS]].
       <li>Set the <code>read</code> of <em>smsMessage</em> to 'false'.
-      <li>Set the <code>to</code> of <em>smsMessage</em> to the
-      recipient of the SMS message, i.e. the value of the TP Destination
-      Address (TP-DA) field of the SMS message [[!GSM-SMS]].
-      <li>Set the <code>messageClass</code> of <em>smsMessage</em> to
-      the message class indicated in the TP-Data-Coding-Scheme (TP-DCS) field of
+      <li>Set the <code>to</code> of <em>smsMessage</em> to the recipient of the
+      SMS message, i.e. the value of the TP Destination Address (TP-DA) field of
       the SMS message [[!GSM-SMS]].
+      <li>Set the <code>messageClass</code> of <em>smsMessage</em> to the
+      message class indicated in the TP-Data-Coding-Scheme (TP-DCS) field of the
+      SMS message [[!GSM-SMS]].
       <li>Set the <code>body</code> element to the text of the received SMS
       message, i.e. the value of the SM element contained within the TP User
       Data (TP-UD) field of the SMS message [[!GSM-SMS]].
@@ -933,9 +931,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 
     <dt> Promise fetch ()</dt>
     <dd>This method requests to fetch an MMS message with identifier equal to
-    the indicated in the <code>messageID</code> parameter from the URL indicated in the
-    MMS notification. The method returns a new <code>Promise</code> that will
-    allow the caller to be notified about the result (success, error) of the
+    the indicated in the <code>messageID</code> parameter from the URL indicated
+    in the MMS notification. The method returns a new <code>Promise</code> that
+    will allow the caller to be notified about the result (success, error) of
+    the
     operation.
       <dl class='parameters'>
          <dt>DOMString messageID</dt>
@@ -1013,7 +1012,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
      <li>Return <var>promise</var> to the caller.
-     <li>Let <var>mmsMessage</var> be  a new instance of <code>MmsMessage</code> and:
+     <li>Let <var>mmsMessage</var> be a new instance of <code>MmsMessage</code>
+     and:
      <ol>
       <li>Generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
@@ -1026,24 +1026,23 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       the <code>serviceID</code> parameter, if provided, or otherwise to the
       first item in the <code>serviceIDs</code> attribute of the
       <code>MmsManager</code>.
-      <li>Set the <code>from</code> of <em>mmsMessage</em> to the
-      number of the mobile subscription used to send this MMS message.
+      <li>Set the <code>from</code> of <em>mmsMessage</em> to the number of the
+      mobile subscription used to send this MMS message.
       <li>Set the <code>read</code> of <em>mmsMessage</em> to 'true'.
-      <li>Set the <code>to</code> of <em>mmsMessage</em> to the
-      <code>to</code> in the <code>mmsContent</code> parameter.
-      <li>Set the <code>cc</code> of <em>mmsMessage</em> to the
-      <code>cc</code> array in the <code>mmsContent</code> parameter.
+      <li>Set the <code>to</code> of <em>mmsMessage</em> to the <code>to</code>
+      in the <code>mmsContent</code> parameter.
+      <li>Set the <code>cc</code> of <em>mmsMessage</em> to the <code>cc</code>
+      array in the <code>mmsContent</code> parameter.
       <li>Set the <code>bcc</code> of <em>mmsMessage</em> to the
       <code>bcc</code> array in the <code>mmsContent</code> parameter.
-      <li>Set the <code>subject</code> of <em>mmsMessage</em> to the
-      value of the the <code>subject</code> parameter in <code>mmsContent</code>.
-      <li>Set the <code>smil</code> of <em>mmsMessage</em> to the value
-      of the the <code>smil</code> parameter in <code>mmsContent</code>.
-      <li>Set the <code>attachments</code> of <em>mmsMessage</em> to the
-      value of the the <code>attachments</code> array in <code>mmsContent</code>
+      <li>Set the <code>subject</code> of <em>mmsMessage</em> to the value of
+      the the <code>subject</code> parameter in <code>mmsContent</code>.
+      <li>Set the <code>smil</code> of <em>mmsMessage</em> to the value of the
+      the <code>smil</code> parameter in <code>mmsContent</code>.
+      <li>Set the <code>attachments</code> of <em>mmsMessage</em> to the value
+      of the the <code>attachments</code> array in <code>mmsContent</code>
       parameter.
-      <li>Set the <code>state</code> of <em>mmsMessage</em> to
-      'sending'.
+      <li>Set the <code>state</code> of <em>mmsMessage</em> to 'sending'.
       <li>Add a new item in the <code>deliveryInfo</code> attribute of
       <em>mmsMessage</em> for each unique recipient included in the
       <code>to</code>, <code>cc</code> and <code>bcc</code> parameters (i.e. a
@@ -1063,7 +1062,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <ol>
         <li>If a delivery report had been requested set the
         <code>deliveryStatus</code> attribute of the different items in the
-        <code>deliveryInfo</code> array attribute of <em>mmsMessage</em> to 'error'.
+        <code>deliveryInfo</code> array attribute of <em>mmsMessage</em> to
+        'error'.
         <li>invoke <em>resolver</em>'s <a class="internalDFN"
         href="#dfn-reject-algorithm">reject algorithm</a> with <em>error</em> as
         the <code>value</code> argument.
@@ -1117,13 +1117,16 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           notification, i.e. the value of the TP-Service-Centre-Time-Stamp
           (TP-SCTS) parameter received in the SMS-DELIVER Protocol Data Unit
           [[!GSM-SMS]].
-          <li>Set the <code>expiry</code> of <em>mmsMessage</em> to the
-          value of the 'X-Mms-Expiry' field of the MMS notification.
-          <li>Add a new item in the <code>to</code> array of <em>mmsMessage</em> for each of recipients in the 'To' field of the
-          MMS notification [[!MMS13]], if present.
-          <li>Add a new item in the <code>cc</code> array of <em>mmsMessage</em> for each of recipients in the 'Cc' field of the
-          MMS notification [[!MMS13]], if present.
-          <li>Add a new item in the <code>bcc</code> array of <em>mmsMessage</em> for each of recipients in the 'Bcc' field of the
+          <li>Set the <code>expiry</code> of <em>mmsMessage</em> to the value of
+          the 'X-Mms-Expiry' field of the MMS notification.
+          <li>Add a new item in the <code>to</code> array of <em>mmsMessage</em>
+          for each of recipients in the 'To' field of the MMS notification
+          [[!MMS13]], if present.
+          <li>Add a new item in the <code>cc</code> array of <em>mmsMessage</em>
+          for each of recipients in the 'Cc' field of the MMS notification
+          [[!MMS13]], if present.
+          <li>Add a new item in the <code>bcc</code> array of
+          <em>mmsMessage</em> for each of recipients in the 'Bcc' field of the
           MMS notification [[!MMS13]], if present.
           <li>Set the <code>subject</code> attribute to the value of the 'Subject'
           field of the MMS notification [[!MMS13]], if present.
@@ -1158,7 +1161,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
               <li>Set the <code>subject</code> attribute to the value of the 'Subject'
               field of the MMS message [[!MMS13]], if present.
               <li>Set the <code>smil</code> attribute to a <code>DOMString</code>
-              containing the SMIL object of the received MMS message [[!MMS13]], if present.
+              containing the SMIL object of the received MMS message [[!MMS13]],
+              if present.
               <li>For each of the media files attached to the received MMS message add a
               new item to the <code>attachments</code> array with:
               <ol>
