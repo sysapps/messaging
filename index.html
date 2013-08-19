@@ -8,7 +8,7 @@
     <script class="remove">
       var respecConfig = {
           specStatus:           "ED",
-          shortName:            "messaging-api",
+          shortName:            "messaging",
           publishDate:          "",
           previousPublishDate:  "",
           previousMaturity:     "",
@@ -68,7 +68,7 @@ Style guide to contributors:
  
   <body>
 
-<!------------------------------ Abstract ------------------------------------>    
+<!-- - - - - - - - - - - - - - - Abstract  - - - - - - - - - - - - - - - - - -->    
 <section id="abstract">
   This specification defines a System Level API which offers a simple interface
   to get access to mobile messaging services. A typical use case of the
@@ -77,11 +77,11 @@ Style guide to contributors:
   the received SMS and MMS messages.
 </section>
 
-<!----------------------- Status of this document ---------------------------->    
+<!-- - - - - - - - - - - - - - - Status of this document - - - - - - - - - - -->   
 <section id="sotd">
 </section>
     
-<!----------------------------- Introduction --------------------------------->
+<!-- - - - - - - - - - - - - - - Introduction  - - - - - - - - - - - - - - - -->
 <section class="informative">
   <h2>Introduction</h2>
   <p>
@@ -100,7 +100,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   </pre>
 </section>
     
-<!---------------------------- Conformance ----------------------------------->
+<!-- - - - - - - - - - - - - - - Conformance - - - - - - - - - - - - - - - - -->
 <section id="conformance">
   <p>This specification defines conformance criteria that apply to a single
   product: the <dfn>user agent</dfn> that implements the interfaces that it
@@ -112,7 +112,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   specification uses that specification and terminology.
 </section>
     
-<!----------------------------- Terminology ---------------------------------->
+<!-- - - - - - - - - - - - - - - Terminology  - - - - - - - - - - - - - - - -->
 <section>
   <h2>Terminology</h2> <p>The <code><a
   href="http://dev.w3.org/html5/spec/webappapis.html#eventhandler">
@@ -130,16 +130,26 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   id="dfn-eventhandler">event handler</dfn></a> and <a
   href="http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
   <dfn id="dfn-eventtypes"> event handler event types</dfn></a> are defined in
-  [[!HTML5]]. 
+  [[!HTML5]].
+  
+  <p>The <dfn><a href="http://dom.spec.whatwg.org/#promise">Promise</a></dfn>
+  interface, the concepts of a <a href=
+  "http://dom.spec.whatwg.org/#concept-resolver"><dfn>resolver</dfn></a>, a <dfn
+  id="dfn-fulfill-algorithm"><a
+  href="http://dom.spec.whatwg.org/#concept-resolver-fulfill"> resolver's
+  fulfill algorithm</a></dfn> and a <dfn id="dfn-reject-algorithm"><a
+  href="http://dom.spec.whatwg.org/#concept-resolver-reject"> resolver's reject
+  algorithm</a></dfn> are defined in [[DOM4]].</p>
+  
 </section>
 
-<!------------------------ Security and privacy ------------------------------>
+<!-- - - - - - - - - - - - - - - Security and privacy  - - - - - - - - - - - -->
 <section>
       <h2>Security and privacy considerations</h2>
       <p>This API must be only exposed to trusted content
 </section>
 
-<!---------------------- Extended interface Navigator ------------------------>
+<!-- - - - - - - - - - - - - Extended interface Navigator  - - - - - - - - - -->
 <section>
   <h2><a>Navigator</a> Interface</h2>
     <dl title="partial interface Navigator" class="idl">
@@ -150,7 +160,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   </dl>
 </section>
     
-<!------------------------ Interface MessagingManager ------------------------------->
+<!-- - - - - - - - - - - - - Interface MessagingManager  - - - - - - - - - - -->
 <section>
   <h2><a>MessagingManager</a> Interface</h2>
   
@@ -166,11 +176,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     <dt>readonly attribute MmsManager mms</dt> <dd>Provides access to the
     MMS service's specific functionality.</dd>
   
-    <dt> Future findMessages ()</dt> <dd>This method makes a request
+    <dt> Promise findMessages ()</dt> <dd>This method makes a request
     to retrieve the messages matching the filter described by the
     <code>filter</code> parameter and according to the filtering options
     described in the <code>options</code>. It returns a new
-    <code>Future</code> that will be used to notify the caller about
+    <code>Promise</code> that will be used to notify the caller about
     the result of the operation, which is a MessagingCursor to access the set of
     messages.
       <dl class='parameters'>
@@ -184,14 +194,14 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future findConversations ()</dt> <dd>This method makes a
+    <dt> Promise findConversations ()</dt> <dd>This method makes a
     request to retrieve the list of conversations in which the messages can be
     grouped using the criteria defined by the <code>groupBy</code> parameter.
     Only those messages matching the filter described in the <code>filter</code>
     parameter SHALL be included in the resulting conversations, what can be
     useful for instance to filter just a specific type of messages (e.g. SMS) or
     to implement message search in a conversational messaging client. It returns
-    a new <code>Future</code> that will be used to notify the caller
+    a new <code>Promise</code> that will be used to notify the caller
     about the result of the operation, which is a MessagingCursor to access the
     set of conversations.
       <dl class='parameters'>
@@ -212,9 +222,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future getMessage ()</dt> <dd>This method makes a request to
+    <dt> Promise getMessage ()</dt> <dd>This method makes a request to
     retrieve the message identified by the <code>messageID</code> parameter.
-    It returns a new <code>Future</code> object which allows the
+    It returns a new <code>Promise</code> object which allows the
     caller to be notified about the result of the operation.
       <dl class='parameters'>
          <dt>DOMString messageID</dt> <dd>
@@ -223,9 +233,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future deleteMessage ()</dt> <dd>This method requests the
+    <dt> Promise deleteMessage ()</dt> <dd>This method requests the
     deletion of the message with identifier equal to the <code>messageID</code>
-    parameter. A new <code>Future</code> is returned in order to
+    parameter. A new <code>Promise</code> is returned in order to
     notify the request result (success or error) to the caller.
       <dl class='parameters'>
          <dt>DOMString messageID</dt> <dd>
@@ -234,9 +244,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future deleteConversation ()</dt> <dd>This method requests
+    <dt> Promise deleteConversation ()</dt> <dd>This method requests
     the deletion of all the messages in the conversation with identifier equal
-    to the <code>conversationID</code> parameter. A new <code>Future</code> is
+    to the <code>conversationID</code> parameter. A new <code>Promise</code> is
     returned in order to notify the request result (success or error) to the
     caller.
       <dl class='parameters'>
@@ -247,10 +257,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future markMessageRead ()</dt> <dd>This method requests to
+    <dt> Promise markMessageRead ()</dt> <dd>This method requests to
     mark as read or unread the message with identifier equal to the
     <code>messageID</code> parameter. The method returns a new
-    <code>Future</code> that will allow the caller to be notified
+    <code>Promise</code> that will allow the caller to be notified
     about the result (success, error) of the operation.
       <dl class='parameters'>
          <dt>DOMString messageID</dt> <dd>
@@ -265,11 +275,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future markConversationRead ()</dt> <dd>This method
-    requests to mark as read or unread all the messages in the conversation with
-    identifier equal to the <code>conversationID</code> parameter. The method returns a new
-    <code>Future</code> that will allow the caller to be notified
-    about the result (success, error) of the operation.
+    <dt> Promise markConversationRead ()</dt> <dd>This method requests to mark
+    as read or unread all the messages in the conversation with identifier equal
+    to the <code>conversationID</code> parameter. The method returns a new
+    <code>Promise</code> that will allow the caller to be notified about the
+    result (success, error) of the operation.
       <dl class='parameters'>
          <dt>DOMString conversationID</dt> <dd>
            Identifier of the conversation whose messages are requested to be
@@ -290,153 +300,160 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>findMessages</code></dfn>
   method when invoked MUST run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to get the message(s) matching the filter
      included in the <code>filter</code> parameter and according to the
      filtering options described in the <code>options</code> parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messagingCursor</var> be a new <code>MessagingCursor</code>
       object providing access to the results of the retrieval, i.e. the set of
       <code>SmsMessage</code> and/or <code>MmsMessage</code> elements.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messagingCursor</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messagingCursor</em> as the <code>value</code> argument.
     </ol>
    </ol>
      
   <p> The <dfn><code>findConversations</code></dfn> method when invoked MUST
   run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to get the set of conversations in which
      the messages can be grouped, according to the set of participants or the
      subject as indicated in the <code>groupBy</code> parameter, and filtering
      the messages included in those conversations according to the filter
      included in the <code>filter</code> parameter and the filtering options
      described in the <code>options</code> parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messagingCursor</var> be a new <code>MessagingCursor</code>
       object providing access to the results of the retrieval, i.e. the set of
       <code>Conversation</code> elements.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messagingCursor</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messagingCursor</em> as the <code>value</code> argument.
       </ol>
    </ol>
      
   <p> The <dfn><code>getMessage</code></dfn> method when invoked MUST run
   the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to get the message with identifier equal
      to the <code>messageID</code> parameter passed in the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>message</var> be the <code>SmsMessage</code> or
       <code>MmsMessage</code> whose identifier matches the
       <code>messageID</code> parameter.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>message</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>message</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>deleteMessage</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to delete the message with identifier
      equal to the <code>messageID</code> parameter passed in the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messageID</var> be the <code>messageID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messageID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messageID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>deleteConversation</code></dfn> method when invoked MUST
   run the following steps:
     <ol>
-     <li>Make a request to the system to delete the messages in the conversation
-     with identifier equal to the <code>conversationID</code> parameter passed in the
-     request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>Return <var>promise</var> to the caller.
+     <li>Make a request to the system to delete the messages in the conversation
+     with identifier equal to the <code>conversationID</code> parameter passed
+     in the request.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
-      <li>Let <var>conversationID</var> be the <code>conversationID</code> parameter
-      passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>conversationID</var> as <code>value</code> argument.
+      <li>Let <var>conversationID</var> be the <code>conversationID</code>
+      parameter passed in the request
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>conversationID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>markMessageRead</code></dfn> method when invoked MUST run
   the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
-     message with identifier equal to the <code>messageID</code> parameter passed in
-     the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     message with identifier equal to the <code>messageID</code> parameter
+     passed in the request.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>messageID</var> be the <code>messageID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>messageID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>messageID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
   <p> The <dfn><code>markConversationRead</code></dfn> method when invoked
   MUST run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
-     messages in the conversation with identifier equal to the <code>conversationID</code>
-     parameter passed in the request.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     messages in the conversation with identifier equal to the
+     <code>conversationID</code> parameter passed in the request.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
-      <li>Let <var>conversationID</var> be the <code>conversationID</code> parameter
-      passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>conversationID</var> as <code>value</code> argument.
+      <li>Let <var>conversationID</var> be the <code>conversationID</code>
+      parameter passed in the request
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>conversationID</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
@@ -449,7 +466,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 </section>
 
 
-<!------------------------ Interface SmsManager ------------------------------>
+<!-- - - - - - - - - - - - Interface SmsManager  - - - - - - - - - - - - - - -->
 <section>
   <h2><a>SmsManager</a> Interface</h2>
   <p>The <a>SmsManager</a> interface represents the SMS messaging service
@@ -485,11 +502,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
     
-    <dt> Future send ()</dt>
+    <dt> Promise send ()</dt>
     <dd>This method issues a request to the messaging system to send an SMS
     message with the text of the <code>text</code> parameter to the destination
     number indicated in the <code>to</code> parameter.
-    A <code>Future</code> object will be returned in order to notify
+    A <code>Promise</code> object will be returned in order to notify
     the result of the request.
       <dl class='parameters'>
          <dt>DOMString to</dt>
@@ -508,7 +525,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt>Future clear ()</dt>
+    <dt>Promise clear ()</dt>
     <dd>This method makes a request to delete all the messages associated to the
     messaging service passed as parameter.
       <dl class='parameters'>
@@ -568,31 +585,32 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
-     <li>Create a new instance of <code>SmsMessage</code>:
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
+     <li>Let <var>smsMessage</var> be a new instance of <code>SmsMessage</code>:
      <ol>
       <li>Generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier.
-      <li>Set the <code>messageID</code> of the <code>SmsMessage</code> to the
+      <li>Set the <code>messageID</code> of <em>smsMessage</em> to the
       generated identifier.
-      <li>Set the <code>type</code> of the <code>SmsMessage</code> to 'sms'.
-      <li>Set the <code>serviceID</code> of the <code>SmsMessage</code> to the
+      <li>Set the <code>type</code> of <em>smsMessage</em> to 'sms'.
+      <li>Set the <code>serviceID</code> of <em>smsMessage</em> to the
       identifier of the service used to send the message, i.e. the one passed in
       the <code>serviceID</code> parameter, if provided, or otherwise to the
       first item in the <code>serviceIDs</code> attribute of the
       <code>SmsManager</code>.
-      <li>Set the <code>from</code> of the <code>SmsMessage</code> to the
-      number of the mobile subscription used to send this SMS message.
-      <li>Set the <code>read</code> of the <code>SmsMessage</code> to 'true'.
-      <li>Set the <code>to</code> of the <code>SmsMessage</code> to
-      the value of the <code>to</code> parameter.
-      <li>Set the <code>body</code> of the <code>SmsMessage</code> to the value
-      of the <code>text</code> parameter.
-      <li>Set the <code>messageClass</code> of the <code>SmsMessage</code> to
-      'class1'.
-      <li>Set the <code>state</code> of the <code>SmsMessage</code> to
-      'sending'.
-      <li>Set the <code>deliveryStatus</code> of the <code>SmsMessage</code> to
+      <li>Set the <code>from</code> of <em>smsMessage</em> to the number of the
+      mobile subscription used to send this SMS message.
+      <li>Set the <code>read</code> of <em>smsMessage</em> to 'true'.
+      <li>Set the <code>to</code> of <em>smsMessage</em> to the value of the
+      <code>to</code> parameter.
+      <li>Set the <code>body</code> of <em>smsMessage</em> to the value of the
+      <code>text</code> parameter.
+      <li>Set the <code>messageClass</code> of <em>smsMessage</em> to 'class1'.
+      <li>Set the <code>state</code> of <em>smsMessage</em> to 'sending'.
+      <li>Set the <code>deliveryStatus</code> of <em>smsMessage</em> to
       'pending' if a delivery report has been requested or to 'not-applicable'
       otherwise.
       <li>Make a request to the system to send an SMS message with text passed
@@ -601,28 +619,26 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       described above.
       <li><a>Queue a task</a> to monitor SMS submission process.
      </ol>
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
      <li>If an <var>error</var> occurs run these substeps and terminate these
      steps
       <ol>
         <li>If a delivery report had been requested set the
-        <code>deliveryStatus</code> of the <code>SmsMessage</code> to 'error'.
-        <li>call <var>resolver</var>'s <code>reject(value)</code>method with
-        <var>error</var> as <code>value</code> argument.
+        <code>deliveryStatus</code> of <em>smsMessage</em> to 'error'.
+        <li>invoke <em>resolver</em>'s <a class="internalDFN"
+        href="#dfn-reject-algorithm">reject algorithm</a> with <em>error</em> as
+        the <code>value</code> argument.
      </ol>
      <li>When the request has been successfully completed:
      <ol>
-      <li>Set the <code>state</code> of the <code>SmsMessage</code> to 'sent'.
-      <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
+      <li>Set the <code>state</code> of <em>smsMessage</em> to 'sent'.
+      <li>Set the <code>timestamp</code> of <em>smsMessage</em> to the
       device's date when the SMS message was sent, i.e. when the SMS-SUBMIT
       Protocol Data Unit was sent.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      the sent <code>SmsMessage</code> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>smsMessage</em> as the <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
-      with the <code>message</code> attribute set to the sent
-      <code>SmsMessage</code>.
+      with the <code>message</code> attribute set to <em>smsMessage</em>.
     </ol>
    </ol>
 
@@ -655,52 +671,53 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 
   <p>Upon a new SMS message being received, the <a>user agent</a> MUST:
     <ol>
-      <li>Create a new instance of <code>SmsMessage</code>.
+      <li>Let <var>smsMessage</var> be a new instance of <code>SmsMessage</code>.
       <li>Generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier.
-      <li>Set the <code>messageID</code> of the <code>SmsMessage</code> to the
+      <li>Set the <code>messageID</code> of <em>smsMessage</em> to the
       generated identifier.
-      <li>Set the <code>type</code> of the <code>SmsMessage</code> to 'sms'.
-      <li>Set the <code>serviceID</code> of the <code>SmsMessage</code> to the
+      <li>Set the <code>type</code> of <em>smsMessage</em> to 'sms'.
+      <li>Set the <code>serviceID</code> of <em>smsMessage</em> to the
       identifier of the service at which the message has been received.
-      <li>Set the <code>from</code> of the <code>SmsMessage</code> to the
+      <li>Set the <code>from</code> of <em>smsMessage</em> to the
       sender of the SMS message, i.e. the value of the TP Originating Address
       (TP-OA) field of the SMS message [[!GSM-SMS]].
-      <li>Set the <code>timestamp</code> of the <code>SmsMessage</code> to the
+      <li>Set the <code>timestamp</code> of <em>smsMessage</em> to the
       timestamp of the SMS message, i.e. the value of the
       TP-Service-Centre-Time-Stamp (TP-SCTS) parameter received in the SMS
       DELIVER Protocol Data Unit [[!GSM-SMS]].
-      <li>Set the <code>read</code> of the <code>SmsMessage</code> to 'false'.
-      <li>Set the <code>to</code> of the <code>SmsMessage</code> to the
-      recipient of the SMS message, i.e. the value of the TP Destination
-      Address (TP-DA) field of the SMS message [[!GSM-SMS]].
-      <li>Set the <code>messageClass</code> of the <code>SmsMessage</code> to
-      the message class indicated in the TP-Data-Coding-Scheme (TP-DCS) field of
+      <li>Set the <code>read</code> of <em>smsMessage</em> to 'false'.
+      <li>Set the <code>to</code> of <em>smsMessage</em> to the recipient of the
+      SMS message, i.e. the value of the TP Destination Address (TP-DA) field of
       the SMS message [[!GSM-SMS]].
+      <li>Set the <code>messageClass</code> of <em>smsMessage</em> to the
+      message class indicated in the TP-Data-Coding-Scheme (TP-DCS) field of the
+      SMS message [[!GSM-SMS]].
       <li>Set the <code>body</code> element to the text of the received SMS
       message, i.e. the value of the SM element contained within the TP User
       Data (TP-UD) field of the SMS message [[!GSM-SMS]].
-      <li>Set the <code>state</code> of the <code>SmsMessage</code> to
+      <li>Set the <code>state</code> of <em>smsMessage</em> to
       'received'.
-      <li>Set the <code>deliveryStatus</code> of the <code>SmsMessage</code> to
+      <li>Set the <code>deliveryStatus</code> of <em>smsMessage</em> to
       'not-applicable'.
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
-      to the newly created <code>SmsMessage</code> instance.
+      to <em>smsMessage</em>.
       <li><a>Queue a task</a> to fire a system message named
       <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
-      <code>message</code> attribute set to the newly created
-      <code>SmsMessage</code> instance.
+      <code>message</code> attribute set to <em>smsMessage</em>.
     </ol>
 
   <p>Upon a delivery report of a previously sent SMS message being received, the
   <a>user agent</a> MUST
     <ol>
-      <li>Set the <code>deliveryStatus</code> parameter of the
-      <code>SmsMessage</code> to 'success' or 'error' depending on the reported
+      <li>Let <var>smsMessage</var> be the instance of <code>SmsMessage</code>
+      to which this delivery report is related.
+      <li>Set the <code>deliveryStatus</code> parameter of <em>smsMessage</em>
+      to 'success' or 'error' depending on the reported
       result.
-      <li>Set the <code>deliveryTimestamp</code> of the <code>SmsMessage</code>
+      <li>Set the <code>deliveryTimestamp</code> of <em>smsMessage</em>
       to the delivery time of the SMS message, i.e. the TP-Discharge-Time (TP
       DT) parameter included in the SMS-STATUS-REPORT Protocol Data Unit
       [[!GSM-SMS]].
@@ -708,12 +725,12 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
         <ol>
-          <li>the <code>messageID</code> attribute set to the identifier of the
-          <code>SmsMessage</code> to which this confirmation is related,
-          <li>the <code>serviceID</code> attribute set to the identifier of the
-      service used to send such message, and
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>smsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>smsMessage</em>,
           <li>the first item in the <code>recipients</code> attribute set to the
-          recipient of such message.
+          <code>to</code> attribute of <em>smsMessage</em>, and
           <li>the first item in the <code>deliveryTimestamps</code> attribute set
           to delivery time of such message.
         </ol>
@@ -722,12 +739,12 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <a>deliveryfailure</a> respectively if the delivery was successfull or
       not, with
         <ol>
-          <li>the <code>messageID</code> attribute set to the identifier of the
-          <code>SmsMessage</code> to which this confirmation is related,
-          <li>the <code>serviceID</code> attribute set to the identifier of the
-      service used to send such message, and
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>smsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>smsMessage</em>, and
           <li>the first item in the <code>recipients</code> attribute set to the
-          recipient of such message.
+          <code>to</code> attribute of <em>smsMessage</em>.
           <li>the first item in the <code>deliveryTimestamps</code> attribute set
           to delivery time of such message.
         </ol>
@@ -736,21 +753,22 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>clear</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>Make a request to the system to delete all the messages associated to
      the messaging service with identifier equal to the <code>serviceID</code>
      parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>serviceID</var> be the <code>serviceID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>serviceID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>serviceID</em> as the <code>value</code> argument.
     </ol>
    </ol>
   </section>
@@ -817,7 +835,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 </section>
 
 
-<!------------------------ Interface SmsSegmentInfo -------------------------->
+<!-- - - - - - - - - - - - Interface SmsSegmentInfo  - - - - - - - - - - - - -->
 <section>
   <h2><a>SmsSegmentInfo</a> Dictionary</h2>
   <p>The <a>SmsSegmentInfo</a> dictionary contains information about the
@@ -845,7 +863,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
 </section>    
     
 
-<!------------------------ Interface MmsManager ------------------------------>    
+<!-- - - - - - - - - - - - Interface MmsManager  - - - - - - - - - - - - - - -->   
 <section>
   <h2><a>MmsManager</a> Interface</h2>
   <p>The <a>MmsManager</a> interface represents the MMS messaging service
@@ -892,11 +910,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
    
-    <dt> Future send ()</dt>
+    <dt> Promise send ()</dt>
     <dd>This method issues a request to the messaging system to send an MMS
     message with the content and recipients included in the
     <code>mmsContent</code> parameter.
-    A <code>Future</code> object will be returned in order to notify the result
+    A <code>Promise</code> object will be returned in order to notify the result
     of the request.
     <dl class='parameters'>
          <dt>MmsContent mmsContent</dt>
@@ -911,11 +929,12 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt> Future fetch ()</dt>
+    <dt> Promise fetch ()</dt>
     <dd>This method requests to fetch an MMS message with identifier equal to
-    the indicated in the <code>messageID</code> parameter from the URL indicated in the
-    MMS notification. The method returns a new <code>Future</code> that will
-    allow the caller to be notified about the result (success, error) of the
+    the indicated in the <code>messageID</code> parameter from the URL indicated
+    in the MMS notification. The method returns a new <code>Promise</code> that
+    will allow the caller to be notified about the result (success, error) of
+    the
     operation.
       <dl class='parameters'>
          <dt>DOMString messageID</dt>
@@ -925,7 +944,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      </dl>
     </dd>
 
-    <dt>Future clear ()</dt>
+    <dt>Promise clear ()</dt>
     <dd>This method makes a request to delete all the messages associated to the
     messaging service passed as parameter.
       <dl class='parameters'>
@@ -990,39 +1009,42 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
   following steps:
     <ol>
-     <li>Create a new instance of <code>MmsMessage</code> and:
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
+     <li>Let <var>mmsMessage</var> be a new instance of <code>MmsMessage</code>
+     and:
      <ol>
       <li>Generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier.
-      <li>Set the <code>messageID</code> of the <code>MmsMessage</code> to the
+      <li>Set the <code>messageID</code> of <em>mmsMessage</em> to the
       generated identifier.
-      <li>Set the <code>type</code> of the <code>MmsMessage</code> to 'mms'.
-      <li>Set the <code>serviceID</code> of the <code>MmsMessage</code> to the
+      <li>Set the <code>type</code> of <em>mmsMessage</em> to 'mms'.
+      <li>Set the <code>serviceID</code> of <em>mmsMessage</em> to the
       identifier of the service used to send the message, i.e. the one passed in
       the <code>serviceID</code> parameter, if provided, or otherwise to the
       first item in the <code>serviceIDs</code> attribute of the
       <code>MmsManager</code>.
-      <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
-      number of the mobile subscription used to send this MMS message.
-      <li>Set the <code>read</code> of the <code>MmsMessage</code> to 'true'.
-      <li>Set the <code>to</code> of the <code>MmsMessage</code> to the
-      <code>to</code> in the <code>mmsContent</code> parameter.
-      <li>Set the <code>cc</code> of the <code>MmsMessage</code> to the
-      <code>cc</code> array in the <code>mmsContent</code> parameter.
-      <li>Set the <code>bcc</code> of the <code>MmsMessage</code> to the
+      <li>Set the <code>from</code> of <em>mmsMessage</em> to the number of the
+      mobile subscription used to send this MMS message.
+      <li>Set the <code>read</code> of <em>mmsMessage</em> to 'true'.
+      <li>Set the <code>to</code> of <em>mmsMessage</em> to the <code>to</code>
+      in the <code>mmsContent</code> parameter.
+      <li>Set the <code>cc</code> of <em>mmsMessage</em> to the <code>cc</code>
+      array in the <code>mmsContent</code> parameter.
+      <li>Set the <code>bcc</code> of <em>mmsMessage</em> to the
       <code>bcc</code> array in the <code>mmsContent</code> parameter.
-      <li>Set the <code>subject</code> of the <code>MmsMessage</code> to the
-      value of the the <code>subject</code> parameter in <code>mmsContent</code>.
-      <li>Set the <code>smil</code> of the <code>MmsMessage</code> to the value
-      of the the <code>smil</code> parameter in <code>mmsContent</code>.
-      <li>Set the <code>attachments</code> of the <code>MmsMessage</code> to the
-      value of the the <code>attachments</code> array in <code>mmsContent</code>
+      <li>Set the <code>subject</code> of <em>mmsMessage</em> to the value of
+      the the <code>subject</code> parameter in <code>mmsContent</code>.
+      <li>Set the <code>smil</code> of <em>mmsMessage</em> to the value of the
+      the <code>smil</code> parameter in <code>mmsContent</code>.
+      <li>Set the <code>attachments</code> of <em>mmsMessage</em> to the value
+      of the the <code>attachments</code> array in <code>mmsContent</code>
       parameter.
-      <li>Set the <code>state</code> of the <code>MmsMessage</code> to
-      'sending'.
-      <li>Add a new item in the <code>deliveryInfo</code> attribute of the
-      <code>MmsMessage</code> for each unique recipient included in the
+      <li>Set the <code>state</code> of <em>mmsMessage</em> to 'sending'.
+      <li>Add a new item in the <code>deliveryInfo</code> attribute of
+      <em>mmsMessage</em> for each unique recipient included in the
       <code>to</code>, <code>cc</code> and <code>bcc</code> parameters (i.e. a
       single item if the same address has multiple ocurrences across these
       parameters), with the <code>recipient</code> attribute set to this
@@ -1035,30 +1057,29 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       above.
       <li><a>Queue a task</a> to monitor MMS sending progress.
      </ol>
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
      <li>If an <var>error</var> occurs run these substeps and terminate these
      steps
       <ol>
         <li>If a delivery report had been requested set the
         <code>deliveryStatus</code> attribute of the different items in the
-        <code>deliveryInfo</code> array attribute of the
-        <code>MmsMessage</code> to 'error'.
-        <li>call <var>resolver</var>'s <code>reject(value)</code>method with
-        <var>error</var> as <code>value</code> argument.
+        <code>deliveryInfo</code> array attribute of <em>mmsMessage</em> to
+        'error'.
+        <li>invoke <em>resolver</em>'s <a class="internalDFN"
+        href="#dfn-reject-algorithm">reject algorithm</a> with <em>error</em> as
+        the <code>value</code> argument.
      </ol>
      <li>When the request has been successfully completed:
      <ol>
-      <li>Set the <code>state</code> of the <code>MmsMessage</code> to 'sent'.
-      <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to the
+      <li>Set the <code>state</code> of <em>mmsMessage</em> to 'sent'.
+      <li>Set the <code>timestamp</code> of <em>mmsMessage</em> to the
       device's date when the MMS message was sent, i.e. the date when the
       M-Send.req Protocol Data Unit was sent by the MMS Client.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      the sent <code>MmsMessage</code> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>mmsMessage</em> as the <code>value</code> argument.
       <li><a>Queue a task</a> to <a>fire an event</a> named
-      <code>sent</code> with the <code>message</code> attribute set to the sent
-      <code>MmsMessage</code>.
+      <code>sent</code> with the <code>message</code> attribute set to
+      <em>mmsMessage</em>.
      </ol>
     </ol>        
 
@@ -1073,43 +1094,43 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <p>Upon a new MMS notification being received, the <a>user agent</a>
   MUST:
     <ol>
-      <li>Create a new instance of <code>MmsMessage</code>.
+      <li>Let <var>mmsMessage</var> be a new instance of <code>MmsMessage</code>.
       <li>Generate a identifier for this message that is globally unique within
       the implementation, i.e. there cannot be any other message with the same
       identifier.
-      <li>Set the <code>messageID</code> of the <code>MmsMessage</code> to the
+      <li>Set the <code>messageID</code> of <em>mmsMessage</em> to the
       generated identifier.
-      <li>Set the <code>type</code> of the <code>MmsMessage</code> to 'mms'.
-      <li>Set the <code>serviceID</code> of the <code>MmsMessage</code> to the
+      <li>Set the <code>type</code> of <em>mmsMessage</em> to 'mms'.
+      <li>Set the <code>serviceID</code> of <em>mmsMessage</em> to the
       identifier of the service at which the message has been received.
-      <li>Set the <code>read</code> of the <code>MmsMessage</code> to 'false'.
+      <li>Set the <code>read</code> of <em>mmsMessage</em> to 'false'.
       <li>if the fetch mode is <a class="internalDFN"
       href="#idl-def-FetchMode.manual">manual</a>, <a class="internalDFN"
       href="#idl-def-FetchMode.never">never</a> or the device is not in the home
       network and the the fetch mode is <a class="internalDFN"
       href="#idl-def-FetchMode.automatic-home">automatic-home</a>: 
         <ol>
-          <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
+          <li>Set the <code>from</code> of <em>mmsMessage</em> to the
           value of the 'From' field of the MMS notification, if present.
-          <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to
+          <li>Set the <code>timestamp</code> of <em>mmsMessage</em> to
           the timestamp of the binary SMS message used to transport the MMS
           notification, i.e. the value of the TP-Service-Centre-Time-Stamp
           (TP-SCTS) parameter received in the SMS-DELIVER Protocol Data Unit
           [[!GSM-SMS]].
-          <li>Set the <code>expiry</code> of the <code>MmsMessage</code> to the
-          value of the 'X-Mms-Expiry' field of the MMS notification.
-          <li>Add a new item in the <code>to</code> array of the
-          <code>MmsMessage</code> for each of recipients in the 'To' field of the
-          MMS notification [[!MMS13]], if present.
-          <li>Add a new item in the <code>cc</code> array of the
-          <code>MmsMessage</code> for each of recipients in the 'Cc' field of the
-          MMS notification [[!MMS13]], if present.
-          <li>Add a new item in the <code>bcc</code> array of the
-          <code>MmsMessage</code> for each of recipients in the 'Bcc' field of the
+          <li>Set the <code>expiry</code> of <em>mmsMessage</em> to the value of
+          the 'X-Mms-Expiry' field of the MMS notification.
+          <li>Add a new item in the <code>to</code> array of <em>mmsMessage</em>
+          for each of recipients in the 'To' field of the MMS notification
+          [[!MMS13]], if present.
+          <li>Add a new item in the <code>cc</code> array of <em>mmsMessage</em>
+          for each of recipients in the 'Cc' field of the MMS notification
+          [[!MMS13]], if present.
+          <li>Add a new item in the <code>bcc</code> array of
+          <em>mmsMessage</em> for each of recipients in the 'Bcc' field of the
           MMS notification [[!MMS13]], if present.
           <li>Set the <code>subject</code> attribute to the value of the 'Subject'
           field of the MMS notification [[!MMS13]], if present.
-          <li>Set the <code>state</code> of the <code>MmsMessage</code> to
+          <li>Set the <code>state</code> of <em>mmsMessage</em> to
           'not-downloaded'.
         </ol>
       <li>if the fetch mode is otherwise <a class="internalDFN"
@@ -1124,23 +1145,24 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           <code>MmsMessage</code> object with the data contained in the MMS
           message enclosed in the M-Retrieve.conf Protocol Data Unit</dfn>.  
           <ol>
-              <li>Set the <code>from</code> of the <code>MmsMessage</code> to the
+              <li>Set the <code>from</code> of <em>mmsMessage</em> to the
               value of the 'From' field of the MMS message [[!MMS13]].
-              <li>Set the <code>timestamp</code> of the <code>MmsMessage</code> to
+              <li>Set the <code>timestamp</code> of <em>mmsMessage</em> to
               the value of the 'Date' field of the MMS message [[!MMS13]].
-              <li>Add a new item in the <code>to</code> array of the
-              <code>MmsMessage</code> for each of recipients in the 'To' field of the
-              MMS message [[!MMS13]], if present.
-              <li>Add a new item in the <code>cc</code> array of the
-              <code>MmsMessage</code> for each of recipients in the 'Cc' field of the
-              MMS message [[!MMS13]], if present.
-              <li>Add a new item in the <code>bcc</code> array of the
-              <code>MmsMessage</code> for each of recipients in the 'Bcc' field of the
-              MMS message [[!MMS13]], if present.
+              <li>Add a new item in the <code>to</code> array of
+              <em>mmsMessage</em> for each of recipients in the 'To' field of
+              the MMS message [[!MMS13]], if present.
+              <li>Add a new item in the <code>cc</code> array of
+              <em>mmsMessage</em> for each of recipients in the 'Cc' field of
+              the MMS message [[!MMS13]], if present.
+              <li>Add a new item in the <code>bcc</code> array of
+              <em>mmsMessage</em> for each of recipients in the 'Bcc' field of
+              the MMS message [[!MMS13]], if present.
               <li>Set the <code>subject</code> attribute to the value of the 'Subject'
               field of the MMS message [[!MMS13]], if present.
               <li>Set the <code>smil</code> attribute to a <code>DOMString</code>
-              containing the SMIL object of the received MMS message [[!MMS13]], if present.
+              containing the SMIL object of the received MMS message [[!MMS13]],
+              if present.
               <li>For each of the media files attached to the received MMS message add a
               new item to the <code>attachments</code> array with:
               <ol>
@@ -1158,10 +1180,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
                 the incoming MMS message [[!MMS13]], if present.
               </ol>
           </ol>
-          <li>Set the <code>state</code> of the <code>MmsMessage</code> to
+          <li>Set the <code>state</code> of <em>mmsMessage</em> to
           'received'.
           <li>Add a new item in the <code>deliveryInfo</code> array attribute of
-          the <code>MmsMessage</code> for each unique recipient included in the
+          <em>mmsMessage</em> for each unique recipient included in the
           'To', 'Cc' and 'Bcc' fields (i.e. a single item if the same address
           has multiple ocurrences across these parameters), with the
           <code>recipient</code> attribute set to this recipient's address and
@@ -1169,11 +1191,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
         </ol>
       <li><a>Queue a task</a> to <a>fire an event</a> named
       <code><a>received</a></code> with the <code>message</code> attribute set
-      to the newly created <code>MmsMessage</code> instance.
+      to <em>mmsMessage</em>.
       <li><a>Queue a task</a> to fire a system message named
       <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
-      <code>message</code> attribute set to the newly created
-      <code>MmsMessage</code> instance.
+      <code>message</code> attribute set to <em>mmsMessage</em>.
     </ol>
     </ol>    
     
@@ -1183,26 +1204,26 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
    class="internalDFN" href="#idl-def-FetchMode.manual">manual</a>. When this
    method is invoked the User Agent MUST run the following steps:
     <ol>
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
      <li>If the <code>messageID</code> parameter passed in the request matches
      with an MMS message that has already been fetched, or to an SMS message go
-     to next step, otherwise set the <code>state</code> of the
-     <code>MmsMessage</code> to 'fetching' and make a request to the system to
-     fetch the MMS message.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
-     <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     to next step, otherwise let <var>mmsMessage</var> the message with
+     <code>messageID</code> attribute equal to the <code>messageID</code>
+     parameter and set the <code>state</code> of <em>mmsMessage</em> to
+     'fetching' and make a request to the system to fetch the MMS message.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Run the <a class="internalDFN" href="#dfn-fill-mms-message">steps for
       filling the MmsMessage object with the data contained in the MMS
       message</a>.
-      <li>Let <var>message</var> be the <code>MmsMessage</code> that has been
-      fetched.
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>message</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>mmsMessage</em> as the <code>value</code> argument.
     </ol>
    </ol>
 
@@ -1234,8 +1255,10 @@ function onMessageReceived(message) {
   <p>Upon a delivery report of a previously sent MMS message being received, the
   <a>user agent</a> MUST
     <ol>
+      <li>Let <var>mmsMessage</var> be the instance of <code>MmsMessage</code>
+      to which this delivery report is related.
       <li>For each of the items in the <code>deliveryInfo</code> array
-      attribute of the <code>MmsMessage</code> whose <code>recipient</code>
+      attribute of <em>mmsMessage</em> whose <code>recipient</code>
       attribute matches one of the recipients of the MMS to which the delivery
       report is related,  
         <ol>
@@ -1256,12 +1279,13 @@ function onMessageReceived(message) {
       <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
       delivery was successfull or not, with
         <ol>
-          <li>the <code>messageID</code> attribute set to the identifier of the
-          <code>MmsMessage</code> to which this confirmation is related,
-          <li>the <code>serviceID</code> attribute set to the identifier of the
-          service used to send such message, and
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>mmsMessage</em>,
           <li>the <code>recipients</code> attribute set to the subset of the
-          original recipients to which this delivery report is related, and
+          original recipients of <em>mmsMessage</em>to which this delivery
+          report is related, and
           <li>in case of successful delivery, with each of the items in the
           <code>deliveryTimestamps</code> attribute set to the delivery time of
           the MMS message to the corresponding recipient, i.e. that in the
@@ -1272,12 +1296,13 @@ function onMessageReceived(message) {
       <a>deliveryfailure</a> respectively if the delivery was successfull or
       not, with
         <ol>
-          <li>the <code>messageID</code> attribute set to the identifier of the
-          <code>MmsMessage</code> to which this confirmation is related,
-          <li>the <code>serviceID</code> attribute set to the identifier of the
-          service used to send such message, and
-          <li>the <code>recipients</code> attribute set to the recipient of such
-          message, and
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>recipients</code> attribute set to the subset of the
+          original recipients of <em>mmsMessage</em>to which this delivery
+          report is related, and
           <li>in case of successful delivery, with each of the items in the
           <code>deliveryTimestamps</code> attribute set to the delivery time of
           the MMS message to the corresponding recipient, i.e. that in the
@@ -1291,18 +1316,19 @@ function onMessageReceived(message) {
      <li>Make a request to the system to delete all the messages associated to
      the messaging service with identifier equal to the <code>serviceID</code>
      parameter.
-     <li>Let <var>future</var> be a new <code>Future</code> object and
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
-     <li>Return <var>future</var> to the caller.
-     <li>If an <var>error</var> occurs call <var>resolver</var>'s
-     <code>reject(value)</code>method with <var>error</var> as
-     <code>value</code> argument.
+     <li>Return <var>promise</var> to the caller.
+     <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
+     class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
+     <em>error</em> as the <code>value</code> argument.
      <li>When the request has been successfully completed:
      <ol>
       <li>Let <var>serviceID</var> be the <code>serviceID</code> parameter
       passed in the request
-      <li>Call <var>resolver</var>'s <code>accept(value)</code>method with
-      <var>serviceID</var> as <code>value</code> argument.
+      <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+      href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+      <em>serviceID</em> as the <code>value</code> argument.
     </ol>
    </ol>
   </section>
@@ -1369,7 +1395,7 @@ function onMessageReceived(message) {
 </section>    
     
 
-<!------------------------ Interface SmsMessage ------------------------------>
+<!-- - - - - - - - - - - - Interface SmsMessage  - - - - - - - - - - - - - - -->
 <section>
   <h2><a>SmsMessage</a> Interface</h2>
   <p>The <a>SmsMessage</a> interface represents an SMS message as defined in
@@ -1430,7 +1456,7 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Interface MmsMessage ------------------------------>
+<!-- - - - - - - - - - - - Interface MmsMessage  - - - - - - - - - - - - - - -->
 <section>
   <h2><a>MmsMessage</a> Interface</h2>
   <p>The <a>MmsMessage</a> interface represents an MMS message, as defined in 
@@ -1503,7 +1529,7 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Dictionary MmsContent ----------------------------->
+<!-- - - - - - - - - - - - Dictionary MmsContent - - - - - - - - - - - - - - -->
 <section>
   <h2><a>MmsContent</a> Dictionary</h2>
   <dl title="dictionary MmsContent" class="idl">
@@ -1539,7 +1565,7 @@ function onMessageReceived(message) {
 </section>
 
     
-<!------------------------ Dictionary MmsAttachment -------------------------->
+<!-- - - - - - - - - - - - Dictionary MmsAttachment  - - - - - - - - - - - - -->
 <section>
   <h2><a>MmsAttachment</a> Dictionary</h2>
   <dl title="dictionary MmsAttachment" class="idl">
@@ -1566,7 +1592,7 @@ function onMessageReceived(message) {
   </dl>    
 </section>
     
-<!------------------------ Dictionary MmsDeliveryInfo -------------------->
+<!-- - - - - - - - - - - - Dictionary MmsDeliveryInfo  - - - - - - - - - - - -->
 <section>
   <h2><a>MmsDeliveryInfo</a> Dictionary</h2>
   <dl title="dictionary MmsDeliveryInfo" class="idl">
@@ -1586,7 +1612,7 @@ function onMessageReceived(message) {
   </dl>    
 </section>
     
-<!------------------------ Interface Conversation ---------------------------->
+<!-- - - - - - - - - - - - Interface Conversation  - - - - - - - - - - - - - -->
 <section>
   <h2><a>Conversation</a> Interface</h2>
   <p>The <a>Conversation</a> interface represents a set of messages that are
@@ -1637,14 +1663,14 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Interface MessagingCursor ------------------------->
+<!-- - - - - - - - - - - - Interface MessagingCursor - - - - - - - - - - - - -->
 <section>
   <h2><a>MessagingCursor</a> Interface</h2>
   <p>The <a>MessagingCursor</a> interface allows to iterate through a list of
   <code>Conversation</code> elements or of messages (<code>SmsMessage</code>
   and/or <code>MmsMessage</code> elements).</p>
   <p>A <a>MessagingCursor</a> always has, an <dfn>associated request</dfn> which
-  is the <a>Future</a> that created it.</p>
+  is the <a>Promise</a> that created it.</p>
   <p>As soon as the <a>MessagingCursor</a> is <dfn>accessing an element</dfn>,
   it MUST put its <a>associated request</a> in the 'processing'
   <code>readyState</code>, and set the <code>result</code> to null. Then, the UA
@@ -1680,7 +1706,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface ReceivedMessage ------------------------->
+<!-- - - - - - - - - - - - Interface ReceivedMessage - - - - - - - - - - - - -->
 <section>
   <h2><a>ReceivedMessage</a> Interface</h2>
   <p>The <a>ReceivedMessage</a> interface represents a system message related to
@@ -1700,7 +1726,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface DeliveryReport -------------------------->
+<!-- - - - - - - - - - - - Interface DeliveryReport  - - - - - - - - - - - - -->
 <section>
   <h2><a>DeliveryReport</a> Interface</h2>
   <p>The <a>DeliveryReport</a> interface represents a system message related to
@@ -1739,7 +1765,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface MessagingEvent -------------------------->
+<!-- - - - - - - - - - - - Interface MessagingEvent  - - - - - - - - - - - - -->
 <section>
   <h2><a>MessagingEvent</a> Interface</h2>
   <p>The <a>MessagingEvent</a> interface represents events related to a message
@@ -1753,7 +1779,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface DeliveryReportEvent ------------------>
+<!-- - - - - - - - - - - - Interface DeliveryReportEvent - - - - - - - - - - -->
 <section>
   <h2><a>DeliveryReportEvent</a> Interface</h2>
   <p>The <a>DeliveryReportEvent</a> interface represents events related
@@ -1786,7 +1812,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Interface ServiceChangeEvent ---------------------->
+<!-- - - - - - - - - - - - Interface ServiceChangeEvent  - - - - - - - - - - -->
 <section>
   <h2><a>ServiceChangeEvent</a> Interface</h2>
   <p>The <a>ServiceChangeEvent</a> interface represents events related to
@@ -1800,7 +1826,7 @@ function onMessageReceived(message) {
 </section>
 
 
-<!------------------------ Dictionary MessagingFilter ------------------------>
+<!-- - - - - - - - - - - - Dictionary MessagingFilter  - - - - - - - - - - - -->
 <section>
   <h2><a>MessagingFilter</a> Dictionary</h2>
   <p>The <a>MessagingFilter</a> Dictionary represents a filter that is used to
@@ -1846,7 +1872,7 @@ function onMessageReceived(message) {
   </dl>
 </section>
 
-<!------------------------ Dictionary FilterOptions -------------------------->
+<!-- - - - - - - - - - - - Dictionary FilterOptions  - - - - - - - - - - - - -->
 <section>
   <h2><a>FilterOptions</a> Dictionary</h2>
   <dl title="dictionary FilterOptions" class="idl">
@@ -1864,7 +1890,7 @@ function onMessageReceived(message) {
   </dl>    
 </section>
 
-<!------------------------ Interface Enumerations ---------------------------->
+<!-- - - - - - - - - - - - Interface Enumerations  - - - - - - - - - - - - - -->
   <section>
     <h2>Enumerations</h2>
 
@@ -2037,7 +2063,7 @@ function onMessageReceived(message) {
     </section>
   
   
-<!------------------------ Acknowledgements ---------------------------------->
+<!-- - - - - - - - - - - - Acknowledgements  - - - - - - - - - - - - - - - - -->
 <section>
   <h2>Acknowledgements</h2>
   <p>The editors would like to express their gratitude to the Mozilla B2G Team
