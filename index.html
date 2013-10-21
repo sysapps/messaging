@@ -1596,19 +1596,30 @@ function onMessageReceived(message) {
 <section>
   <h2><a>MmsDeliveryInfo</a> Dictionary</h2>
   <dl title="dictionary MmsDeliveryInfo" class="idl">
-    <dt>DeliveryStatus deliveryStatus</dt>
-    <dd>
-    The delivery status of the MMS message to a specific recipient.
-    </dd>
     <dt>DOMString recipient</dt>
     <dd>
     The recipient of the MMS to which the delivery status is related.
+    </dd>
+    <dt>DeliveryStatus deliveryStatus</dt>
+    <dd>
+    The delivery status of the MMS message to a specific recipient.
     </dd>
     <dt>Date deliveryTimestamp</dt>
     <dd>The time the message was delivered to the recipient, i.e. the 'Date'
     field in the M-Delivery.ind Protocol Data Unit [[!MMS13]]. It is not
     provided if there is no positive knowledge about the delivery of the
-    message.</dd>
+    message.
+    </dd>
+    <dt>ReadStatus readStatus</dt>
+    <dd>
+    The read status of the MMS message to a specific recipient.
+    </dd>
+    <dt>Date readTimestamp</dt>
+    <dd>The time the message was read by the recipient, i.e. the 'Date'
+    field in the M-Read-Orig.ind Protocol Data Unit [[!MMS13]]. It is not
+    provided if there is no positive knowledge about the delivery of the
+    message.
+    </dd>
   </dl>    
 </section>
     
@@ -2028,6 +2039,31 @@ function onMessageReceived(message) {
               The delivery status is not applicable either because a delivery
               report has not been requested or because the message is an inbound
               message
+          </dd>
+    </dl>
+
+    <p>The attibute <code>readStatus</code> can have the following values:
+    <dl class="idl" title="enum ReadStatus">
+          <dt>success</dt>
+          <dd>
+              The message has been read by the recipient.
+          </dd>
+
+          <dt>pending</dt>
+          <dd>
+              There is no positive knowledge that the message has been read by
+              the recipient.
+          </dd>
+
+          <dt>error</dt>
+          <dd>
+              The delivery of the message has failed.
+          </dd>
+
+          <dt>not-applicable</dt>
+          <dd>
+              The read status is not applicable either because a read report has
+              not been requested or because the message is an inbound message
           </dd>
     </dl>
 
