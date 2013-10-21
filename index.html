@@ -557,9 +557,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
-      attribute EventHandler ondeliveryfailure
+      attribute EventHandler ondeliveryerror
     </dt>
-    <dd>Handles the <code>deliveryfailure</code> event of type
+    <dd>Handles the <code>deliveryerror</code> event of type
     <a>DeliveryReportEvent</a>, fired when a new failure delivery
     report is received on this messaging service manager.</dd>
 
@@ -722,7 +722,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       DT) parameter included in the SMS-STATUS-REPORT Protocol Data Unit
       [[!GSM-SMS]].
       <li><a>Queue a task</a> to <a>fire an event</a> named
-      <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
+      <a>deliverysuccess</a> or <a>deliveryerror</a> respectively if the
       delivery was successfull or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
@@ -736,7 +736,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
       <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
-      <a>deliveryfailure</a> respectively if the delivery was successfull or
+      <a>deliveryerror</a> respectively if the delivery was successfull or
       not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
@@ -809,8 +809,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           <td>handles successful delivery reports</td>
         </tr>
         <tr>
-          <td><strong><code>ondeliveryfailure</code></strong></td>
-          <td><code><dfn>deliveryfailure</dfn></code></td>
+          <td><strong><code>ondeliveryerror</code></strong></td>
+          <td><code><dfn>deliveryerror</dfn></code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles failure delivery reports</td>
         </tr>
@@ -976,11 +976,25 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
-      attribute EventHandler ondeliveryfailure
+      attribute EventHandler ondeliveryerror
     </dt>
-    <dd>Handles the <code>deliveryfailure</code> event of type
+    <dd>Handles the <code>deliveryerror</code> event of type
     <a>DeliveryReportEvent</a>, fired when a new failure delivery
     report is received on this messaging service manager.</dd>
+
+    <dt class="no-docs">
+      attribute EventHandler onreadsuccess
+    </dt>
+    <dd>Handles the <code>readsuccess</code> event of type
+    <a>ReadReportEvent</a>, fired when a new succesful read report is
+    received on this messaging service manager.</dd>
+
+    <dt class="no-docs">
+      attribute EventHandler onreaderror
+    </dt>
+    <dd>Handles the <code>readerror</code> event of type
+    <a>ReadReportEvent</a>, fired when a new failure read report is received
+    on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onserviceadded
@@ -1268,7 +1282,7 @@ function onMessageReceived(message) {
               value of the X-Mms-Status element in the M-Delivery.ind Protocol
               Data Unit [[!MMS13]] is 'Retrieved', or
               <li>to 'error', in case of failed delivery, i.e. if the value of
-              the X-Mms-Status element in the the M-Delivery.ind Protocol Data
+              the X-Mms-Status element in the M-Delivery.ind Protocol Data
               Unit [[!MMS13]] is 'Expired', 'Rejected' or 'Unreachable'.
             </ol>
           <li>set its <code>deliveryTimestamp</code> attribute to the delivery
@@ -1276,7 +1290,7 @@ function onMessageReceived(message) {
           [[!MMS13]], in case of successful delivery.
         </ol>
       <li><a>Queue a task</a> to <a>fire an event</a> named
-      <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
+      <a>deliverysuccess</a> or <a>deliveryerror</a> respectively if the
       delivery was successfull or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
@@ -1292,8 +1306,8 @@ function onMessageReceived(message) {
           same position of the <code>recipients</code> array.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
-      <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
-      <a>deliveryfailure</a> respectively if the delivery was successfull or
+      <code><a>DeliveryReport</a></code> named <a>deliverysuccess</a> or
+      <a>deliveryerror</a> respectively if the delivery was successfull or
       not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
@@ -1306,6 +1320,63 @@ function onMessageReceived(message) {
           <li>in case of successful delivery, with each of the items in the
           <code>deliveryTimestamps</code> attribute set to the delivery time of
           the MMS message to the corresponding recipient, i.e. that in the
+          same position of the <code>recipients</code> array.
+        </ol>
+    </ol>
+
+  <p>Upon a read report of a previously sent MMS message being received, the
+  <a>user agent</a> MUST
+    <ol>
+      <li>Let <var>mmsMessage</var> be the instance of <code>MmsMessage</code>
+      to which this read report is related.
+      <li>For each of the items in the <code>deliveryInfo</code> array
+      attribute of <em>mmsMessage</em> whose <code>recipient</code>
+      attribute matches one of the recipients of the MMS to which the read
+      report is related,  
+        <ol>
+          <li>set its <code>readStatus</code> attribute:
+            <ol>
+              <li>to 'success', in case the message has been read, i.e. if the
+              value of the X-Mms-Read-Status element in the M-Read-Orig.ind
+              Protocol Data Unit [[!MMS13]] is 'Read', or
+              <li>to 'error', in case the message has been deleted without being
+              read, i.e. if the value of the X-Mms-Status element in the
+              M-Read-Orig.ind Protocol Data Unit [[!MMS13]] is 'Deleted without
+              being read'.
+            </ol>
+          <li>set its <code>readTimestamp</code> attribute to the read
+          time, i.e. the 'Date' field in the M-Read-Orig.ind Protocol Data Unit
+          [[!MMS13]], in case the message has been read.
+        </ol>
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a>readsuccess</a>
+      or <a>readerror</a> respectively if the message has been read or not, with
+        <ol>
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>recipients</code> attribute set to the subset of the
+          original recipients of <em>mmsMessage</em>to which this read
+          report is related, and
+          <li>in case the message has been read, with each of the items in the
+          <code>readTimestamps</code> attribute set to the read time of
+          the MMS message by the corresponding recipient, i.e. that in the
+          same position of the <code>recipients</code> array.
+        </ol>
+      <li><a>Queue a task</a> to fire a system message of type
+      <code><a>ReadReport</a></code> named <a>readsuccess</a> or
+      <a>readerror</a> respectively if the message has been read or not, with
+        <ol>
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>recipients</code> attribute set to the subset of the
+          original recipients of <em>mmsMessage</em>to which this read
+          report is related, and
+          <li>in case the message has been read, with each of the items in the
+          <code>readTimestamps</code> attribute set to the read time of
+          the MMS message by the corresponding recipient, i.e. that in the
           same position of the <code>recipients</code> array.
         </ol>
     </ol>
@@ -1369,10 +1440,22 @@ function onMessageReceived(message) {
           <td>handles successful delivery reports</td>
         </tr>
         <tr>
-          <td><strong><code>ondeliveryfailure</code></strong></td>
-          <td><code><dfn>deliveryfailure</dfn></code></td>
+          <td><strong><code>ondeliveryerror</code></strong></td>
+          <td><code><dfn>deliveryerror</dfn></code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles failure delivery reports</td>
+        </tr>
+        <tr>
+          <td><strong><code>onreadsuccess</code></strong></td>
+          <td><code><dfn>readsuccess</dfn></code></td>
+          <td><a><code>ReadReportEvent</code></a></td>
+          <td>handles successful read reports</td>
+        </tr>
+        <tr>
+          <td><strong><code>onreaderror</code></strong></td>
+          <td><code><dfn>readerror</dfn></code></td>
+          <td><a><code>ReadReportEvent</code></a></td>
+          <td>handles failure read reports</td>
         </tr>
         <tr>
           <td><strong><code>onserviceadded</code></strong></td>
@@ -1757,7 +1840,7 @@ function onMessageReceived(message) {
     <dd>MUST return the identifier of the message to which this delivery
     report is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
-    <dd>MUST return an array contining the addresses of the subset of the
+    <dd>MUST return an array containing the addresses of the subset of the
     original recipients of the message to which this delivery report is
     related. As delivery reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
@@ -1796,7 +1879,7 @@ function onMessageReceived(message) {
     <dd>MUST return the identifier of the message to which this read
     report is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
-    <dd>MUST return an array contining the addresses of the subset of the
+    <dd>MUST return an array containing the addresses of the subset of the
     original recipients of the message to which this read report is
     related. As read reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
@@ -1840,7 +1923,7 @@ function onMessageReceived(message) {
     <dd>MUST return the identifier of the message to which this delivery
     report event is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
-    <dd>MUST return an array contining the addresses of the subset of the
+    <dd>MUST return an array containing the addresses of the subset of the
     original recipients of the message to which this delivery report event is
     related. As delivery reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
@@ -1873,7 +1956,7 @@ function onMessageReceived(message) {
     <dd>MUST return the identifier of the message to which this read
     report event is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
-    <dd>MUST return an array contining the addresses of the subset of the
+    <dd>MUST return an array containing the addresses of the subset of the
     original recipients of the message to which this read report event is
     related. As read reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
