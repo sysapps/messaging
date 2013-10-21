@@ -1776,6 +1776,42 @@ function onMessageReceived(message) {
 </section>
 
 
+<!-- - - - - - - - - - - - Interface ReadReport  - - - - - - - - - - - - -->
+<section>
+  <h2><a>ReadReport</a> Interface</h2>
+  <p>The <a>ReadReport</a> interface represents a system message related to
+  a read report of a sent MMS message. This event is originated from the system
+  and will start the application if it is not currently running. 
+
+  <p>The application that consumes this API MAY set a message handler for the
+  <code>ReadReport</code> system message to listen for when a system
+  message related to a received read report is fired.
+
+  <dl title="interface ReadReport"
+      class="idl">
+    <dt>readonly attribute DOMString serviceID</dt>
+    <dd>MUST return the identifier of the service used to send the message to
+    which this read report is related.</dd>
+    <dt>readonly attribute DOMString messageID</dt>
+    <dd>MUST return the identifier of the message to which this read
+    report is related.</dd>
+    <dt>readonly attribute DOMString[] recipients</dt>
+    <dd>MUST return an array contining the addresses of the subset of the
+    original recipients of the message to which this read report is
+    related. As read reports related to just part of the recipients of the
+    MMS message are possible, this array may not contain the full list of
+    recipients to which the MMS message was sent.
+    </dd>
+    <dt>readonly attribute Date[]? readTimestamps</dt>
+    <dd>MUST return an array containing the read dates by each of the
+    recipients to which this read report event relates. Each element in the
+    array refers to the recipient in the same position of the
+    <code>recipients</code> array.
+    </dd>
+  </dl>
+</section>
+
+
 <!-- - - - - - - - - - - - Interface MessagingEvent  - - - - - - - - - - - - -->
 <section>
   <h2><a>MessagingEvent</a> Interface</h2>
