@@ -921,10 +921,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
          <dd>
            Content and recipients of the MMS message to be sent.
          </dd>
-         <dt>optional DOMString serviceID</dt>
+         <dt>optional MmsSendParameters sendParameters</dt>
          <dd>
-           Identifier of the service through which the message is requested to
-           be sent.
+           Set of parameters related to the submission of the message (e.g.
+           request of delivery/read report or not).
          </dd>
      </dl>
     </dd>
@@ -1477,6 +1477,22 @@ function onMessageReceived(message) {
 
 </section>    
     
+<!-- - - - - - - - - - - - Dictionary MmsSendParameters- - - - - - - - - - - -->
+<section>
+  <h2><a>MmsSendParameters</a> Dictionary</h2>
+  <dl title="dictionary MmsSendParameters" class="idl">
+    <dt>optional DOMString serviceID</dt>
+    <dd>Identifier of the service through which the message is requested to be
+    sent. </dd>
+
+    <dt>boolean requestDeliveryReport</dt>
+    <dd>Flag to indicate whether a delivery report is requested. </dd>
+
+    <dt>boolean requestReadReport</dt>
+    <dd>Flag to indicate whether a read report is requested. </dd>
+
+  </dl>    
+</section>
 
 <!-- - - - - - - - - - - - Interface SmsMessage  - - - - - - - - - - - - - - -->
 <section>
