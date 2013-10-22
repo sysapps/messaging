@@ -1037,9 +1037,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>type</code> of <em>mmsMessage</em> to 'mms'.
       <li>Set the <code>serviceID</code> of <em>mmsMessage</em> to the
       identifier of the service used to send the message, i.e. the one passed in
-      the <code>serviceID</code> parameter, if provided, or otherwise to the
-      first item in the <code>serviceIDs</code> attribute of the
-      <code>MmsManager</code>.
+      the <code>serviceID</code> parameter in <code>MmsSendParameters</code>, if
+      provided, or otherwise to the first item in the <code>serviceIDs</code>
+      attribute of the <code>MmsManager</code>.
       <li>Set the <code>from</code> of <em>mmsMessage</em> to the number of the
       mobile subscription used to send this MMS message.
       <li>Set the <code>read</code> of <em>mmsMessage</em> to 'true'.
@@ -1062,13 +1062,14 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <code>to</code>, <code>cc</code> and <code>bcc</code> parameters (i.e. a
       single item if the same address has multiple ocurrences across these
       parameters), with the <code>recipient</code> attribute set to this
-      recipient's address and the <code>deliveryStatus</code> attribute set to
+      recipient's address, with the <code>deliveryStatus</code> attribute set to
       'pending', if a delivery report has been requested, or 'not-applicable'
-      otherwise.
+      otherwise and with the <code>readStatus</code> attribute set to 'pending',
+      if a read report has been requested, or 'not-applicable' otherwise.
       <li>Make a request to the system to send an MMS message with the content
       passed in the <code>content</code> parameter to the number(s) of indicated
       in the <code>to</code> parameter, using the proper service as described
-      above.
+      above and asking for delivery and/or read report if requested.
       <li><a>Queue a task</a> to monitor MMS sending progress.
      </ol>
      <li>If an <var>error</var> occurs run these substeps and terminate these
