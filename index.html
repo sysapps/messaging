@@ -1197,6 +1197,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
                 Content-Location used to reference this attachment from the SMIL object in
                 the incoming MMS message [[!MMS13]], if present.
               </ol>
+              <li>Set the <code>readReportRequested</code> attribute to 'true'
+              if the 'X-Mms-Read-Report' field is present in the incoming MMS
+              message [[!MMS13]] and has the value 'Yes', and to 'false'
+              otherwise.
           </ol>
           <li>Set the <code>state</code> of <em>mmsMessage</em> to
           'received'.
@@ -1635,6 +1639,10 @@ function onMessageReceived(message) {
     <dd>MUST return an array with each of the items indicating the delivery
     status and, if applicable, the delivery time to each of the recipients of the
     message.</dd>
+
+    <dt>readonly attribute boolean? readReportRequested</dt>
+    <dd>MUST return true in case the originator of a received message requested
+    a read report and false otherwise. MUST return null for sent messages.</dd>
 
   </dl>
 </section>
