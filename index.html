@@ -26,7 +26,6 @@
           inlineCSS:    true,
           noIDLIn:      true,
           noIDLSorting: true,
-          extraCSS:     ["../ReSpec.js/css/respec.css"],
           wg:           "System Applications Working Group",
           wgURI:        "http://www.w3.org/2012/sysapps/",
           wgPublicList: "public-sysapps",
@@ -582,8 +581,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <section>
   <h3>Steps</h3>
   
-  <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
-  following steps:
+  <p> The <code>send</code> method when invoked MUST run the following steps:
     <ol>
      <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
@@ -637,8 +635,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Invoke <em>resolver</em>'s <a class="internalDFN"
       href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
       <em>smsMessage</em> as the <code>value</code> argument.
-      <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
-      with the <code>message</code> attribute set to <em>smsMessage</em>.
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN" href="#dfn-sms-sent-event"><code>sent</code></a> with
+      the <code>message</code> attribute set to <em>smsMessage</em>.
     </ol>
    </ol>
 
@@ -701,9 +700,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       'received'.
       <li>Set the <code>deliveryStatus</code> of <em>smsMessage</em> to
       'not-applicable'.
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <code><a>received</a></code> with the <code>message</code> attribute set
-      to <em>smsMessage</em>.
+      <li><a>Queue a task</a> to <a>fire an event</a> named <code><a
+      class="internalDFN" href="#dfn-sms-received-event">received</a></code>
+      with the <code>message</code> attribute set to <em>smsMessage</em>.
       <li><a>Queue a task</a> to fire a system message named
       <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
       <code>message</code> attribute set to <em>smsMessage</em>.
@@ -721,9 +720,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       to the delivery time of the SMS message, i.e. the TP-Discharge-Time (TP
       DT) parameter included in the SMS-STATUS-REPORT Protocol Data Unit
       [[!GSM-SMS]].
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <a>deliverysuccess</a> or <a>deliveryerror</a> respectively if the
-      delivery was successfull or not, with
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN"
+      href="#dfn-sms-deliverysuccess-event">deliverysuccess</a> or <a
+      class="internalDFN" href="#dfn-sms-deliveryerror-event">deliveryerror</a>
+      respectively if the delivery was successfull or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
           <code>messageID</code> attribute of <em>smsMessage</em>,
@@ -735,7 +736,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           to delivery time of such message.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
-      <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
+      <code><a>DeliveryReport</a></code>named <code>deliverysuccess</code> or
       <a>deliveryerror</a> respectively if the delivery was successfull or
       not, with
         <ol>
@@ -750,8 +751,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
         </ol>
     </ol>
   
-  <p> The <dfn><code>clear</code></dfn> method when invoked MUST run the
-  following steps:
+  <p> The <code>clear</code> method when invoked MUST run the following steps:
     <ol>
      <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
@@ -792,38 +792,42 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <tbody>
         <tr>
           <td><strong><code>onreceived</code></strong></td>
-          <td><code><dfn>received</dfn></code></td>
+          <td><code><dfn id="dfn-sms-received-event">received</dfn></code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles received messages</td>
         </tr>
         <tr>
           <td><strong><code>onsent</code></strong></td>
-          <td><code><dfn>sent</dfn></code></td>
+          <td><code><dfn id="dfn-sms-sent-event">sent</dfn></code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles sent messages</td>
         </tr>
         <tr>
           <td><strong><code>ondeliverysuccess</code></strong></td>
-          <td><code><dfn>deliverysuccess</dfn></code></td>
+          <td><code><dfn
+          id="dfn-sms-deliverysuccess-event">deliverysuccess</dfn></code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles successful delivery reports</td>
         </tr>
         <tr>
           <td><strong><code>ondeliveryerror</code></strong></td>
-          <td><code><dfn>deliveryerror</dfn></code></td>
+          <td><code><dfn
+          id="dfn-sms-deliveryerror-event">deliveryerror</dfn></code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles failure delivery reports</td>
         </tr>
         <tr>
           <td><strong><code>onserviceadded</code></strong></td>
-          <td><code><dfn>serviceadded</dfn></code></td>
+          <td><code><dfn
+          id="dfn-sms-serviceadded-event">serviceadded</dfn></code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle new messaging services</td>
           </td>
         </tr>
         <tr>
           <td><strong><code>onserviceremoved</code></strong></td>
-          <td><code><dfn>serviceremoved</dfn></code></td>
+          <td><code><dfn
+          id="dfn-sms-serviceremoved-event">serviceremoved</dfn></code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle disabled messaging services</td>
           </td>
@@ -1020,8 +1024,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <section>
   <h3>Steps</h3>        
     
-  <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
-  following steps:
+  <p> The <code>send</code> method when invoked MUST run the following steps:
     <ol>
      <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
@@ -1092,9 +1095,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Invoke <em>resolver</em>'s <a class="internalDFN"
       href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
       <em>mmsMessage</em> as the <code>value</code> argument.
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <code>sent</code> with the <code>message</code> attribute set to
-      <em>mmsMessage</em>.
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN" href="#dfn-mms-sent-event"><code>sent</code></a> with
+      the <code>message</code> attribute set to <em>mmsMessage</em>.
      </ol>
     </ol>        
 
@@ -1205,7 +1208,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           the <code>deliveryStatus</code> attribute set to 'not-applicable'.
         </ol>
       <li><a>Queue a task</a> to <a>fire an event</a> named
-      <code><a>received</a></code> with the <code>message</code> attribute set
+      <code><a class="internalDFN" href="#dfn-mms-received-event">received</a></code> with the <code>message</code> attribute set
       to <em>mmsMessage</em>.
       <li><a>Queue a task</a> to fire a system message named
       <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
@@ -1290,9 +1293,11 @@ function onMessageReceived(message) {
           time, i.e. the 'Date' field in the M-Delivery.ind Protocol Data Unit
           [[!MMS13]], in case of successful delivery.
         </ol>
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <a>deliverysuccess</a> or <a>deliveryerror</a> respectively if the
-      delivery was successfull or not, with
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN"
+      href="#dfn-mms-deliverysuccess-event">deliverysuccess</a> or <a
+      class="internalDFN" href="#dfn-mms-deliveryerror-event">deliveryerror</a>
+      respectively if the delivery was successfull or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
           <code>messageID</code> attribute of <em>mmsMessage</em>,
@@ -1307,8 +1312,8 @@ function onMessageReceived(message) {
           same position of the <code>recipients</code> array.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
-      <code><a>DeliveryReport</a></code> named <a>deliverysuccess</a> or
-      <a>deliveryerror</a> respectively if the delivery was successfull or
+      <code><a>DeliveryReport</a></code> named <code>deliverysuccess</code> or
+      <code>deliveryerror</code> respectively if the delivery was successfull or
       not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
@@ -1349,8 +1354,10 @@ function onMessageReceived(message) {
           time, i.e. the 'Date' field in the M-Read-Orig.ind Protocol Data Unit
           [[!MMS13]], in case the message has been read.
         </ol>
-      <li><a>Queue a task</a> to <a>fire an event</a> named <a>readsuccess</a>
-      or <a>readerror</a> respectively if the message has been read or not, with
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN" href="#dfn-mms-readsuccess-event">readsuccess</a> or
+      <a class="internalDFN" href="#dfn-mms-readerror-event">readerror</a>
+      respectively if the message has been read or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
           <code>messageID</code> attribute of <em>mmsMessage</em>,
@@ -1365,8 +1372,8 @@ function onMessageReceived(message) {
           same position of the <code>recipients</code> array.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
-      <code><a>ReadReport</a></code> named <a>readsuccess</a> or
-      <a>readerror</a> respectively if the message has been read or not, with
+      <code><a>ReadReport</a></code> named <code>readsuccess</code> or
+      <code>readerror</code> respectively if the message has been read or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
           <code>messageID</code> attribute of <em>mmsMessage</em>,
@@ -1382,8 +1389,7 @@ function onMessageReceived(message) {
         </ol>
     </ol>
 
-  <p> The <dfn><code>clear</code></dfn> method when invoked MUST run the
-  following steps:
+  <p> The <code>clear</code> method when invoked MUST run the following steps:
     <ol>
      <li>Make a request to the system to delete all the messages associated to
      the messaging service with identifier equal to the <code>serviceID</code>
@@ -1424,50 +1430,54 @@ function onMessageReceived(message) {
       <tbody>
         <tr>
           <td><strong><code>onreceived</code></strong></td>
-          <td><code><dfn>received</dfn></code></td>
+          <td><code id="dfn-mms-received-event">received</code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles received messages</td>
         </tr>
         <tr>
           <td><strong><code>onsent</code></strong></td>
-          <td><code><dfn>sent</dfn></code></td>
+          <td><code id="dfn-mms-sent-event">sent</code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles sent messages</td>
         </tr>
         <tr>
           <td><strong><code>ondeliverysuccess</code></strong></td>
-          <td><code><dfn>deliverysuccess</dfn></code></td>
+          <td><code
+          id="dfn-mms-deliverysuccess-event">deliverysuccess</code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles successful delivery reports</td>
         </tr>
         <tr>
           <td><strong><code>ondeliveryerror</code></strong></td>
-          <td><code><dfn>deliveryerror</dfn></code></td>
+          <td><code
+          id="dfn-mms-deliveryerror-event">deliveryerror</code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles failure delivery reports</td>
         </tr>
         <tr>
           <td><strong><code>onreadsuccess</code></strong></td>
-          <td><code><dfn>readsuccess</dfn></code></td>
+          <td><code id="dfn-mms-readsuccess-event">readsuccess</code></td>
           <td><a><code>ReadReportEvent</code></a></td>
           <td>handles successful read reports</td>
         </tr>
         <tr>
           <td><strong><code>onreaderror</code></strong></td>
-          <td><code><dfn>readerror</dfn></code></td>
+          <td><code id="dfn-mms-readerror-event">readerror</code></td>
           <td><a><code>ReadReportEvent</code></a></td>
-          <td>handles failure read reports</td>
+          <td>handles failure read reports</td> 
         </tr>
         <tr>
           <td><strong><code>onserviceadded</code></strong></td>
-          <td><code><dfn>serviceadded</dfn></code></td>
+          <td><code
+          id="dfn-mms-serviceadded-event">serviceadded</code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle new messaging services</td>
           </td>
         </tr>
         <tr>
           <td><strong><code>onserviceremoved</code></strong></td>
-          <td><code><dfn>serviceremoved</dfn></code></td>
+          <td><code
+          id="dfn-mms-serviceremoved-event">serviceremoved</code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle disabled messaging services</td>
           </td>
