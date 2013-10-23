@@ -266,10 +266,15 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
            Identifier of the message that is requested to be marked as
            read or unread
          </dd>
-         <dt>optional boolean value = true</dt>
+         <dt>boolean value</dt>
          <dd>
-          Indicates whether the message is to be marked as read ('true',
-          which is the default) or unread ('false')
+          Indicates whether the message is to be marked as read ('true') or
+          unread ('false')
+         </dd>
+         <dt>optional boolean sendReadReport value = false</dt>
+         <dd>
+          Indicates that, in case a Read Report was requested, it is to be sent
+          ('true') or not ('false', which is the default)
          </dd>
      </dl>
     </dd>
@@ -284,10 +289,16 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
            Identifier of the conversation whose messages are requested to be
            marked as read or unread
          </dd>
-         <dt>optional boolean value = true</dt>
+         <dt>boolean value</dt>
          <dd>
           Indicates whether the messages in the conversation are to be marked as
-          read ('true', which is the default) or unread ('false')
+          read ('true') or unread ('false')
+         </dd>
+         <dt>optional boolean sendReadReport value = false</dt>
+         <dd>
+          Indicates that, in case a Read Report was requested for any MMS
+          message in the conversation, a Read Report is to be sent ('true') or
+          not ('false', which is the default)
          </dd>
      </dl>
     </dd>
@@ -419,7 +430,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
      message with identifier equal to the <code>messageID</code> parameter
-     passed in the request.
+     passed in the request, and to send a Read Report if
+     <code>sendReadReport</code> is set to 'true'.
      <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
      class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
      <em>error</em> as the <code>value</code> argument.
@@ -442,7 +454,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
      messages in the conversation with identifier equal to the
-     <code>conversationID</code> parameter passed in the request.
+     <code>conversationID</code> parameter passed in the request, and in case
+     <code>sendReadReport</code> is set to 'true', to send a Read Report for
+     each of the MMS messages for which it was requested.
      <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
      class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
      <em>error</em> as the <code>value</code> argument.
