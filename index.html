@@ -496,12 +496,13 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     identifier of the different services for this type of messaging service
     (e.g. 'sms_sim1').</dd>
 
-    <dt> SmsSegmentInfo segmentInfo ()</dt>
-    <dd>This method returns an <code>SmsSegmentInfo</code> object including
-    information on the number of concatenated SMS segments needed to send the
-    text in the <code>text</code> parameter, the number of characters available
-    per segment and the maximum number of available characters in the last
-    segment.
+    <dt> Promise segmentInfo ()</dt>
+    <dd>This method issues a request to get information on the number of
+    concatenated SMS segments needed to send the text in the <code>text</code>
+    parameter, the number of characters available per segment and the maximum
+    number of available characters in the last segment.
+    A <code>Promise</code> object will be returned in order to notify
+    the result of the request.
       <dl class='parameters'>
          <dt>DOMString text</dt>
          <dd>
@@ -655,33 +656,58 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     </ol>
    </ol>
 
-  <p> The <dfn><code>segmentInfo</code></dfn> method when invoked MUST
-  return a <code>SmsSegmentInfo</code> object that contains the following
-  elements:
+  <p> The <dfn><code>segmentInfo</code></dfn> method when invoked MUST run the
+  following steps:
     <ol>
-     <li>A <code>segments</code> element indicating the number of concatenated
-     SMS segments needed to send the text passed in the <code>text</code>
-     parameter using the service with identifier equal to the one passed in the
+     <li>Let <var>promise</var> be a new <code>Promise</code> object and
+     <var>resolver</var> its associated <code>resolver</code>
+     <li>Return <var>promise</var> to the caller.
+     <li>Let <var>smsSegmentInfo</var> be a new instance of
+     <code>SmsSegmentInfo</code>.
+     <li>Make a request to the system to calculate the segmentation information
+     related to the sending as SMS the text passed in the <code>text</code>
+     parameter, using the service with identifier equal to the one passed in the
      <code>serviceID</code> parameter, if provided, or otherwise to the first
      item in the <code>serviceIDs</code> attribute of the
-     <code>SmsManager</code>. Note that the application SHOULD NOT split the
-     text in a set of strings that fit each into a single SMS segment as it
-     would result in different independent SMS messages being sent, but SHOULD
-     instead send the full message in a single <code>sendSMS</code> request.
-     However having information on the number of SMS segments may be required by
-     the application in order to inform the user (e.g. in case the length of the
-     text impacts on the price charged for sending the message).
-     <li>A <code>charsPerSegment</code> element indicating the number of
-     characters available per SMS segment. This number depends on the encoding
-     to be used to send the SMS message, which in turn depends on the language /
-     special characters included in the text. 
-     <li>A <code>charsAvailableInLastSegment</code> element indicating the
-     maximum number of available characters in the last segment that would be
-     needed to send the input string. This provides useful information to the user
-     on the number of characters that can type without requiring an additional
-     SMS segment to send the text.
+     <code>SmsManager</code>.
+     <li><a>Queue a task</a> to monitor the calculation process.
+     <li>If an <var>error</var> occurs run these substeps and terminate these
+     steps
+      <ol>
+        <li>invoke <em>resolver</em>'s <a class="internalDFN"
+        href="#dfn-reject-algorithm">reject algorithm</a> with <em>error</em> as
+        the <code>value</code> argument.
+     </ol>
+     <li>When the request has been successfully completed:
+       <ol>
+        <li>Set the <code>segments</code> of <em>smsSegmentInfo</em> to the
+        number of concatenated SMS segments needed to send the provided text.
+        <li>Set the <code>charsPerSegment</code> of <em>smsSegmentInfo</em> to
+        the number of characters available per SMS segment. This number depends
+        on the encoding to be used to send the SMS message, which in turn
+        depends on the language / special characters included in the text. 
+        <li>Set the <code>charsAvailableInLastSegment</code> of
+        <em>smsSegmentInfo</em> to the maximum number of available characters in
+        the last segment that would be needed to send the input string. This
+        provides useful information to the user on the number of characters that
+        can type without requiring an additional SMS segment to send the text.
+        <li>Invoke <em>resolver</em>'s <a class="internalDFN"
+        href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
+        <em>smsSegmentInfo</em> as the <code>value</code> argument.
+      </ol>
    </ol>
 
+   <p>Note that the application that has invoked the <code>segmentInfo</code>
+   method SHOULD NOT split the text in a set of strings that fit each into a
+   single SMS segment and send each of them by an independent call to the
+   <code>sendSMS</code> method as it would result in different independent SMS
+   messages being sent, but SHOULD instead send the full message in a single
+   <code>sendSMS</code> request. However having information on the number of SMS
+   segments may be required by the application in order to inform the user (e.g.
+   in case the length of the text impacts on the price charged for sending the
+   message).
+   
+   
   <p>Upon a new SMS message being received, the <a>user agent</a> MUST:
     <ol>
       <li>Let <var>smsMessage</var> be a new instance of <code>SmsMessage</code>.
