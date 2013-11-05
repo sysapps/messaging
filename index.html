@@ -26,7 +26,6 @@
           inlineCSS:    true,
           noIDLIn:      true,
           noIDLSorting: true,
-          extraCSS:     ["../ReSpec.js/css/respec.css"],
           wg:           "System Applications Working Group",
           wgURI:        "http://www.w3.org/2012/sysapps/",
           wgPublicList: "public-sysapps",
@@ -267,10 +266,15 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
            Identifier of the message that is requested to be marked as
            read or unread
          </dd>
-         <dt>optional boolean value = true</dt>
+         <dt>boolean value</dt>
          <dd>
-          Indicates whether the message is to be marked as read ('true',
-          which is the default) or unread ('false')
+          Indicates whether the message is to be marked as read ('true') or
+          unread ('false')
+         </dd>
+         <dt>optional boolean sendReadReport = false</dt>
+         <dd>
+          Indicates that, in case a Read Report was requested, it is to be sent
+          ('true') or not ('false', which is the default)
          </dd>
      </dl>
     </dd>
@@ -285,10 +289,16 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
            Identifier of the conversation whose messages are requested to be
            marked as read or unread
          </dd>
-         <dt>optional boolean value = true</dt>
+         <dt>boolean value</dt>
          <dd>
           Indicates whether the messages in the conversation are to be marked as
-          read ('true', which is the default) or unread ('false')
+          read ('true') or unread ('false')
+         </dd>
+         <dt>optional boolean sendReadReport = false</dt>
+         <dd>
+          Indicates that, in case a Read Report was requested for any MMS
+          message in the conversation, a Read Report is to be sent ('true') or
+          not ('false', which is the default)
          </dd>
      </dl>
     </dd>
@@ -420,7 +430,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
      message with identifier equal to the <code>messageID</code> parameter
-     passed in the request.
+     passed in the request, and to send a Read Report if
+     <code>sendReadReport</code> is set to 'true'.
      <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
      class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
      <em>error</em> as the <code>value</code> argument.
@@ -443,7 +454,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
      <li>Make a request to the system to mark as read/unread (depending on the
      <code>value</code> parameter being respectively 'true' or 'false') the
      messages in the conversation with identifier equal to the
-     <code>conversationID</code> parameter passed in the request.
+     <code>conversationID</code> parameter passed in the request, and in case
+     <code>sendReadReport</code> is set to 'true', to send a Read Report for
+     each of the MMS messages for which it was requested.
      <li>If an <var>error</var> occurs invoke <em>resolver</em>'s <a
      class="internalDFN" href="#dfn-reject-algorithm">reject algorithm</a> with
      <em>error</em> as the <code>value</code> argument.
@@ -557,9 +570,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
-      attribute EventHandler ondeliveryfailure
+      attribute EventHandler ondeliveryerror
     </dt>
-    <dd>Handles the <code>deliveryfailure</code> event of type
+    <dd>Handles the <code>deliveryerror</code> event of type
     <a>DeliveryReportEvent</a>, fired when a new failure delivery
     report is received on this messaging service manager.</dd>
 
@@ -582,8 +595,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <section>
   <h3>Steps</h3>
   
-  <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
-  following steps:
+  <p> The <code>send</code> method when invoked MUST run the following steps:
     <ol>
      <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
@@ -637,8 +649,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Invoke <em>resolver</em>'s <a class="internalDFN"
       href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
       <em>smsMessage</em> as the <code>value</code> argument.
-      <li><a>Queue a task</a> to <a>fire an event</a> named <code>sent</code>
-      with the <code>message</code> attribute set to <em>smsMessage</em>.
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN" href="#dfn-sms-sent-event"><code>sent</code></a> with
+      the <code>message</code> attribute set to <em>smsMessage</em>.
     </ol>
    </ol>
 
@@ -701,9 +714,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       'received'.
       <li>Set the <code>deliveryStatus</code> of <em>smsMessage</em> to
       'not-applicable'.
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <code><a>received</a></code> with the <code>message</code> attribute set
-      to <em>smsMessage</em>.
+      <li><a>Queue a task</a> to <a>fire an event</a> named <code><a
+      class="internalDFN" href="#dfn-sms-received-event">received</a></code>
+      with the <code>message</code> attribute set to <em>smsMessage</em>.
       <li><a>Queue a task</a> to fire a system message named
       <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
       <code>message</code> attribute set to <em>smsMessage</em>.
@@ -721,9 +734,11 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       to the delivery time of the SMS message, i.e. the TP-Discharge-Time (TP
       DT) parameter included in the SMS-STATUS-REPORT Protocol Data Unit
       [[!GSM-SMS]].
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
-      delivery was successfull or not, with
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN"
+      href="#dfn-sms-deliverysuccess-event">deliverysuccess</a> or <a
+      class="internalDFN" href="#dfn-sms-deliveryerror-event">deliveryerror</a>
+      respectively if the delivery was successfull or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
           <code>messageID</code> attribute of <em>smsMessage</em>,
@@ -735,8 +750,8 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           to delivery time of such message.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
-      <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
-      <a>deliveryfailure</a> respectively if the delivery was successfull or
+      <code><a>DeliveryReport</a></code>named <code>deliverysuccess</code> or
+      <a>deliveryerror</a> respectively if the delivery was successfull or
       not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
@@ -750,8 +765,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
         </ol>
     </ol>
   
-  <p> The <dfn><code>clear</code></dfn> method when invoked MUST run the
-  following steps:
+  <p> The <code>clear</code> method when invoked MUST run the following steps:
     <ol>
      <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
@@ -792,38 +806,42 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <tbody>
         <tr>
           <td><strong><code>onreceived</code></strong></td>
-          <td><code><dfn>received</dfn></code></td>
+          <td><code><dfn id="dfn-sms-received-event">received</dfn></code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles received messages</td>
         </tr>
         <tr>
           <td><strong><code>onsent</code></strong></td>
-          <td><code><dfn>sent</dfn></code></td>
+          <td><code><dfn id="dfn-sms-sent-event">sent</dfn></code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles sent messages</td>
         </tr>
         <tr>
           <td><strong><code>ondeliverysuccess</code></strong></td>
-          <td><code><dfn>deliverysuccess</dfn></code></td>
+          <td><code><dfn
+          id="dfn-sms-deliverysuccess-event">deliverysuccess</dfn></code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles successful delivery reports</td>
         </tr>
         <tr>
-          <td><strong><code>ondeliveryfailure</code></strong></td>
-          <td><code><dfn>deliveryfailure</dfn></code></td>
+          <td><strong><code>ondeliveryerror</code></strong></td>
+          <td><code><dfn
+          id="dfn-sms-deliveryerror-event">deliveryerror</dfn></code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles failure delivery reports</td>
         </tr>
         <tr>
           <td><strong><code>onserviceadded</code></strong></td>
-          <td><code><dfn>serviceadded</dfn></code></td>
+          <td><code><dfn
+          id="dfn-sms-serviceadded-event">serviceadded</dfn></code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle new messaging services</td>
           </td>
         </tr>
         <tr>
           <td><strong><code>onserviceremoved</code></strong></td>
-          <td><code><dfn>serviceremoved</dfn></code></td>
+          <td><code><dfn
+          id="dfn-sms-serviceremoved-event">serviceremoved</dfn></code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle disabled messaging services</td>
           </td>
@@ -921,10 +939,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
          <dd>
            Content and recipients of the MMS message to be sent.
          </dd>
-         <dt>optional DOMString serviceID</dt>
+         <dt>optional MmsSendParameters sendParameters</dt>
          <dd>
-           Identifier of the service through which the message is requested to
-           be sent.
+           Set of parameters related to the submission of the message (e.g.
+           request of delivery/read report or not).
          </dd>
      </dl>
     </dd>
@@ -976,11 +994,25 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
     report is received on this messaging service manager.</dd>
 
     <dt class="no-docs">
-      attribute EventHandler ondeliveryfailure
+      attribute EventHandler ondeliveryerror
     </dt>
-    <dd>Handles the <code>deliveryfailure</code> event of type
+    <dd>Handles the <code>deliveryerror</code> event of type
     <a>DeliveryReportEvent</a>, fired when a new failure delivery
     report is received on this messaging service manager.</dd>
+
+    <dt class="no-docs">
+      attribute EventHandler onreadsuccess
+    </dt>
+    <dd>Handles the <code>readsuccess</code> event of type
+    <a>ReadReportEvent</a>, fired when a new succesful read report is
+    received on this messaging service manager.</dd>
+
+    <dt class="no-docs">
+      attribute EventHandler onreaderror
+    </dt>
+    <dd>Handles the <code>readerror</code> event of type
+    <a>ReadReportEvent</a>, fired when a new failure read report is received
+    on this messaging service manager.</dd>
 
     <dt class="no-docs">
       attribute EventHandler onserviceadded
@@ -1006,8 +1038,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
   <section>
   <h3>Steps</h3>        
     
-  <p> The <dfn><code>send</code></dfn> method when invoked MUST run the
-  following steps:
+  <p> The <code>send</code> method when invoked MUST run the following steps:
     <ol>
      <li>Let <var>promise</var> be a new <code>Promise</code> object and
      <var>resolver</var> its associated <code>resolver</code>
@@ -1023,9 +1054,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Set the <code>type</code> of <em>mmsMessage</em> to 'mms'.
       <li>Set the <code>serviceID</code> of <em>mmsMessage</em> to the
       identifier of the service used to send the message, i.e. the one passed in
-      the <code>serviceID</code> parameter, if provided, or otherwise to the
-      first item in the <code>serviceIDs</code> attribute of the
-      <code>MmsManager</code>.
+      the <code>serviceID</code> parameter in <code>MmsSendParameters</code>, if
+      provided, or otherwise to the first item in the <code>serviceIDs</code>
+      attribute of the <code>MmsManager</code>.
       <li>Set the <code>from</code> of <em>mmsMessage</em> to the number of the
       mobile subscription used to send this MMS message.
       <li>Set the <code>read</code> of <em>mmsMessage</em> to 'true'.
@@ -1048,13 +1079,14 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <code>to</code>, <code>cc</code> and <code>bcc</code> parameters (i.e. a
       single item if the same address has multiple ocurrences across these
       parameters), with the <code>recipient</code> attribute set to this
-      recipient's address and the <code>deliveryStatus</code> attribute set to
+      recipient's address, with the <code>deliveryStatus</code> attribute set to
       'pending', if a delivery report has been requested, or 'not-applicable'
-      otherwise.
+      otherwise and with the <code>readStatus</code> attribute set to 'pending',
+      if a read report has been requested, or 'not-applicable' otherwise.
       <li>Make a request to the system to send an MMS message with the content
       passed in the <code>content</code> parameter to the number(s) of indicated
       in the <code>to</code> parameter, using the proper service as described
-      above.
+      above and asking for delivery and/or read report if requested.
       <li><a>Queue a task</a> to monitor MMS sending progress.
      </ol>
      <li>If an <var>error</var> occurs run these substeps and terminate these
@@ -1077,9 +1109,9 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
       <li>Invoke <em>resolver</em>'s <a class="internalDFN"
       href="#dfn-fulfill-algorithm">fulfill algorithm</a> with
       <em>mmsMessage</em> as the <code>value</code> argument.
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <code>sent</code> with the <code>message</code> attribute set to
-      <em>mmsMessage</em>.
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN" href="#dfn-mms-sent-event"><code>sent</code></a> with
+      the <code>message</code> attribute set to <em>mmsMessage</em>.
      </ol>
     </ol>        
 
@@ -1179,6 +1211,10 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
                 Content-Location used to reference this attachment from the SMIL object in
                 the incoming MMS message [[!MMS13]], if present.
               </ol>
+              <li>Set the <code>readReportRequested</code> attribute to 'true'
+              if the 'X-Mms-Read-Report' field is present in the incoming MMS
+              message [[!MMS13]] and has the value 'Yes', and to 'false'
+              otherwise.
           </ol>
           <li>Set the <code>state</code> of <em>mmsMessage</em> to
           'received'.
@@ -1190,7 +1226,7 @@ navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
           the <code>deliveryStatus</code> attribute set to 'not-applicable'.
         </ol>
       <li><a>Queue a task</a> to <a>fire an event</a> named
-      <code><a>received</a></code> with the <code>message</code> attribute set
+      <code><a class="internalDFN" href="#dfn-mms-received-event">received</a></code> with the <code>message</code> attribute set
       to <em>mmsMessage</em>.
       <li><a>Queue a task</a> to fire a system message named
       <code>received</code> of type <code><a>ReceivedMessage</a></code> with the
@@ -1268,16 +1304,18 @@ function onMessageReceived(message) {
               value of the X-Mms-Status element in the M-Delivery.ind Protocol
               Data Unit [[!MMS13]] is 'Retrieved', or
               <li>to 'error', in case of failed delivery, i.e. if the value of
-              the X-Mms-Status element in the the M-Delivery.ind Protocol Data
+              the X-Mms-Status element in the M-Delivery.ind Protocol Data
               Unit [[!MMS13]] is 'Expired', 'Rejected' or 'Unreachable'.
             </ol>
           <li>set its <code>deliveryTimestamp</code> attribute to the delivery
           time, i.e. the 'Date' field in the M-Delivery.ind Protocol Data Unit
           [[!MMS13]], in case of successful delivery.
         </ol>
-      <li><a>Queue a task</a> to <a>fire an event</a> named
-      <a>deliverysuccess</a> or <a>deliveryfailure</a> respectively if the
-      delivery was successfull or not, with
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN"
+      href="#dfn-mms-deliverysuccess-event">deliverysuccess</a> or <a
+      class="internalDFN" href="#dfn-mms-deliveryerror-event">deliveryerror</a>
+      respectively if the delivery was successfull or not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
           <code>messageID</code> attribute of <em>mmsMessage</em>,
@@ -1292,8 +1330,8 @@ function onMessageReceived(message) {
           same position of the <code>recipients</code> array.
         </ol>
       <li><a>Queue a task</a> to fire a system message of type
-      <code><a>DeliveryReport</a></code>named <a>deliverysuccess</a> or
-      <a>deliveryfailure</a> respectively if the delivery was successfull or
+      <code><a>DeliveryReport</a></code> named <code>deliverysuccess</code> or
+      <code>deliveryerror</code> respectively if the delivery was successfull or
       not, with
         <ol>
           <li>the <code>messageID</code> attribute set to the
@@ -1310,8 +1348,66 @@ function onMessageReceived(message) {
         </ol>
     </ol>
 
-  <p> The <dfn><code>clear</code></dfn> method when invoked MUST run the
-  following steps:
+  <p>Upon a read report of a previously sent MMS message being received, the
+  <a>user agent</a> MUST
+    <ol>
+      <li>Let <var>mmsMessage</var> be the instance of <code>MmsMessage</code>
+      to which this read report is related.
+      <li>For each of the items in the <code>deliveryInfo</code> array
+      attribute of <em>mmsMessage</em> whose <code>recipient</code>
+      attribute matches one of the recipients of the MMS to which the read
+      report is related,  
+        <ol>
+          <li>set its <code>readStatus</code> attribute:
+            <ol>
+              <li>to 'success', in case the message has been read, i.e. if the
+              value of the X-Mms-Read-Status element in the M-Read-Orig.ind
+              Protocol Data Unit [[!MMS13]] is 'Read', or
+              <li>to 'error', in case the message has been deleted without being
+              read, i.e. if the value of the X-Mms-Status element in the
+              M-Read-Orig.ind Protocol Data Unit [[!MMS13]] is 'Deleted without
+              being read'.
+            </ol>
+          <li>set its <code>readTimestamp</code> attribute to the read
+          time, i.e. the 'Date' field in the M-Read-Orig.ind Protocol Data Unit
+          [[!MMS13]], in case the message has been read.
+        </ol>
+      <li><a>Queue a task</a> to <a>fire an event</a> named <a
+      class="internalDFN" href="#dfn-mms-readsuccess-event">readsuccess</a> or
+      <a class="internalDFN" href="#dfn-mms-readerror-event">readerror</a>
+      respectively if the message has been read or not, with
+        <ol>
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>recipients</code> attribute set to the subset of the
+          original recipients of <em>mmsMessage</em>to which this read
+          report is related, and
+          <li>in case the message has been read, with each of the items in the
+          <code>readTimestamps</code> attribute set to the read time of
+          the MMS message by the corresponding recipient, i.e. that in the
+          same position of the <code>recipients</code> array.
+        </ol>
+      <li><a>Queue a task</a> to fire a system message of type
+      <code><a>ReadReport</a></code> named <code>readsuccess</code> or
+      <code>readerror</code> respectively if the message has been read or not, with
+        <ol>
+          <li>the <code>messageID</code> attribute set to the
+          <code>messageID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>serviceID</code> attribute set to the
+          <code>serviceID</code> attribute of <em>mmsMessage</em>,
+          <li>the <code>recipients</code> attribute set to the subset of the
+          original recipients of <em>mmsMessage</em>to which this read
+          report is related, and
+          <li>in case the message has been read, with each of the items in the
+          <code>readTimestamps</code> attribute set to the read time of
+          the MMS message by the corresponding recipient, i.e. that in the
+          same position of the <code>recipients</code> array.
+        </ol>
+    </ol>
+
+  <p> The <code>clear</code> method when invoked MUST run the following steps:
     <ol>
      <li>Make a request to the system to delete all the messages associated to
      the messaging service with identifier equal to the <code>serviceID</code>
@@ -1352,38 +1448,54 @@ function onMessageReceived(message) {
       <tbody>
         <tr>
           <td><strong><code>onreceived</code></strong></td>
-          <td><code><dfn>received</dfn></code></td>
+          <td><code id="dfn-mms-received-event">received</code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles received messages</td>
         </tr>
         <tr>
           <td><strong><code>onsent</code></strong></td>
-          <td><code><dfn>sent</dfn></code></td>
+          <td><code id="dfn-mms-sent-event">sent</code></td>
           <td><a><code>MessagingEvent</code></a></td>
           <td>handles sent messages</td>
         </tr>
         <tr>
           <td><strong><code>ondeliverysuccess</code></strong></td>
-          <td><code><dfn>deliverysuccess</dfn></code></td>
+          <td><code
+          id="dfn-mms-deliverysuccess-event">deliverysuccess</code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles successful delivery reports</td>
         </tr>
         <tr>
-          <td><strong><code>ondeliveryfailure</code></strong></td>
-          <td><code><dfn>deliveryfailure</dfn></code></td>
+          <td><strong><code>ondeliveryerror</code></strong></td>
+          <td><code
+          id="dfn-mms-deliveryerror-event">deliveryerror</code></td>
           <td><a><code>DeliveryReportEvent</code></a></td>
           <td>handles failure delivery reports</td>
         </tr>
         <tr>
+          <td><strong><code>onreadsuccess</code></strong></td>
+          <td><code id="dfn-mms-readsuccess-event">readsuccess</code></td>
+          <td><a><code>ReadReportEvent</code></a></td>
+          <td>handles successful read reports</td>
+        </tr>
+        <tr>
+          <td><strong><code>onreaderror</code></strong></td>
+          <td><code id="dfn-mms-readerror-event">readerror</code></td>
+          <td><a><code>ReadReportEvent</code></a></td>
+          <td>handles failure read reports</td> 
+        </tr>
+        <tr>
           <td><strong><code>onserviceadded</code></strong></td>
-          <td><code><dfn>serviceadded</dfn></code></td>
+          <td><code
+          id="dfn-mms-serviceadded-event">serviceadded</code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle new messaging services</td>
           </td>
         </tr>
         <tr>
           <td><strong><code>onserviceremoved</code></strong></td>
-          <td><code><dfn>serviceremoved</dfn></code></td>
+          <td><code
+          id="dfn-mms-serviceremoved-event">serviceremoved</code></td>
           <td><a><code>ServiceChangeEvent</code></a></td>
           <td>handle disabled messaging services</td>
           </td>
@@ -1394,6 +1506,22 @@ function onMessageReceived(message) {
 
 </section>    
     
+<!-- - - - - - - - - - - - Dictionary MmsSendParameters- - - - - - - - - - - -->
+<section>
+  <h2><a>MmsSendParameters</a> Dictionary</h2>
+  <dl title="dictionary MmsSendParameters" class="idl">
+    <dt>optional DOMString serviceID</dt>
+    <dd>Identifier of the service through which the message is requested to be
+    sent. </dd>
+
+    <dt>boolean requestDeliveryReport</dt>
+    <dd>Flag to indicate whether a delivery report is requested. </dd>
+
+    <dt>boolean requestReadReport</dt>
+    <dd>Flag to indicate whether a read report is requested. </dd>
+
+  </dl>    
+</section>
 
 <!-- - - - - - - - - - - - Interface SmsMessage  - - - - - - - - - - - - - - -->
 <section>
@@ -1526,6 +1654,10 @@ function onMessageReceived(message) {
     status and, if applicable, the delivery time to each of the recipients of the
     message.</dd>
 
+    <dt>readonly attribute boolean? readReportRequested</dt>
+    <dd>MUST return true in case the originator of a received message requested
+    a read report and false otherwise. MUST return null for sent messages.</dd>
+
   </dl>
 </section>
 
@@ -1596,19 +1728,30 @@ function onMessageReceived(message) {
 <section>
   <h2><a>MmsDeliveryInfo</a> Dictionary</h2>
   <dl title="dictionary MmsDeliveryInfo" class="idl">
-    <dt>DeliveryStatus deliveryStatus</dt>
-    <dd>
-    The delivery status of the MMS message to a specific recipient.
-    </dd>
     <dt>DOMString recipient</dt>
     <dd>
     The recipient of the MMS to which the delivery status is related.
+    </dd>
+    <dt>DeliveryStatus deliveryStatus</dt>
+    <dd>
+    The delivery status of the MMS message to a specific recipient.
     </dd>
     <dt>Date deliveryTimestamp</dt>
     <dd>The time the message was delivered to the recipient, i.e. the 'Date'
     field in the M-Delivery.ind Protocol Data Unit [[!MMS13]]. It is not
     provided if there is no positive knowledge about the delivery of the
-    message.</dd>
+    message.
+    </dd>
+    <dt>ReadStatus readStatus</dt>
+    <dd>
+    The read status of the MMS message to a specific recipient.
+    </dd>
+    <dt>Date readTimestamp</dt>
+    <dd>The time the message was read by the recipient, i.e. the 'Date'
+    field in the M-Read-Orig.ind Protocol Data Unit [[!MMS13]]. It is not
+    provided if there is no positive knowledge about the delivery of the
+    message.
+    </dd>
   </dl>    
 </section>
     
@@ -1746,7 +1889,7 @@ function onMessageReceived(message) {
     <dd>MUST return the identifier of the message to which this delivery
     report is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
-    <dd>MUST return an array contining the addresses of the subset of the
+    <dd>MUST return an array containing the addresses of the subset of the
     original recipients of the message to which this delivery report is
     related. As delivery reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
@@ -1760,6 +1903,42 @@ function onMessageReceived(message) {
     array refers to the recipient in the same position of the
     <code>recipients</code> array. It MUST return null if case of delivery
     failure (e.g. message expired)
+    </dd>
+  </dl>
+</section>
+
+
+<!-- - - - - - - - - - - - Interface ReadReport  - - - - - - - - - - - - -->
+<section>
+  <h2><a>ReadReport</a> Interface</h2>
+  <p>The <a>ReadReport</a> interface represents a system message related to
+  a read report of a sent MMS message. This event is originated from the system
+  and will start the application if it is not currently running. 
+
+  <p>The application that consumes this API MAY set a message handler for the
+  <code>ReadReport</code> system message to listen for when a system
+  message related to a received read report is fired.
+
+  <dl title="interface ReadReport"
+      class="idl">
+    <dt>readonly attribute DOMString serviceID</dt>
+    <dd>MUST return the identifier of the service used to send the message to
+    which this read report is related.</dd>
+    <dt>readonly attribute DOMString messageID</dt>
+    <dd>MUST return the identifier of the message to which this read
+    report is related.</dd>
+    <dt>readonly attribute DOMString[] recipients</dt>
+    <dd>MUST return an array containing the addresses of the subset of the
+    original recipients of the message to which this read report is
+    related. As read reports related to just part of the recipients of the
+    MMS message are possible, this array may not contain the full list of
+    recipients to which the MMS message was sent.
+    </dd>
+    <dt>readonly attribute Date[]? readTimestamps</dt>
+    <dd>MUST return an array containing the read dates by each of the
+    recipients to which this read report event relates. Each element in the
+    array refers to the recipient in the same position of the
+    <code>recipients</code> array.
     </dd>
   </dl>
 </section>
@@ -1793,7 +1972,7 @@ function onMessageReceived(message) {
     <dd>MUST return the identifier of the message to which this delivery
     report event is related.</dd>
     <dt>readonly attribute DOMString[] recipients</dt>
-    <dd>MUST return an array contining the addresses of the subset of the
+    <dd>MUST return an array containing the addresses of the subset of the
     original recipients of the message to which this delivery report event is
     related. As delivery reports related to just part of the recipients of the
     MMS message are possible, this array may not contain the full list of
@@ -1807,6 +1986,36 @@ function onMessageReceived(message) {
     array refers to the recipient in the same position of the
     <code>recipients</code> array. It MUST return null if case of delivery
     failure (e.g. message expired)
+    </dd>
+  </dl>
+</section>
+
+
+<!-- - - - - - - - - - - - Interface ReadReportEvent - - - - - - - - - - -->
+<section>
+  <h2><a>ReadReportEvent</a> Interface</h2>
+  <p>The <a>ReadReportEvent</a> interface represents events related
+  to a read report of a sent message.
+  <dl title="interface ReadReportEvent : Event"
+      class="idl">
+    <dt>readonly attribute DOMString serviceID</dt>
+    <dd>MUST return the identifier of the service used to send the message to
+    which this read report event is related.</dd>
+    <dt>readonly attribute DOMString messageID</dt>
+    <dd>MUST return the identifier of the message to which this read
+    report event is related.</dd>
+    <dt>readonly attribute DOMString[] recipients</dt>
+    <dd>MUST return an array containing the addresses of the subset of the
+    original recipients of the message to which this read report event is
+    related. As read reports related to just part of the recipients of the
+    MMS message are possible, this array may not contain the full list of
+    recipients to which the MMS message was sent.
+    </dd>
+    <dt>readonly attribute Date[]? readTimestamps</dt>
+    <dd>MUST return an array containing the read dates for each of the
+    recipients to which this read report event relates. Each element in the
+    array refers to the recipient in the same position of the
+    <code>recipients</code> array.
     </dd>
   </dl>
 </section>
@@ -2028,6 +2237,31 @@ function onMessageReceived(message) {
               The delivery status is not applicable either because a delivery
               report has not been requested or because the message is an inbound
               message
+          </dd>
+    </dl>
+
+    <p>The attibute <code>readStatus</code> can have the following values:
+    <dl class="idl" title="enum ReadStatus">
+          <dt>success</dt>
+          <dd>
+              The message has been read by the recipient.
+          </dd>
+
+          <dt>pending</dt>
+          <dd>
+              There is no positive knowledge that the message has been read by
+              the recipient.
+          </dd>
+
+          <dt>error</dt>
+          <dd>
+              The delivery of the message has failed.
+          </dd>
+
+          <dt>not-applicable</dt>
+          <dd>
+              The read status is not applicable either because a read report has
+              not been requested or because the message is an inbound message
           </dd>
     </dl>
 
