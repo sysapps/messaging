@@ -1961,10 +1961,12 @@ function onMessageReceived(message) {
     recipients to which the MMS message was sent.
     </dd>
     <dt>readonly attribute Date[]? readTimestamps</dt>
-    <dd>MUST return an array containing the read dates by each of the
-    recipients to which this read report event relates. Each element in the
-    array refers to the recipient in the same position of the
-    <code>recipients</code> array.
+    <dd>MUST return an array containing the read dates, or null if no read date
+    is provided, for each of the recipients to which this read report event
+    relates. Each element in the array refers to the recipient in the same
+    position of the <code>recipients</code> array. It MUST return null when no
+    read date is provided for any of the recipients to which this read report
+    event relates.
     </dd>
   </dl>
 </section>
@@ -2038,10 +2040,12 @@ function onMessageReceived(message) {
     recipients to which the MMS message was sent.
     </dd>
     <dt>readonly attribute Date[]? readTimestamps</dt>
-    <dd>MUST return an array containing the read dates for each of the
-    recipients to which this read report event relates. Each element in the
-    array refers to the recipient in the same position of the
-    <code>recipients</code> array.
+    <dd>MUST return an array containing the read dates, or null if no read date
+    is provided, for each of the recipients to which this read report event
+    relates. Each element in the array refers to the recipient in the same
+    position of the <code>recipients</code> array. It MUST return null when no
+    read date is provided for any of the recipients to which this read report
+    event relates.
     </dd>
   </dl>
 </section>
