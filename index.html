@@ -92,7 +92,7 @@ Style guide to contributors:
     An example of use is provided below:
   
   <pre class="example highlight">
-navigator.messaging.sms.send ( '+1234567890', 'How are you?').done(
+navigator.messaging.sms.send ( '+1234567890', 'How are you?').then(
   function(message) { window.console.log('Message with identifier  ' +
                       message.messageID + ' sent at ' + message.timestamp); },
   function(error) {   window.console.error('Error: ' + error); } )
